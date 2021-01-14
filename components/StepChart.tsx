@@ -9,18 +9,18 @@ type StepChartProps = {
   availableStyles: string[];
   mix: string;
   artist: string;
+  arrows: Arrow[];
 };
 
-function StepChart({
-  className,
-  songTitle,
-  currentDifficulty,
-  availableDifficulties,
-  currentStyle,
-  availableStyles,
-  mix,
-  artist,
-}: StepChartProps) {
+function StepChart({}: // className,
+// songTitle,
+// currentDifficulty,
+// availableDifficulties,
+// currentStyle,
+// availableStyles,
+// mix,
+// artist,
+StepChartProps) {
   return <div>stepchart</div>;
 }
 
