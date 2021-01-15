@@ -14,7 +14,9 @@ function IndexPage({ songs }: IndexPageProps) {
       <ul>
         {songs.map((s) => (
           <li key={s.title}>
-            <a href={buildSongUrl(s)}>{s.title}</a>
+            <a href={buildSongUrl(s)}>
+              {s.title} {s.difficulty} {s.type}
+            </a>
           </li>
         ))}
       </ul>

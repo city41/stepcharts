@@ -10,18 +10,27 @@ function getAllSongDifficultyTypes(): SongDifficultyType[] {
   return mixDirs.reduce<SongDifficultyType[]>((building, mixDir) => {
     const songDirs = fs.readdirSync(path.join(ROOT, mixDir));
 
-    const sdts = songDirs.map((songDir) => {
-      const songDirPath = path.join(ROOT, mixDir, songDir);
-      const Stepchart = parseStepchart(songDirPath);
+    const sdts = songDirs.reduce<SongDifficultyType[]>(
+      (songBuilding, songDir) => {
+        const songDirPath = path.join(ROOT, mixDir, songDir);
+        const stepchart = parseStepchart(songDirPath);
 
-      // TODO: grab all difficulties and type combos
-      return {
-        title: Stepchart.title,
-        mix: Stepchart.mix,
-        difficulty: Stepchart.availableDifficulties[0],
-        type: Stepchart.availableTypes[0],
-      };
-    });
+        // TODO: support more than just single
+        const allDifficulties = stepchart.availableDifficulties.map(
+          (difficulty) => {
+            return {
+              title: stepchart.title,
+              mix: stepchart.mix,
+              difficulty,
+              type: "single",
+            };
+          }
+        );
+
+        return songBuilding.concat(allDifficulties);
+      },
+      []
+    );
 
     return building.concat(sdts);
   }, []);

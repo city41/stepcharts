@@ -17,6 +17,7 @@ export async function getStaticPaths(
   _context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
   const allSongs = getAllSongDifficultyTypes();
+  console.log("allSongs", allSongs);
 
   return {
     paths: allSongs.map((sdt) => ({ params: sdt })),
