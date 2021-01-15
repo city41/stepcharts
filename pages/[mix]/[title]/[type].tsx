@@ -4,12 +4,11 @@ import {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from "next";
-import { parseStepchart } from "../../../../lib/parseStepchart";
-import { getAllSongDifficultyTypes } from "../../../../lib/getAllSongDifficultyTypes";
-import { StepchartPage } from "../../../../components/StepchartPage";
+import { parseStepchart } from "../../../lib/parseStepchart";
+import { getAllSongDifficultyTypes } from "../../../lib/getAllSongDifficultyTypes";
+import { StepchartPage } from "../../../components/StepchartPage";
 
 type NextSongDifficultyTypePageProps = Stepchart & {
-  currentDifficulty: string;
   currentType: string;
 };
 
@@ -17,7 +16,6 @@ export async function getStaticPaths(
   _context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
   const allSongs = getAllSongDifficultyTypes();
-  console.log("allSongs", allSongs);
 
   return {
     paths: allSongs.map((sdt) => ({ params: sdt })),
@@ -35,7 +33,6 @@ export async function getStaticProps(
   const results = {
     props: {
       ...sc,
-      currentDifficulty: context.params!.difficulty as string,
       currentType: context.params!.type as string,
     },
   };

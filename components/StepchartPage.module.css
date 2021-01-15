@@ -3,7 +3,7 @@
     @apply absolute;
 }
 
-.L {
+.S-L, .D-1-L {
     @apply bg-no-repeat bg-cover;
 
     left: 0;
@@ -14,7 +14,7 @@
     transform-origin: center;
 }
 
-.D {
+.S-D, .D-1-D {
     @apply bg-no-repeat bg-cover;
 
     left: 50px;
@@ -25,7 +25,7 @@
     transform-origin: center;
 }
 
-.U {
+.S-U, .D-1-U {
     @apply bg-no-repeat bg-cover;
 
     left: 100px;
@@ -34,7 +34,7 @@
     background-image: url(./upArrow.png);
 }
 
-.R {
+.S-R, .D-1-R {
     @apply bg-no-repeat bg-cover;
 
     left: 150px;

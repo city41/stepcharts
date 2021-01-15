@@ -27,10 +27,22 @@ const smToArrowDirections: Record<string, Arrow["direction"]> = {
   "01000000": "D-1-D",
   "00100000": "D-1-U",
   "00010000": "D-1-R",
+  "11000000": "D-1-LD",
+  "10100000": "D-1-LU",
+  "01100000": "D-1-UD",
+  "01010000": "D-1-RD",
+  "00110000": "D-1-RU",
+  "10010000": "D-1-LR",
   "00001000": "D-2-L",
   "00000100": "D-2-D",
   "00000010": "D-2-U",
   "00000001": "D-2-R",
+  "00001100": "D-2-LD",
+  "00001010": "D-2-LU",
+  "00000110": "D-2-UD",
+  "00000101": "D-2-RD",
+  "00000011": "D-2-RU",
+  "00001001": "D-2-LR",
   "00100010": "D-1-U-2-U",
   "01000100": "D-1-D-2-D",
   "00011000": "D-1-R-2-L",
@@ -46,8 +58,13 @@ const smToArrowDirections: Record<string, Arrow["direction"]> = {
 
 function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
   // const measureType = measureLines.length;
-
   return measureLines.map((mline) => {
+    const direction = smToArrowDirections[mline];
+
+    if (!direction) {
+      throw new Error(`No direction found for ${mline}`);
+    }
+
     return {
       direction: smToArrowDirections[mline],
       // TODO: figure out actual beat
@@ -64,7 +81,6 @@ function parseSm(sm: string, mix: string): Stepchart {
   const sc: Partial<Stepchart> = {
     mix,
     arrows: {},
-    availableDifficulties: [],
     availableTypes: [],
   };
 
@@ -92,9 +108,8 @@ function parseSm(sm: string, mix: string): Stepchart {
       arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
     } while (lines[i++].trim() !== ";");
 
-    sc.arrows![`${difficulty}-${type}`] = arrows;
-    sc.availableDifficulties.push(difficulty);
-    sc.availableTypes.push(type);
+    sc.arrows![`${type}-${difficulty}`] = arrows;
+    sc.availableTypes!.push(`${type}-${difficulty}`);
 
     return i + 1;
   }

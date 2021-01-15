@@ -16,18 +16,15 @@ function getAllSongDifficultyTypes(): SongDifficultyType[] {
         const stepchart = parseStepchart(songDirPath);
 
         // TODO: support more than just single
-        const allDifficulties = stepchart.availableDifficulties.map(
-          (difficulty) => {
-            return {
-              title: stepchart.title,
-              mix: stepchart.mix,
-              difficulty,
-              type: "single",
-            };
-          }
-        );
+        const allTypes = stepchart.availableTypes.map((type) => {
+          return {
+            title: stepchart.title,
+            mix: stepchart.mix,
+            type,
+          };
+        });
 
-        return songBuilding.concat(allDifficulties);
+        return songBuilding.concat(allTypes);
       },
       []
     );

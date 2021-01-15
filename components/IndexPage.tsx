@@ -5,7 +5,7 @@ type IndexPageProps = {
 };
 
 function buildSongUrl(s: SongDifficultyType): string {
-  return `/${s.mix}/${s.title}/${s.difficulty}/${s.type}`;
+  return `/${s.mix}/${s.title}/${s.type}`;
 }
 
 function IndexPage({ songs }: IndexPageProps) {
@@ -15,7 +15,7 @@ function IndexPage({ songs }: IndexPageProps) {
         {songs.map((s) => (
           <li key={s.title}>
             <a href={buildSongUrl(s)}>
-              {s.title} {s.difficulty} {s.type}
+              {s.title} {s.type}
             </a>
           </li>
         ))}

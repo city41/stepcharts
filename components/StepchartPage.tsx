@@ -4,7 +4,6 @@ import clsx from "clsx";
 import styles from "./StepchartPage.module.css";
 
 type StepchartPageProps = Stepchart & {
-  currentDifficulty: string;
   currentType: string;
 };
 
@@ -15,17 +14,12 @@ const offsets = {
   8: ARROW_HEIGHT / 2,
 };
 
-function StepchartPage({
-  title,
-  currentDifficulty,
-  currentType,
-  arrows,
-}: StepchartPageProps) {
+function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
   let offset = 0;
 
   let arrowSeen = false;
 
-  const arrowDivs = arrows[`${currentDifficulty}-${currentType}`].map((a) => {
+  const arrowDivs = arrows[currentType].map((a) => {
     // for now, skip the empty intro
     arrowSeen = arrowSeen || a.direction !== "none";
     if (!arrowSeen) {
@@ -45,7 +39,6 @@ function StepchartPage({
   return (
     <div>
       <h1>{title}</h1>
-      <h2>{currentDifficulty}</h2>
       <h2>{currentType}</h2>
       <div className="relative" style={{ height: offset }}>
         {arrowDivs}

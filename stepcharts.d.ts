@@ -49,7 +49,6 @@ type Stepchart = {
   title: string;
   artist: string;
   mix: string;
-  availableDifficulties: string[];
   availableTypes: string[];
   arrows: Record<string, Arrow[]>;
 };
@@ -57,6 +56,5 @@ type Stepchart = {
 type SongDifficultyType = {
   title: string;
   mix: string;
-  difficulty: string;
   type: string;
 };
