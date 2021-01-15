@@ -1,0 +1,46 @@
+.arrow {
+    height: 50px;
+    @apply absolute;
+}
+
+.L {
+    @apply bg-no-repeat bg-cover;
+
+    left: 0;
+
+    width: 50px;
+    background-image: url(./upArrow.png);
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+.D {
+    @apply bg-no-repeat bg-cover;
+
+    left: 50px;
+
+    width: 50px;
+    background-image: url(./upArrow.png);
+    transform: rotate(180deg);
+    transform-origin: center;
+}
+
+.U {
+    @apply bg-no-repeat bg-cover;
+
+    left: 100px;
+
+    width: 50px;
+    background-image: url(./upArrow.png);
+}
+
+.R {
+    @apply bg-no-repeat bg-cover;
+
+    left: 150px;
+
+    width: 50px;
+    background-image: url(./upArrow.png);
+    transform: rotate(90deg);
+    transform-origin: center;
+}

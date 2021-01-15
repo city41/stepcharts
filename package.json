@@ -9,6 +9,7 @@
   "dependencies": {
     "@types/node": "^14.14.20",
     "@types/react": "^17.0.0",
+    "clsx": "^1.1.1",
     "next": "latest",
     "prettier": "^2.2.1",
     "react": "^16.13.1",
