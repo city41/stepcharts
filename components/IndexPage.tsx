@@ -18,10 +18,12 @@ function IndexPage({ mixes }: IndexPageProps) {
       socialMediaImg=""
     >
       <h1 className="text-3xl">Choose a mix</h1>
-      <ul>
+      <ul className="flex flex-col gap-2">
         {mixes.map((m) => (
-          <li key={m} className="h-36 w-72 bg-red-200">
-            <a href={buildMixUrl(m)}>{m}</a>
+          <li key={m}>
+            <a className="block h-36 w-72 bg-red-200" href={buildMixUrl(m)}>
+              {m}
+            </a>
           </li>
         ))}
       </ul>

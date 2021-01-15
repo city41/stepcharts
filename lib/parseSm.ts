@@ -3,7 +3,7 @@ const metaTagsToConsume = ["title", "artist", "mix", "banner"];
 function getMeasureLines(lines: string[], i: number): string[] {
   const measureLines: string[] = [];
 
-  while (lines[i] !== "," && lines[i] !== ";") {
+  while (!lines[i].startsWith(",") && !lines[i].startsWith(";")) {
     measureLines.push(lines[i++]);
   }
 
@@ -41,6 +41,32 @@ function determineBeat(index: number, measureLength: number): Arrow["beat"] {
     }
   }
 
+  if (measureLength === 24) {
+    if (index % 6 === 1) {
+      return 24;
+    } else if (index % 6 === 2) {
+      return 12;
+    } else if (index % 6 === 3) {
+      return 6;
+    } else {
+      return 4;
+    }
+  }
+
+  if (measureLength === 48) {
+    if (index % 12 === 1) {
+      return 48;
+    } else if (index % 12 === 2) {
+      return 24;
+    } else if (index % 12 === 3) {
+      return 12;
+    } else if (index % 12 === 4) {
+      return 6;
+    } else {
+      return 4;
+    }
+  }
+
   if (measureLength === 16) {
     if (index % 4 === 1) {
       return 16;
@@ -51,6 +77,36 @@ function determineBeat(index: number, measureLength: number): Arrow["beat"] {
     } else {
       return 4;
     }
+  }
+
+  if (measureLength === 32) {
+    if (index % 8 === 1) {
+      return 32;
+    } else if (index % 8 === 2) {
+      return 16;
+    } else if (index % 8 === 3) {
+      return 8;
+    } else {
+      return 4;
+    }
+  }
+
+  if (measureLength === 64) {
+    if (index % 16 === 1) {
+      return 64;
+    } else if (index % 16 === 2) {
+      return 32;
+    } else if (index % 16 === 3) {
+      return 16;
+    } else if (index % 16 === 4) {
+      return 8;
+    } else {
+      return 4;
+    }
+  }
+
+  if (measureLength === 192) {
+    return 4;
   }
 
   throw new Error(`measureLength was: ${measureLength}`);
@@ -67,84 +123,88 @@ function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
 }
 
 function parseSm(sm: string, mix: string): Stepchart {
-  const lines = sm.split("\n").map((l) => l.trim());
+  try {
+    const lines = sm.split("\n").map((l) => l.trim());
 
-  let i = 0;
+    let i = 0;
 
-  const sc: Partial<Stepchart> = {
-    mix,
-    arrows: {},
-    availableTypes: [],
-    banner: null,
-  };
+    const sc: Partial<Stepchart> = {
+      mix,
+      arrows: {},
+      availableTypes: [],
+      banner: null,
+    };
 
-  function parseNotes(lines: string[], i: number): number {
-    // move past #NOTES into the note metadata
-    i++;
-    const type = lines[i++].replace("dance-", "").replace(":", "");
-    i++; // skip author for now
-    const difficulty = lines[i++].replace(":", "").toLowerCase();
-    const feet = Number(lines[i++].replace(":", ""));
-    i++; // skip groove meter data for now
+    function parseNotes(lines: string[], i: number): number {
+      // move past #NOTES into the note metadata
+      i++;
+      const type = lines[i++].replace("dance-", "").replace(":", "");
+      i++; // skip author for now
+      const difficulty = lines[i++].replace(":", "").toLowerCase();
+      const feet = Number(lines[i++].replace(":", ""));
+      i++; // skip groove meter data for now
 
-    // skip couple, versus, etc for now
-    if (type !== "single" && type !== "double") {
+      // skip couple, versus, etc for now
+      if (type !== "single" && type !== "double") {
+        return i + 1;
+      }
+
+      // now i is pointing at the first measure
+      let arrows: Arrow[] = [];
+
+      do {
+        const measureLines = getMeasureLines(lines, i);
+        i += measureLines.length;
+
+        arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
+      } while (lines[i++].trim() !== ";");
+
+      sc.arrows![`${type}-${difficulty}`] = arrows;
+      sc.availableTypes!.push(`${type}-${difficulty}`);
+
       return i + 1;
     }
 
-    // now i is pointing at the first measure
-    let arrows: Arrow[] = [];
+    function parseTag(lines: string[], index: number): number {
+      const line = lines[index];
 
-    do {
-      const measureLines = getMeasureLines(lines, i);
-      i += measureLines.length;
+      const r = /#([A-Z]+):([^;]*)/;
+      const result = r.exec(line);
 
-      arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
-    } while (lines[i++].trim() !== ";");
+      if (result) {
+        const tag = result[1].toLowerCase();
+        const value = result[2];
 
-    sc.arrows![`${type}-${difficulty}`] = arrows;
-    sc.availableTypes!.push(`${type}-${difficulty}`);
+        if (metaTagsToConsume.includes(tag)) {
+          // @ts-ignore
+          sc[tag] = value;
+        } else if (tag === "notes") {
+          return parseNotes(lines, index);
+        }
+      }
 
-    return i + 1;
-  }
+      return index + 1;
+    }
 
-  function parseTag(lines: string[], index: number): number {
-    const line = lines[index];
+    while (i < lines.length) {
+      const line = lines[i];
 
-    const r = /#([A-Z]+):([^;]*)/;
-    const result = r.exec(line);
+      if (!line.length || line.startsWith("//")) {
+        i += 1;
+        continue;
+      }
 
-    if (result) {
-      const tag = result[1].toLowerCase();
-      const value = result[2];
-
-      if (metaTagsToConsume.includes(tag)) {
-        // @ts-ignore
-        sc[tag] = value;
-      } else if (tag === "notes") {
-        return parseNotes(lines, index);
+      if (line.startsWith("#")) {
+        i = parseTag(lines, i);
+      } else {
+        i += 1;
       }
     }
 
-    return index + 1;
+    return sc as Stepchart;
+  } catch (e) {
+    throw new Error(`error parsing ${sm}: ${e}`);
   }
-
-  while (i < lines.length) {
-    const line = lines[i];
-
-    if (!line.length || line.startsWith("//")) {
-      i += 1;
-      continue;
-    }
-
-    if (line.startsWith("#")) {
-      i = parseTag(lines, i);
-    } else {
-      i += 1;
-    }
-  }
-
-  return sc as Stepchart;
 }
 
 export { parseSm };
