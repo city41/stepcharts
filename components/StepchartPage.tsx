@@ -42,7 +42,7 @@ function StepchartPage({
     const arrowSvgs = [];
 
     for (let i = 0; i < a.direction.length; ++i) {
-      if (a.direction[i] === "1") {
+      if (a.direction[i] !== "0") {
         arrowSvgs.push(
           <ArrowSvg
             key={i}

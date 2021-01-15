@@ -158,6 +158,20 @@ function parseSm(sm: string, mix: string): Stepchart {
       arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
     } while (lines[i++].trim() !== ";");
 
+    // trim off empty trailing measures
+    // TODO: I think this does trim right, but it
+    // isn't showing up correctly in StepchartPage
+    let endI = arrows.length - 1;
+    while (
+      endI > 0 &&
+      (arrows[endI].direction === "0000" ||
+        arrows[endI].direction === "00000000")
+    ) {
+      --endI;
+    }
+
+    arrows = arrows.slice(0, endI);
+
     sc.arrows![`${type}-${difficulty}`] = arrows;
     sc.availableTypes!.push(`${type}-${difficulty}`);
 
