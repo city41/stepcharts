@@ -1,4 +1,4 @@
-const metaTagsToConsume = ["title", "artist", "mix"];
+const metaTagsToConsume = ["title", "artist", "mix", "banner"];
 
 function getMeasureLines(lines: string[], i: number): string[] {
   const measureLines: string[] = [];
@@ -75,6 +75,7 @@ function parseSm(sm: string, mix: string): Stepchart {
     mix,
     arrows: {},
     availableTypes: [],
+    banner: null,
   };
 
   function parseNotes(lines: string[], i: number): number {

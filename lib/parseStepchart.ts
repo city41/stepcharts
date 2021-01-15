@@ -16,6 +16,8 @@ function getSongFile(songDir: string): string {
 }
 
 function parseStepchart(stepchartSongDirPath: string): Stepchart {
+  // const bannerUrl = copyBannerToPublic(stepchartSongDirPath);
+
   const songFile = getSongFile(stepchartSongDirPath);
   const stepchartPath = path.join(stepchartSongDirPath, songFile);
   const extension = path.extname(stepchartPath);
@@ -30,7 +32,20 @@ function parseStepchart(stepchartSongDirPath: string): Stepchart {
   }
 
   const fileContents = fs.readFileSync(stepchartPath);
-  return parser(fileContents.toString(), mix);
+  const stepchart = parser(fileContents.toString(), mix);
+
+  if (stepchart.banner) {
+    const publicName = encodeURIComponent(
+      `${mix}-${stepchart.title}-${stepchart.banner}`
+    );
+    fs.copyFileSync(
+      path.join(stepchartSongDirPath, stepchart.banner),
+      path.join("components/bannerImages", publicName)
+    );
+    stepchart.banner = publicName;
+  }
+
+  return stepchart;
 }
 
 export { parseStepchart };

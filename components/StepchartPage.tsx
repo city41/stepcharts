@@ -18,7 +18,12 @@ const offsets = {
   16: ARROW_HEIGHT / 4,
 };
 
-function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
+function StepchartPage({
+  title,
+  currentType,
+  arrows,
+  banner,
+}: StepchartPageProps) {
   let offset = 0;
 
   let arrowSeen = true;
@@ -89,6 +94,7 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
 
   return (
     <div>
+      {banner && <img src={require(`./bannerImages/${banner}`)} />}
       <h1>{title}</h1>
       <h2>{currentType}</h2>
       <div
