@@ -22,8 +22,8 @@ function getAllSongDifficultyTypes(): SongDifficultyType[] {
         // TODO: support more than just single
         const allTypes = stepchart.availableTypes.map((type) => {
           return {
-            title: stepchart.title,
-            mix: stepchart.mix,
+            title: songDir,
+            mix: mixDir,
             type,
           };
         });

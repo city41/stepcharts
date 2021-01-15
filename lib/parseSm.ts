@@ -123,69 +123,69 @@ function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
 }
 
 function parseSm(sm: string, mix: string): Stepchart {
-  try {
-    const lines = sm.split("\n").map((l) => l.trim());
+  const lines = sm.split("\n").map((l) => l.trim());
 
-    let i = 0;
+  let i = 0;
 
-    const sc: Partial<Stepchart> = {
-      mix,
-      arrows: {},
-      availableTypes: [],
-      banner: null,
-    };
+  const sc: Partial<Stepchart> = {
+    mix,
+    arrows: {},
+    availableTypes: [],
+    banner: null,
+  };
 
-    function parseNotes(lines: string[], i: number): number {
-      // move past #NOTES into the note metadata
-      i++;
-      const type = lines[i++].replace("dance-", "").replace(":", "");
-      i++; // skip author for now
-      const difficulty = lines[i++].replace(":", "").toLowerCase();
-      const feet = Number(lines[i++].replace(":", ""));
-      i++; // skip groove meter data for now
+  function parseNotes(lines: string[], i: number): number {
+    // move past #NOTES into the note metadata
+    i++;
+    const type = lines[i++].replace("dance-", "").replace(":", "");
+    i++; // skip author for now
+    const difficulty = lines[i++].replace(":", "").toLowerCase();
+    const feet = Number(lines[i++].replace(":", ""));
+    i++; // skip groove meter data for now
 
-      // skip couple, versus, etc for now
-      if (type !== "single" && type !== "double") {
-        return i + 1;
-      }
-
-      // now i is pointing at the first measure
-      let arrows: Arrow[] = [];
-
-      do {
-        const measureLines = getMeasureLines(lines, i);
-        i += measureLines.length;
-
-        arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
-      } while (lines[i++].trim() !== ";");
-
-      sc.arrows![`${type}-${difficulty}`] = arrows;
-      sc.availableTypes!.push(`${type}-${difficulty}`);
-
+    // skip couple, versus, etc for now
+    if (type !== "single" && type !== "double") {
       return i + 1;
     }
 
-    function parseTag(lines: string[], index: number): number {
-      const line = lines[index];
+    // now i is pointing at the first measure
+    let arrows: Arrow[] = [];
 
-      const r = /#([A-Z]+):([^;]*)/;
-      const result = r.exec(line);
+    do {
+      const measureLines = getMeasureLines(lines, i);
+      i += measureLines.length;
 
-      if (result) {
-        const tag = result[1].toLowerCase();
-        const value = result[2];
+      arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
+    } while (lines[i++].trim() !== ";");
 
-        if (metaTagsToConsume.includes(tag)) {
-          // @ts-ignore
-          sc[tag] = value;
-        } else if (tag === "notes") {
-          return parseNotes(lines, index);
-        }
+    sc.arrows![`${type}-${difficulty}`] = arrows;
+    sc.availableTypes!.push(`${type}-${difficulty}`);
+
+    return i + 1;
+  }
+
+  function parseTag(lines: string[], index: number): number {
+    const line = lines[index];
+
+    const r = /#([A-Z]+):([^;]*)/;
+    const result = r.exec(line);
+
+    if (result) {
+      const tag = result[1].toLowerCase();
+      const value = result[2];
+
+      if (metaTagsToConsume.includes(tag)) {
+        // @ts-ignore
+        sc[tag] = value;
+      } else if (tag === "notes") {
+        return parseNotes(lines, index);
       }
-
-      return index + 1;
     }
 
+    return index + 1;
+  }
+
+  try {
     while (i < lines.length) {
       const line = lines[i];
 
