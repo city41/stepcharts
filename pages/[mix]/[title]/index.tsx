@@ -29,12 +29,15 @@ export async function getStaticPaths(
 export async function getStaticProps(
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<NextTitleIndexPageProps>> {
-  const types = getTypesForTitle(context.params!.mix, context.params!.title);
+  const mix = context.params!.mix as string;
+  const title = context.params!.title as string;
+
+  const types = getTypesForTitle(mix, title);
 
   const results = {
     props: {
-      mix: context.params!.mix,
-      title: context.params!.title,
+      mix,
+      title,
       types,
     },
   };
