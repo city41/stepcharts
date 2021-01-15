@@ -88,6 +88,8 @@
     background-position: var(--arrow-size) 0, calc(var(--arrow-size) * 3) 0;
 }
 
+/* fully on pad 2 */
+
 .D-2-L {
     background-image: url(./leftArrow.png);
     background-position: calc(var(--arrow-size) * 4) 0;
@@ -139,9 +141,25 @@
 }
 
 .D-2-RD {
-    width: calc(var(--arrow-size) * 3);
     background-image: url(./downArrow.png), url(./rightArrow.png);
     background-position: calc(var(--arrow-size) * 5) 0, calc(var(--arrow-size) * 7) 0;
+}
+
+/* bridge pad 1 and 2 */
+
+.D-1-R-2-L {
+    background-image: url(./rightArrow.png), url(./leftArrow.png);
+    background-position: calc(var(--arrow-size) * 3) 0, calc(var(--arrow-size) * 4) 0;
+}
+
+.D-1-U-2-L {
+    background-image: url(./upArrow.png), url(./leftArrow.png);
+    background-position: calc(var(--arrow-size) * 2) 0, calc(var(--arrow-size) * 4) 0;
+}
+
+.D-1-D-2-L {
+    background-image: url(./downArrow.png), url(./leftArrow.png);
+    background-position: calc(var(--arrow-size) * 1) 0, calc(var(--arrow-size) * 4) 0;
 }
 
 .beat-4::after {
