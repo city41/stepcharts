@@ -20,7 +20,7 @@ type Stepchart = {
   mix: string;
   availableDifficulties: string[];
   availableTypes: string[];
-  arrows: Arrow[];
+  arrows: Record<string, Arrow[]>;
 };
 
 type SongDifficultyType = {

@@ -41,7 +41,12 @@ function parseSm(sm: string, mix: string): Stepchart {
 
   let i = 0;
 
-  const sc: Partial<Stepchart> = { mix };
+  const sc: Partial<Stepchart> = {
+    mix,
+    arrows: {},
+    availableDifficulties: [],
+    availableTypes: [],
+  };
 
   function parseNotes(lines: string[], i: number): number {
     // move past #NOTES into the note metadata
@@ -51,6 +56,11 @@ function parseSm(sm: string, mix: string): Stepchart {
     const difficulty = lines[i++].replace(":", "").toLowerCase();
     const feet = Number(lines[i++].replace(":", ""));
     i++; // skip groove meter data for now
+
+    // TODO: support more than just single
+    if (type !== "single") {
+      return i + 1;
+    }
 
     // now i is pointing at the first measure
     let arrows: Arrow[] = [];
@@ -62,9 +72,9 @@ function parseSm(sm: string, mix: string): Stepchart {
       arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
     } while (lines[i++].trim() !== ";");
 
-    sc.arrows = arrows;
-    sc.availableDifficulties = [difficulty];
-    sc.availableTypes = [type];
+    sc.arrows![`${difficulty}-${type}`] = arrows;
+    sc.availableDifficulties.push(difficulty);
+    sc.availableTypes.push(type);
 
     return i + 1;
   }
@@ -102,10 +112,6 @@ function parseSm(sm: string, mix: string): Stepchart {
       i = parseTag(lines, i);
     } else {
       i += 1;
-    }
-
-    if (sc.arrows) {
-      break;
     }
   }
 

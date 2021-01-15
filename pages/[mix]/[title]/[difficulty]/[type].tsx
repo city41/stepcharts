@@ -8,7 +8,10 @@ import { parseStepchart } from "../../../../lib/parseStepchart";
 import { getAllSongDifficultyTypes } from "../../../../lib/getAllSongDifficultyTypes";
 import { StepchartPage } from "../../../../components/StepchartPage";
 
-type NextSongDifficultyTypePageProps = Stepchart;
+type NextSongDifficultyTypePageProps = Stepchart & {
+  currentDifficulty: string;
+  currentType: string;
+};
 
 export async function getStaticPaths(
   _context: GetStaticPathsContext
@@ -28,9 +31,16 @@ export async function getStaticProps(
     `./stepcharts/${context.params!.mix}/${context.params!.title}`
   );
 
-  return {
-    props: sc,
+  const results = {
+    props: {
+      ...sc,
+      currentDifficulty: context.params!.difficulty as string,
+      currentType: context.params!.type as string,
+    },
   };
+
+  console.log("results", results);
+  return results;
 }
 
 export default function NextSongDifficultyTypePage(

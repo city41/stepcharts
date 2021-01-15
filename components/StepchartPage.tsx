@@ -25,7 +25,7 @@ function StepchartPage({
 
   let arrowSeen = false;
 
-  const arrowDivs = arrows.map((a) => {
+  const arrowDivs = arrows[`${currentDifficulty}-${currentType}`].map((a) => {
     // for now, skip the empty intro
     arrowSeen = arrowSeen || a.direction !== "none";
     if (!arrowSeen) {
