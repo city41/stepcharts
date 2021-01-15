@@ -12,16 +12,36 @@ function getMeasureLines(lines: string[], i: number): string[] {
 
 const smToArrowDirections: Record<string, Arrow["direction"]> = {
   "0000": "none",
-  "1000": "L",
-  "0100": "D",
-  "0010": "U",
-  "0001": "R",
-  "1100": "LD",
-  "1010": "LU",
-  "0110": "UD",
-  "0101": "RD",
-  "0011": "RU",
-  "1001": "LR",
+  "1000": "S-L",
+  "0100": "S-D",
+  "0010": "S-U",
+  "0001": "S-R",
+  "1100": "S-LD",
+  "1010": "S-LU",
+  "0110": "S-UD",
+  "0101": "S-RD",
+  "0011": "S-RU",
+  "1001": "S-LR",
+  "00000000": "none",
+  "10000000": "D-1-L",
+  "01000000": "D-1-D",
+  "00100000": "D-1-U",
+  "00010000": "D-1-R",
+  "00001000": "D-2-L",
+  "00000100": "D-2-D",
+  "00000010": "D-2-U",
+  "00000001": "D-2-R",
+  "00100010": "D-1-U-2-U",
+  "01000100": "D-1-D-2-D",
+  "00011000": "D-1-R-2-L",
+  "00100001": "D-1-U-2-R",
+  "00101000": "D-1-U-2-L",
+  "01000001": "D-1-D-2-R",
+  "01001000": "D-1-D-2-L",
+  "00010010": "D-1-R-2-U",
+  "10000010": "D-1-L-2-U",
+  "00010100": "D-1-R-2-D",
+  "10000100": "D-1-L-2-D",
 };
 
 function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
@@ -57,8 +77,8 @@ function parseSm(sm: string, mix: string): Stepchart {
     const feet = Number(lines[i++].replace(":", ""));
     i++; // skip groove meter data for now
 
-    // TODO: support more than just single
-    if (type !== "single") {
+    // skip couple, versus, etc for now
+    if (type !== "single" && type !== "double") {
       return i + 1;
     }
 
