@@ -8,10 +8,11 @@ import {
 import { getAllTitles } from "../../../lib/getAllTitles";
 import { getTypesForTitle } from "../../../lib/getTypesForTitle";
 import { TitlePage } from "../../../components/TitlePage";
+import { parseStepchart } from "../../../lib/parseStepchart";
 
 type NextTitleIndexPageProps = {
   mix: string;
-  title: string;
+  title: Title;
   types: string[];
 };
 
@@ -29,15 +30,20 @@ export async function getStaticPaths(
 export async function getStaticProps(
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<NextTitleIndexPageProps>> {
-  const mix = context.params!.mix as string;
-  const title = context.params!.title as string;
+  const mixDir = context.params!.mix as string;
+  const titleDir = context.params!.title as string;
 
-  const types = getTypesForTitle(mix, title);
+  const stepchart = parseStepchart(`stepcharts/${mixDir}/${titleDir}`);
+
+  const types = getTypesForTitle(mixDir, titleDir);
 
   const results = {
     props: {
-      mix,
-      title,
+      mix: stepchart.mix,
+      title: {
+        actualTitle: stepchart.title,
+        titleDir,
+      },
       types,
     },
   };

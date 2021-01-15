@@ -2,7 +2,7 @@ import React from "react";
 
 type MixPageProps = {
   mix: string;
-  titles: string[];
+  titles: Title[];
 };
 
 function buildTitleUrl(mix: string, title: string) {
@@ -15,8 +15,8 @@ function MixPage({ mix, titles }: MixPageProps) {
       <h1>{mix}</h1>
       <ul>
         {titles.map((title) => (
-          <li key={title}>
-            <a href={buildTitleUrl(mix, title)}>{title}</a>
+          <li key={title.actualTitle}>
+            <a href={buildTitleUrl(mix, title.titleDir)}>{title.actualTitle}</a>
           </li>
         ))}
       </ul>

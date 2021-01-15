@@ -2,7 +2,7 @@ import React from "react";
 
 type TitlePageProps = {
   mix: string;
-  title: string;
+  title: Title;
   types: string[];
 };
 
@@ -13,11 +13,11 @@ function buildTypeUrl(mix: string, title: string, type: string) {
 function TitlePage({ mix, title, types }: TitlePageProps) {
   return (
     <>
-      <h1>{title}</h1>
+      <h1>{title.actualTitle}</h1>
       <ul>
         {types.map((type) => (
           <li key={type}>
-            <a href={buildTypeUrl(mix, title, type)}>{type}</a>
+            <a href={buildTypeUrl(mix, title.titleDir, type)}>{type}</a>
           </li>
         ))}
       </ul>

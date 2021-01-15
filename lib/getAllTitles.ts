@@ -10,7 +10,10 @@ function getAllTitles(): SongMix[] {
   return mixDirs.reduce<SongMix[]>((building, mixDir) => {
     const songDirs = fs.readdirSync(path.join(ROOT, mixDir));
 
-    const songMixes = songDirs.map((song) => ({ mix: mixDir, title: song }));
+    const songMixes = songDirs.map((songDir) => ({
+      mix: mixDir,
+      title: songDir,
+    }));
 
     return building.concat(songMixes);
   }, []);

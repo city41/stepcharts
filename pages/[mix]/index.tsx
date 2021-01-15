@@ -11,7 +11,7 @@ import { MixPage } from "../../components/MixPage";
 
 type NextMixIndexPageProps = {
   mix: string;
-  titles: string[];
+  titles: Title[];
 };
 
 export async function getStaticPaths(

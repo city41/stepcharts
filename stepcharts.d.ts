@@ -15,6 +15,11 @@ type Stepchart = {
   banner: string | null;
 };
 
+type Title = {
+  actualTitle: string;
+  titleDir: string;
+};
+
 type SongMix = {
   title: string;
   mix: string;
