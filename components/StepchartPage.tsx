@@ -11,7 +11,9 @@ const ARROW_HEIGHT = 20;
 
 const offsets = {
   4: ARROW_HEIGHT,
+  6: (ARROW_HEIGHT * 2) / 3,
   8: ARROW_HEIGHT / 2,
+  12: ARROW_HEIGHT / 3,
   16: ARROW_HEIGHT / 4,
 };
 

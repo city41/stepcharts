@@ -100,9 +100,9 @@
     background-position: calc(var(--arrow-size) * 4) 0;
 }
 
-.D-2-D {
-    background-image: url(./downArrow.png);
-    background-position: calc(var(--arrow-size) * 5) 0;
+.D-2-R {
+    background-image: url(./rightArrow.png);
+    background-position: calc(var(--arrow-size) * 7) 0;
 }
 
 .D-2-U {
@@ -110,9 +110,9 @@
     background-position: calc(var(--arrow-size) * 6) 0;
 }
 
-.D-2-R {
-    background-image: url(./rightArrow.png);
-    background-position: calc(var(--arrow-size) * 7) 0;
+.D-2-D {
+    background-image: url(./downArrow.png);
+    background-position: calc(var(--arrow-size) * 5) 0;
 }
 
 .D-2-UD {
@@ -162,9 +162,49 @@
     background-position: calc(var(--arrow-size) * 2) 0, calc(var(--arrow-size) * 4) 0;
 }
 
+.D-1-U-2-R {
+    background-image: url(./upArrow.png), url(./rightArrow.png);
+    background-position: calc(var(--arrow-size) * 2) 0, calc(var(--arrow-size) * 7) 0;
+}
+
 .D-1-D-2-L {
     background-image: url(./downArrow.png), url(./leftArrow.png);
     background-position: calc(var(--arrow-size) * 1) 0, calc(var(--arrow-size) * 4) 0;
+}
+
+.D-1-R-2-U {
+    background-image: url(./rightArrow.png), url(./upArrow.png);
+    background-position: calc(var(--arrow-size) * 3) 0, calc(var(--arrow-size) * 6) 0;
+}
+
+.D-1-R-2-D {
+    background-image: url(./rightArrow.png), url(./downArrow.png);
+    background-position: calc(var(--arrow-size) * 3) 0, calc(var(--arrow-size) * 5) 0;
+}
+
+.D-1-U-2-U {
+    background-image: url(./upArrow.png), url(./upArrow.png);
+    background-position: calc(var(--arrow-size) * 2) 0, calc(var(--arrow-size) * 6) 0;
+}
+
+.D-1-D-2-D {
+    background-image: url(./downArrow.png), url(./downArrow.png);
+    background-position: calc(var(--arrow-size) * 1) 0, calc(var(--arrow-size) * 5) 0;
+}
+
+.D-1-D-2-R {
+    background-image: url(./downArrow.png), url(./rightArrow.png);
+    background-position: calc(var(--arrow-size) * 1) 0, calc(var(--arrow-size) * 7) 0;
+}
+
+.D-1-L-2-U {
+    background-image: url(./leftArrow.png), url(./upArrow.png);
+    background-position: calc(var(--arrow-size) * 0) 0, calc(var(--arrow-size) * 6) 0;
+}
+
+.D-1-L-2-D {
+    background-image: url(./leftArrow.png), url(./downArrow.png);
+    background-position: calc(var(--arrow-size) * 0) 0, calc(var(--arrow-size) * 5) 0;
 }
 
 .beat-4::after {

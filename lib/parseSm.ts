@@ -61,9 +61,27 @@ function determineBeat(index: number, measureLength: number): Arrow["beat"] {
     return 4;
   }
 
+  if (measureLength === 6) {
+    if (index % 2 === 1) {
+      return 6;
+    } else {
+      return 4;
+    }
+  }
+
   if (measureLength === 8) {
     if (index % 2 === 1) {
       return 8;
+    } else {
+      return 4;
+    }
+  }
+
+  if (measureLength === 12) {
+    if (index % 2 === 1) {
+      return 12;
+    } else if (index % 4 === 1) {
+      return 6;
     } else {
       return 4;
     }

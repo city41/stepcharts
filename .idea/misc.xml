@@ -3,4 +3,7 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="JSX" />
   </component>
+  <component name="TailwindSettings">
+    <option name="mainCssPath" value="$PROJECT_DIR$/tailwind.config.js" />
+  </component>
 </project>
