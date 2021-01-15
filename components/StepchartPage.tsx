@@ -46,7 +46,11 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
           top: offset,
         }}
       >
-        {a.direction === "0000" || a.direction === "00000000" ? "" : a.beat}
+        {a.direction === "0000" ||
+        a.direction === "00000000" ||
+        process.env.NODE_ENV === "production"
+          ? ""
+          : a.beat}
       </div>
     );
     offset += offsets[a.measureBeatHeight as 4 | 8 | 16];

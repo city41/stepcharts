@@ -59,9 +59,9 @@ function determineBeat(index: number, measureLength: number): Arrow["beat"] {
 function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
   return measureLines.map((mline, i) => {
     return {
-      direction: mline,
+      direction: mline as Arrow["direction"],
       beat: determineBeat(i, measureLines.length),
-      measureBeatHeight: measureLines.length,
+      measureBeatHeight: measureLines.length as Arrow["measureBeatHeight"],
     };
   });
 }
