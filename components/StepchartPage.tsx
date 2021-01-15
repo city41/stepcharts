@@ -7,7 +7,7 @@ type StepchartPageProps = Stepchart & {
   currentType: string;
 };
 
-const ARROW_HEIGHT = 50;
+const ARROW_HEIGHT = 20;
 
 const offsets = {
   4: ARROW_HEIGHT,
@@ -54,10 +54,14 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
     barDivs.push(
       <div
         key={i}
-        className={clsx(styles.bar, "bg-blue-200 w-full absolute", {
-          "border-b border-black": (i + 1) % 4 === 0,
-          "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
-        })}
+        className={clsx(
+          styles.bar,
+          "even:bg-blue-200 odd:bg-blue-100 w-full absolute",
+          {
+            "border-b border-black": (i + 1) % 4 === 0,
+            "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
+          }
+        )}
         style={{ left: 0, top: i * ARROW_HEIGHT }}
       />
     );
