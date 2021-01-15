@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="100"
+   height="100"
+   viewBox="0 0 50 50"
+  >
+  <g
+     >
+    <path
+       id="path2039"
+       style="fill:#000000;stroke:none;stroke-width:0.0313751px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="M 12.961346,0.01568755 0.01568755,12.542912 v 3.408845 L 2.717912,18.668882 h 3.3571554 l 2.4014345,-2.414616 v 6.029375 l 4.1362641,4.159005 h 1.232801 l 4.136265,-4.159005 v -6.029375 l 2.401433,2.414616 h 3.357156 l 2.702224,-2.717125 V 12.542912 L 13.496987,0.01568755 h -0.173984 -0.187734 z"
+       />
+    <path
+       id="path2081"
+       style="fill:#ed3e29;stroke:none;stroke-width:0.0313751px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="M 12.816451,1.7954155 1.4281555,13.332216 v 2.251464 l 1.8277813,1.83786 h 2.5336788 l 4.0493033,-4.071688 v 8.856239 l 2.9301711,2.946323 h 0.477157 0.12644 0.477157 l 2.930171,-2.946323 v -8.856239 l 4.049303,4.071688 h 2.533679 l 1.827781,-1.83786 V 13.332216 L 13.802483,1.7954155 h -0.193662 -0.229167 z" />
+    <path
+       id="path2086"
+       style="fill:#ffffff;stroke:none;stroke-width:0.0313751px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="m 12.847801,15.408124 -1.120355,1.126534 v 4.529356 l 1.045737,1.051502 h 0.263758 0.47019 0.263697 l 1.045738,-1.051502 v -4.529356 l -1.120295,-1.126534 h -0.250312 -0.347846 z" />
+    <path
+       id="path2091"
+       style="fill:#ffffff;stroke:none;stroke-width:0.0313751px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="m 12.790906,9.3716245 -1.062177,1.0680345 v 5.143408 l 1.191794,-1.198303 h 0.06594 0.541569 0.06594 l 1.191794,1.198303 V 10.439659 L 13.723589,9.3716245 H 13.535855 12.97864 Z" />
+    <path
+       id="path2098"
+       style="fill:#ffffff;stroke:none;stroke-width:0.0313751px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="M 12.834601,4.0810475 3.9776013,12.986875 v 1.665863 h 1.4624573 l 4.1692043,-4.192187 h 1.1172381 l 2.127777,-2.1395695 h 0.05561 0.651387 0.05561 l 2.127778,2.1395695 h 1.117239 l 4.169204,4.192187 h 1.462457 V 12.986875 L 13.636562,4.0810475 h -0.125156 -0.551653 z" />
+  </g>
+</svg>

@@ -1,0 +1,73 @@
+.arrowSvg {
+    @apply absolute;
+    transform-origin: center;
+}
+
+.outerBorder {
+    fill: black;
+}
+
+.arrowColor {
+    fill: red;
+}
+
+.innerWhite {
+    fill: white;
+}
+
+.left1 {
+    left: calc(var(--arrow-size) * 0);
+    transform: rotate(270deg);
+}
+
+.down1 {
+    left: calc(var(--arrow-size) * 1);
+    transform: rotate(180deg);
+}
+
+.up1 {
+    left: calc(var(--arrow-size) * 2);
+    transform: rotate(0deg);
+}
+
+.right1 {
+    left: calc(var(--arrow-size) * 3);
+    transform: rotate(90deg);
+}
+
+.left2 {
+    left: calc(var(--arrow-size) * 4);
+    transform: rotate(270deg);
+}
+
+.down2 {
+    left: calc(var(--arrow-size) * 5);
+    transform: rotate(180deg);
+}
+
+.up2 {
+    left: calc(var(--arrow-size) * 6);
+    transform: rotate(0deg);
+}
+
+.right2 {
+    left: calc(var(--arrow-size) * 7);
+    transform: rotate(90deg);
+}
+
+.beat4 .arrowColor {
+    fill: red;
+}
+
+.beat8 .arrowColor {
+    fill: blue;
+}
+
+.beat16 .arrowColor {
+    fill: yellow;
+}
+
+.beat6 .arrowColor, .beat12 .arrowColor {
+    fill:green;
+}
+

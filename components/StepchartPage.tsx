@@ -2,12 +2,13 @@ import React, { CSSProperties } from "react";
 import clsx from "clsx";
 
 import styles from "./StepchartPage.module.css";
+import { ArrowSvg, ArrowSvgProps } from "./ArrowSvg";
 
 type StepchartPageProps = Stepchart & {
   currentType: string;
 };
 
-const ARROW_HEIGHT = 50;
+const ARROW_HEIGHT = 30;
 
 const offsets = {
   4: ARROW_HEIGHT,
@@ -33,24 +34,34 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
       return null;
     }
 
+    const arrowSvgs = [];
+
+    for (let i = 0; i < a.direction.length; ++i) {
+      if (a.direction[i] === "1") {
+        arrowSvgs.push(
+          <ArrowSvg
+            key={i}
+            size={ARROW_HEIGHT}
+            position={i as ArrowSvgProps["position"]}
+            beat={a.beat}
+          />
+        );
+      }
+    }
+
     const el = (
       <div
         key={offset}
         className={clsx(
           styles.arrow,
-          styles[`direction-${a.direction}`],
           styles[`beat-${a.beat}`],
-          "text-xs"
+          "absolute text-xs"
         )}
         style={{
           top: offset,
         }}
       >
-        {a.direction === "0000" ||
-        a.direction === "00000000" ||
-        process.env.NODE_ENV === "production"
-          ? ""
-          : a.beat}
+        {arrowSvgs}
       </div>
     );
     offset += offsets[a.measureBeatHeight as 4 | 8 | 16];
