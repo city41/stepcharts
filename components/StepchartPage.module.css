@@ -1,46 +1,116 @@
 .arrow {
     height: 50px;
     @apply absolute;
+    mix-blend-mode: multiply;
+    background-color: white;
+}
+
+.arrow::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: color-dodge;
 }
 
 .S-L, .D-1-L {
-    @apply bg-no-repeat bg-cover;
-
-    left: 0;
-
+    @apply bg-no-repeat;
     width: 50px;
-    background-image: url(./upArrow.png);
-    transform: rotate(-90deg);
-    transform-origin: center;
+    background-image: url(./leftArrow.png);
+    background-position: 0 0;
+    background-size: 50px 50px;
 }
 
 .S-D, .D-1-D {
-    @apply bg-no-repeat bg-cover;
-
-    left: 50px;
-
-    width: 50px;
-    background-image: url(./upArrow.png);
-    transform: rotate(180deg);
-    transform-origin: center;
+    @apply bg-no-repeat;
+    width: 100px;
+    background-image: url(./downArrow.png);
+    background-position: 50px 0;
+    background-size: 50px 50px;
 }
 
 .S-U, .D-1-U {
-    @apply bg-no-repeat bg-cover;
-
-    left: 100px;
-
-    width: 50px;
+    @apply bg-no-repeat;
+    width: 150px;
     background-image: url(./upArrow.png);
+    background-position: 100px 0;
+    background-size: 50px 50px;
 }
 
 .S-R, .D-1-R {
-    @apply bg-no-repeat bg-cover;
+    @apply bg-no-repeat;
+    width: 200px;
+    background-image: url(./rightArrow.png);
+    background-position: 150px 0;
+    background-size: 50px 50px;
+}
 
-    left: 150px;
+.S-UD, .D-1-UD {
+    @apply bg-no-repeat;
+    width: 150px;
+    background-image: url(./downArrow.png), url(./upArrow.png);
+    background-position: 50px 0, 100px 0;
+    background-size: 50px 50px, 50px 50px;
+}
 
-    width: 50px;
-    background-image: url(./upArrow.png);
-    transform: rotate(90deg);
-    transform-origin: center;
+.S-LR, .D-1-LR {
+    @apply bg-no-repeat;
+    width: 200px;
+    background-image: url(./leftArrow.png), url(./rightArrow.png);
+    background-position: 0 0, 150px 0;
+    background-size: 50px 50px, 50px 50px;
+}
+
+.S-UD, .D-1-UD {
+    @apply bg-no-repeat;
+    width: 150px;
+    background-image: url(./downArrow.png), url(./upArrow.png);
+    background-position: 50px 0, 100px 0;
+    background-size: 50px 50px, 50px 50px;
+}
+
+.S-LU, .D-1-LU {
+    @apply bg-no-repeat;
+    width: 150px;
+    background-image: url(./leftArrow.png), url(./upArrow.png);
+    background-position: 0 0, 100px 0;
+    background-size: 50px 50px, 50px 50px;
+}
+
+.S-LD, .D-1-LD {
+    @apply bg-no-repeat;
+    width: 150px;
+    background-image: url(./leftArrow.png), url(./downArrow.png);
+    background-position: 0 0, 50px 0;
+    background-size: 50px 50px, 50px 50px;
+}
+
+.S-RU, .D-1-RU {
+    @apply bg-no-repeat;
+    width: 150px;
+    background-image: url(./upArrow.png), url(./rightArrow.png);
+    background-position: 100px 0, 150px 0;
+    background-size: 50px 50px, 50px 50px;
+}
+
+.S-RD, .D-1-RD {
+    @apply bg-no-repeat;
+    width: 150px;
+    background-image: url(./downArrow.png), url(./rightArrow.png);
+    background-position: 50px 0, 150px 0;
+    background-size: 50px 50px, 50px 50px;
+}
+
+.beat-4::after {
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.beat-8::after {
+    background-color: rgba(255, 255, 0, 0.5);
+}
+
+.beat-16::after {
+    background-color: rgba(0, 255, 0, 0.5);
 }

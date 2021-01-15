@@ -12,6 +12,7 @@ const ARROW_HEIGHT = 50;
 const offsets = {
   4: ARROW_HEIGHT,
   8: ARROW_HEIGHT / 2,
+  16: ARROW_HEIGHT / 4,
 };
 
 function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
@@ -30,7 +31,11 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
     return (
       <div
         key={offset}
-        className={clsx(styles.arrow, styles[a.direction])}
+        className={clsx(
+          styles.arrow,
+          styles[a.direction],
+          styles[`beat-${a.beat}`]
+        )}
         style={{ top: offset - offsets[a.beat as 4 | 8] }}
       />
     );

@@ -56,9 +56,34 @@ const smToArrowDirections: Record<string, Arrow["direction"]> = {
   "10000100": "D-1-L-2-D",
 };
 
+function determineBeat(index: number, measureLength: number): Arrow["beat"] {
+  if (index === 0 || measureLength === 4) {
+    return 4;
+  }
+
+  if (measureLength === 8) {
+    if (index % 2 === 1) {
+      return 8;
+    } else {
+      return 4;
+    }
+  }
+
+  if (measureLength === 16) {
+    if (index % 4 === 1) {
+      return 16;
+    } else if (index % 4 === 2) {
+      return 8;
+    } else {
+      return 4;
+    }
+  }
+
+  throw new Error(`measureLength was: ${measureLength}`);
+}
+
 function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
-  // const measureType = measureLines.length;
-  return measureLines.map((mline) => {
+  return measureLines.map((mline, i) => {
     const direction = smToArrowDirections[mline];
 
     if (!direction) {
@@ -68,7 +93,7 @@ function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
     return {
       direction: smToArrowDirections[mline],
       // TODO: figure out actual beat
-      beat: 4,
+      beat: determineBeat(i, measureLines.length),
     };
   });
 }
