@@ -7,6 +7,11 @@
     width: calc(var(--arrow-size) * 8);
 }
 
+.doubleDivider {
+    width: calc(var(--arrow-size) * 4);
+    @apply border-r border-dashed border-blue-500 absolute;
+}
+
 .bar {
     height: var(--arrow-size);
 }

@@ -7,7 +7,7 @@ type StepchartPageProps = Stepchart & {
   currentType: string;
 };
 
-const ARROW_HEIGHT = 20;
+const ARROW_HEIGHT = 50;
 
 const offsets = {
   4: ARROW_HEIGHT,
@@ -18,7 +18,7 @@ const offsets = {
 function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
   let offset = 0;
 
-  let arrowSeen = false;
+  let arrowSeen = true;
 
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
@@ -54,10 +54,11 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
     barDivs.push(
       <div
         key={i}
-        className={clsx(styles.bar, "bg-blue-200 w-full", {
-          "border-b-2 border-black": (i + 1) % 4 === 0,
-          "border-b border-blue-500": (i + 1) % 4 !== 0,
+        className={clsx(styles.bar, "bg-blue-200 w-full absolute", {
+          "border-b border-black": (i + 1) % 4 === 0,
+          "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
         })}
+        style={{ left: 0, top: i * ARROW_HEIGHT }}
       />
     );
   }
@@ -70,7 +71,7 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
         className={clsx(
           styles.container,
           styles[`container-${singleDoubleClass}`],
-          "relative flex flex-col"
+          "relative flex flex-col flex-wrap"
         )}
         style={
           {
@@ -80,6 +81,9 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
         }
       >
         {barDivs}
+        {!isSingle && (
+          <div className={styles.doubleDivider} style={{ height: offset }} />
+        )}
         {arrowDivs}
       </div>
     </div>
