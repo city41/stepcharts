@@ -1,6 +1,18 @@
+.container-single {
+    width: calc(var(--arrow-size) * 4);
+}
+
+.container-double {
+    width: calc(var(--arrow-size) * 8);
+}
+
+.bar {
+    height: var(--arrow-size);
+}
+
 .arrow {
-    height: 50px;
-    @apply absolute;
+    height: var(--arrow-size);
+    @apply absolute bg-no-repeat;
     mix-blend-mode: multiply;
     background-color: white;
 }
@@ -17,90 +29,111 @@
 
 .S-L, .D-1-L {
     @apply bg-no-repeat;
-    width: 50px;
+    width: var(--arrow-size);
     background-image: url(./leftArrow.png);
     background-position: 0 0;
-    background-size: 50px 50px;
+    background-size: var(--arrow-size) var(--arrow-size);
 }
 
 .S-D, .D-1-D {
     @apply bg-no-repeat;
-    width: 100px;
+    width: calc(var(--arrow-size) * 2);
     background-image: url(./downArrow.png);
-    background-position: 50px 0;
-    background-size: 50px 50px;
+    background-position: var(--arrow-size) 0;
+    background-size: var(--arrow-size) var(--arrow-size);
 }
 
 .S-U, .D-1-U {
     @apply bg-no-repeat;
-    width: 150px;
+    width: calc(var(--arrow-size) * 3);
     background-image: url(./upArrow.png);
-    background-position: 100px 0;
-    background-size: 50px 50px;
+    background-position: calc(var(--arrow-size) * 2) 0;
+    background-size: var(--arrow-size) var(--arrow-size);
 }
 
 .S-R, .D-1-R {
     @apply bg-no-repeat;
-    width: 200px;
+    width: calc(var(--arrow-size) * 4);
     background-image: url(./rightArrow.png);
-    background-position: 150px 0;
-    background-size: 50px 50px;
+    background-position: calc(var(--arrow-size) * 3) 0;
+    background-size: var(--arrow-size) var(--arrow-size);
 }
 
 .S-UD, .D-1-UD {
-    @apply bg-no-repeat;
-    width: 150px;
+    width: calc(var(--arrow-size) * 3);
     background-image: url(./downArrow.png), url(./upArrow.png);
-    background-position: 50px 0, 100px 0;
-    background-size: 50px 50px, 50px 50px;
+    background-position: var(--arrow-size) 0, calc(var(--arrow-size) * 2) 0;
+    background-size: var(--arrow-size) var(--arrow-size), var(--arrow-size) var(--arrow-size);
 }
 
 .S-LR, .D-1-LR {
-    @apply bg-no-repeat;
-    width: 200px;
+    width: calc(var(--arrow-size) * 4);
     background-image: url(./leftArrow.png), url(./rightArrow.png);
-    background-position: 0 0, 150px 0;
-    background-size: 50px 50px, 50px 50px;
+    background-position: 0 0, calc(var(--arrow-size) * 3) 0;
+    background-size: var(--arrow-size) var(--arrow-size), var(--arrow-size) var(--arrow-size);
 }
 
 .S-UD, .D-1-UD {
-    @apply bg-no-repeat;
-    width: 150px;
+    width: calc(var(--arrow-size) * 3);
     background-image: url(./downArrow.png), url(./upArrow.png);
-    background-position: 50px 0, 100px 0;
-    background-size: 50px 50px, 50px 50px;
+    background-position: var(--arrow-size) 0, calc(var(--arrow-size) * 2) 0;
+    background-size: var(--arrow-size) var(--arrow-size), var(--arrow-size) var(--arrow-size);
 }
 
 .S-LU, .D-1-LU {
-    @apply bg-no-repeat;
-    width: 150px;
+    width: calc(var(--arrow-size) * 3);
     background-image: url(./leftArrow.png), url(./upArrow.png);
-    background-position: 0 0, 100px 0;
-    background-size: 50px 50px, 50px 50px;
+    background-position: 0 0, calc(var(--arrow-size) * 2) 0;
+    background-size: var(--arrow-size) var(--arrow-size), var(--arrow-size) var(--arrow-size);
 }
 
 .S-LD, .D-1-LD {
-    @apply bg-no-repeat;
-    width: 150px;
+    width: calc(var(--arrow-size) * 3);
     background-image: url(./leftArrow.png), url(./downArrow.png);
-    background-position: 0 0, 50px 0;
-    background-size: 50px 50px, 50px 50px;
+    background-position: 0 0, var(--arrow-size) 0;
+    background-size: var(--arrow-size) var(--arrow-size), var(--arrow-size) var(--arrow-size);
 }
 
 .S-RU, .D-1-RU {
-    @apply bg-no-repeat;
-    width: 150px;
+    width: calc(var(--arrow-size) * 3);
     background-image: url(./upArrow.png), url(./rightArrow.png);
-    background-position: 100px 0, 150px 0;
-    background-size: 50px 50px, 50px 50px;
+    background-position: calc(var(--arrow-size) * 2) 0, calc(var(--arrow-size) * 3) 0;
+    background-size: var(--arrow-size) var(--arrow-size), var(--arrow-size) var(--arrow-size);
 }
 
 .S-RD, .D-1-RD {
-    @apply bg-no-repeat;
-    width: 150px;
+    width: calc(var(--arrow-size) * 3);
     background-image: url(./downArrow.png), url(./rightArrow.png);
-    background-position: 50px 0, 150px 0;
-    background-size: 50px 50px, 50px 50px;
+    background-position: var(--arrow-size) 0, calc(var(--arrow-size) * 3) 0;
+    background-size: var(--arrow-size) var(--arrow-size), var(--arrow-size) var(--arrow-size);
+}
+
+.D-2-L {
+    width: calc(var(--arrow-size) * 5);
+    background-image: url(./leftArrow.png);
+    background-position: calc(var(--arrow-size) * 4) 0;
+    background-size: var(--arrow-size) var(--arrow-size);
+}
+
+.D-2-D {
+    width: calc(var(--arrow-size) * 6);
+    background-image: url(./downArrow.png);
+    background-position: calc(var(--arrow-size) * 5) 0;
+    background-size: var(--arrow-size) var(--arrow-size);
+}
+
+.D-2-U {
+    width: calc(var(--arrow-size) * 7);
+    background-image: url(./upArrow.png);
+    background-position: calc(var(--arrow-size) * 6) 0;
+    background-size: var(--arrow-size) var(--arrow-size);
+}
+
+.D-2-R {
+    width: calc(var(--arrow-size) * 8);
+    background-image: url(./rightArrow.png);
+    background-position: calc(var(--arrow-size) * 7) 0;
+    background-size: var(--arrow-size) var(--arrow-size);
 }
 
 .beat-4::after {
