@@ -43,6 +43,7 @@ type Arrow = {
     | "D-1-R-2-D"
     | "D-1-L-2-D";
   beat: 4 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 192;
+  measureBeatHeight: 4 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 192;
 };
 
 type Stepchart = {

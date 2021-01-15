@@ -30,20 +30,22 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
       return null;
     }
 
-    offset += offsets[a.beat as 4 | 8];
-    return (
+    const el = (
       <div
         key={offset}
         className={clsx(
           styles.arrow,
           styles[a.direction],
-          styles[`beat-${a.beat}`]
+          styles[`beat-${a.beat}`],
+          "text-xs"
         )}
         style={{
-          top: offset - offsets[a.beat as 4 | 8],
+          top: offset,
         }}
       />
     );
+    offset += offsets[a.measureBeatHeight as 4 | 8 | 16];
+    return el;
   });
 
   const barDivs = [];
@@ -52,10 +54,10 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
     barDivs.push(
       <div
         key={i}
-        className={clsx(
-          styles.bar,
-          "bg-blue-200 w-full border-b border-blue-500"
-        )}
+        className={clsx(styles.bar, "bg-blue-200 w-full", {
+          "border-b-2 border-black": (i + 1) % 4 === 0,
+          "border-b border-blue-500": (i + 1) % 4 !== 0,
+        })}
       />
     );
   }

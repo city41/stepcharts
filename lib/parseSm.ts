@@ -1,15 +1,5 @@
 const metaTagsToConsume = ["title", "artist", "mix"];
 
-function getMeasureLines(lines: string[], i: number): string[] {
-  const measureLines: string[] = [];
-
-  while (lines[i] !== "," && lines[i] !== ";") {
-    measureLines.push(lines[i++]);
-  }
-
-  return measureLines;
-}
-
 const smToArrowDirections: Record<string, Arrow["direction"]> = {
   "0000": "none",
   "1000": "S-L",
@@ -56,6 +46,16 @@ const smToArrowDirections: Record<string, Arrow["direction"]> = {
   "10000100": "D-1-L-2-D",
 };
 
+function getMeasureLines(lines: string[], i: number): string[] {
+  const measureLines: string[] = [];
+
+  while (lines[i] !== "," && lines[i] !== ";") {
+    measureLines.push(lines[i++]);
+  }
+
+  return measureLines;
+}
+
 function determineBeat(index: number, measureLength: number): Arrow["beat"] {
   if (index === 0 || measureLength === 4) {
     return 4;
@@ -94,6 +94,7 @@ function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
       direction: smToArrowDirections[mline],
       // TODO: figure out actual beat
       beat: determineBeat(i, measureLines.length),
+      measureBeatHeight: measureLines.length,
     };
   });
 }
