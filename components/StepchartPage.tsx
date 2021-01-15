@@ -7,7 +7,7 @@ type StepchartPageProps = Stepchart & {
   currentType: string;
 };
 
-const ARROW_HEIGHT = 25;
+const ARROW_HEIGHT = 20;
 
 const offsets = {
   4: ARROW_HEIGHT,
