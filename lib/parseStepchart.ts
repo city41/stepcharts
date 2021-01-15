@@ -15,6 +15,13 @@ function getSongFile(songDir: string): string {
   return files.find((f) => f.endsWith(".sm"))!;
 }
 
+function toSafeName(name: string): string {
+  name = name.replace(".png", "");
+  name = name.replace(/\s/g, "-").replace(/[^\w]/g, "_");
+
+  return `${name}.png`;
+}
+
 function parseStepchart(stepchartSongDirPath: string): Stepchart {
   // const bannerUrl = copyBannerToPublic(stepchartSongDirPath);
 
@@ -35,9 +42,7 @@ function parseStepchart(stepchartSongDirPath: string): Stepchart {
   const stepchart = parser(fileContents.toString(), mix);
 
   if (stepchart.banner) {
-    const publicName = encodeURIComponent(
-      `${mix}-${stepchart.title}-${stepchart.banner}`
-    );
+    const publicName = toSafeName(`${mix}-${stepchart.banner}`);
     fs.copyFileSync(
       path.join(stepchartSongDirPath, stepchart.banner),
       path.join("components/bannerImages", publicName)
