@@ -38,7 +38,6 @@ export async function getStaticProps(
     },
   };
 
-  console.log("results", results);
   return results;
 }
 

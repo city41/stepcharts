@@ -5,13 +5,19 @@ type MixPageProps = {
   titles: string[];
 };
 
+function buildTitleUrl(mix: string, title: string) {
+  return `/${mix}/${title}`;
+}
+
 function MixPage({ mix, titles }: MixPageProps) {
   return (
     <>
       <h1>{mix}</h1>
       <ul>
         {titles.map((title) => (
-          <li key={title}>{title}</li>
+          <li key={title}>
+            <a href={buildTitleUrl(mix, title)}>{title}</a>
+          </li>
         ))}
       </ul>
     </>

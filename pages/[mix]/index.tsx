@@ -9,7 +9,7 @@ import { getAllMixes } from "../../lib/getAllMixes";
 import { getTitlesForMix } from "../../lib/getTitlesForMix";
 import { MixPage } from "../../components/MixPage";
 
-type NextMixIndexPageProps = Stepchart & {
+type NextMixIndexPageProps = {
   mix: string;
   titles: string[];
 };
