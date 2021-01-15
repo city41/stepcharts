@@ -7,7 +7,7 @@ type StepchartPageProps = Stepchart & {
   currentType: string;
 };
 
-const ARROW_HEIGHT = 20;
+const ARROW_HEIGHT = 50;
 
 const offsets = {
   4: ARROW_HEIGHT,
@@ -27,7 +27,8 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
 
   const arrowDivs = arrows[currentType].map((a) => {
     // for now, skip the empty intro
-    arrowSeen = arrowSeen || a.direction !== "none";
+    arrowSeen =
+      arrowSeen || (a.direction !== "0000" && a.direction !== "00000000");
     if (!arrowSeen) {
       return null;
     }
@@ -37,14 +38,16 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
         key={offset}
         className={clsx(
           styles.arrow,
-          styles[a.direction],
+          styles[`direction-${a.direction}`],
           styles[`beat-${a.beat}`],
           "text-xs"
         )}
         style={{
           top: offset,
         }}
-      />
+      >
+        {a.direction === "0000" || a.direction === "00000000" ? "" : a.beat}
+      </div>
     );
     offset += offsets[a.measureBeatHeight as 4 | 8 | 16];
     return el;

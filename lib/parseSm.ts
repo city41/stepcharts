@@ -1,51 +1,5 @@
 const metaTagsToConsume = ["title", "artist", "mix"];
 
-const smToArrowDirections: Record<string, Arrow["direction"]> = {
-  "0000": "none",
-  "1000": "S-L",
-  "0100": "S-D",
-  "0010": "S-U",
-  "0001": "S-R",
-  "1100": "S-LD",
-  "1010": "S-LU",
-  "0110": "S-UD",
-  "0101": "S-RD",
-  "0011": "S-RU",
-  "1001": "S-LR",
-  "00000000": "none",
-  "10000000": "D-1-L",
-  "01000000": "D-1-D",
-  "00100000": "D-1-U",
-  "00010000": "D-1-R",
-  "11000000": "D-1-LD",
-  "10100000": "D-1-LU",
-  "01100000": "D-1-UD",
-  "01010000": "D-1-RD",
-  "00110000": "D-1-RU",
-  "10010000": "D-1-LR",
-  "00001000": "D-2-L",
-  "00000100": "D-2-D",
-  "00000010": "D-2-U",
-  "00000001": "D-2-R",
-  "00001100": "D-2-LD",
-  "00001010": "D-2-LU",
-  "00000110": "D-2-UD",
-  "00000101": "D-2-RD",
-  "00000011": "D-2-RU",
-  "00001001": "D-2-LR",
-  "00100010": "D-1-U-2-U",
-  "01000100": "D-1-D-2-D",
-  "00011000": "D-1-R-2-L",
-  "00100001": "D-1-U-2-R",
-  "00101000": "D-1-U-2-L",
-  "01000001": "D-1-D-2-R",
-  "01001000": "D-1-D-2-L",
-  "00010010": "D-1-R-2-U",
-  "10000010": "D-1-L-2-U",
-  "00010100": "D-1-R-2-D",
-  "10000100": "D-1-L-2-D",
-};
-
 function getMeasureLines(lines: string[], i: number): string[] {
   const measureLines: string[] = [];
 
@@ -78,9 +32,9 @@ function determineBeat(index: number, measureLength: number): Arrow["beat"] {
   }
 
   if (measureLength === 12) {
-    if (index % 2 === 1) {
+    if (index % 3 === 1) {
       return 12;
-    } else if (index % 4 === 1) {
+    } else if (index % 3 === 2) {
       return 6;
     } else {
       return 4;
@@ -92,6 +46,8 @@ function determineBeat(index: number, measureLength: number): Arrow["beat"] {
       return 16;
     } else if (index % 4 === 2) {
       return 8;
+    } else if (index % 4 === 3) {
+      return 16;
     } else {
       return 4;
     }
@@ -102,15 +58,8 @@ function determineBeat(index: number, measureLength: number): Arrow["beat"] {
 
 function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
   return measureLines.map((mline, i) => {
-    const direction = smToArrowDirections[mline];
-
-    if (!direction) {
-      throw new Error(`No direction found for ${mline}`);
-    }
-
     return {
-      direction: smToArrowDirections[mline],
-      // TODO: figure out actual beat
+      direction: mline,
       beat: determineBeat(i, measureLines.length),
       measureBeatHeight: measureLines.length,
     };
