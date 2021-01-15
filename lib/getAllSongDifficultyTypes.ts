@@ -12,6 +12,10 @@ function getAllSongDifficultyTypes(): SongDifficultyType[] {
 
     const sdts = songDirs.reduce<SongDifficultyType[]>(
       (songBuilding, songDir) => {
+        if (process.env.NODE_ENV === "production" && songDir === "AUDIT") {
+          return songBuilding;
+        }
+
         const songDirPath = path.join(ROOT, mixDir, songDir);
         const stepchart = parseStepchart(songDirPath);
 
