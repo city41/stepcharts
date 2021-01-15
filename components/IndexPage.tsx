@@ -1,22 +1,20 @@
 import React from "react";
 
 type IndexPageProps = {
-  songs: SongDifficultyType[];
+  mixes: string[];
 };
 
-function buildSongUrl(s: SongDifficultyType): string {
-  return `/${s.mix}/${s.title}/${s.type}`;
+function buildMixUrl(mix: string): string {
+  return `/${mix}`;
 }
 
-function IndexPage({ songs }: IndexPageProps) {
+function IndexPage({ mixes }: IndexPageProps) {
   return (
     <div>
       <ul>
-        {songs.map((s) => (
-          <li key={s.title}>
-            <a href={buildSongUrl(s)}>
-              {s.title} {s.type}
-            </a>
+        {mixes.map((m) => (
+          <li key={m}>
+            <a href={buildMixUrl(m)}>{m}</a>
           </li>
         ))}
       </ul>
