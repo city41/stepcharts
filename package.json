@@ -4,7 +4,8 @@
   "scripts": {
     "develop": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "type-check": "tsc --noemit"
   },
   "dependencies": {
     "@types/node": "^14.14.20",

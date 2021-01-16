@@ -5,24 +5,29 @@ import {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from "next";
-import { getAllTitles } from "../../../lib/getAllTitles";
-import { getTypesForTitle } from "../../../lib/getTypesForTitle";
+import { getAllStepchartData } from "../../../lib/getAllStepchartData";
 import { TitlePage } from "../../../components/TitlePage";
 import { parseStepchart } from "../../../lib/parseStepchart";
 
 type NextTitleIndexPageProps = {
-  mix: string;
+  mix: Mix;
   title: Title;
+  banner: string | null;
   types: string[];
 };
 
 export async function getStaticPaths(
   context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
-  const allTitles = getAllTitles();
+  const allData = getAllStepchartData();
+  const allStepcharts = allData.reduce<Stepchart[]>((building, mix) => {
+    return building.concat(mix.songs);
+  }, []);
 
   return {
-    paths: allTitles.map((title) => ({ params: title })),
+    paths: allStepcharts.map((stepchart) => ({
+      params: { mix: stepchart.mix.mixDir, title: stepchart.title.titleDir },
+    })),
     fallback: false,
   };
 }
@@ -33,18 +38,17 @@ export async function getStaticProps(
   const mixDir = context.params!.mix as string;
   const titleDir = context.params!.title as string;
 
-  const stepchart = parseStepchart(`stepcharts/${mixDir}/${titleDir}`);
-
-  const types = getTypesForTitle(mixDir, titleDir);
+  const allData = getAllStepchartData();
+  const sc = allData
+    .find((m) => m.mixDir === mixDir)!
+    .songs.find((s) => s.title.titleDir === titleDir)!;
 
   const results = {
     props: {
-      mix: stepchart.mix,
-      title: {
-        actualTitle: stepchart.title,
-        titleDir,
-      },
-      types,
+      mix: sc.mix,
+      title: sc.title,
+      banner: sc.banner,
+      types: sc.availableTypes,
     },
   };
 

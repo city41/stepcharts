@@ -21,6 +21,7 @@
   "include": [
     "next-env.d.ts",
     "stepchards.d.ts",
+    "images.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ],

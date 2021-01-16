@@ -7,12 +7,17 @@ type Arrow = {
 };
 
 type Stepchart = {
-  title: string;
+  title: Title;
   artist: string;
-  mix: string;
+  mix: Mix;
   availableTypes: string[];
   arrows: Record<string, Arrow[]>;
   banner: string | null;
+};
+
+type Mix = {
+  mixName: string;
+  mixDir: string;
 };
 
 type Title = {
@@ -26,7 +31,7 @@ type SongMix = {
 };
 
 type SongDifficultyType = {
-  title: string;
-  mix: string;
+  title: Title;
+  mix: Mix;
   type: string;
 };

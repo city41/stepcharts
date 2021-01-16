@@ -1,4 +1,6 @@
-const metaTagsToConsume = ["title", "artist", "mix", "banner"];
+import { RawStepchart } from "./parseStepchart";
+
+const metaTagsToConsume = ["title", "artist", "banner"];
 
 function getMeasureLines(lines: string[], i: number): string[] {
   const measureLines: string[] = [];
@@ -105,11 +107,8 @@ function determineBeat(index: number, measureLength: number): Arrow["beat"] {
     }
   }
 
-  if (measureLength === 192) {
-    return 4;
-  }
-
-  throw new Error(`measureLength was: ${measureLength}`);
+  // TODO: figure this out...
+  return 4;
 }
 
 function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
@@ -122,13 +121,12 @@ function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
   });
 }
 
-function parseSm(sm: string, mix: string): Stepchart {
+function parseSm(sm: string): RawStepchart {
   const lines = sm.split("\n").map((l) => l.trim());
 
   let i = 0;
 
-  const sc: Partial<Stepchart> = {
-    mix,
+  const sc: Partial<RawStepchart> = {
     arrows: {},
     availableTypes: [],
     banner: null,
@@ -215,7 +213,7 @@ function parseSm(sm: string, mix: string): Stepchart {
       }
     }
 
-    return sc as Stepchart;
+    return sc as RawStepchart;
   } catch (e) {
     throw new Error(`error parsing ${sm}: ${e}`);
   }

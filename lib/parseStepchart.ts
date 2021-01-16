@@ -2,7 +2,8 @@ import * as fs from "fs";
 import * as path from "path";
 import { parseSm } from "./parseSm";
 
-type Parser = (chart: string, mix: string) => Stepchart;
+type RawStepchart = Omit<Stepchart, "mix" | "title"> & { title: string };
+type Parser = (chart: string) => RawStepchart;
 
 const parsers: Record<string, Parser> = {
   ".sm": parseSm,
@@ -22,15 +23,15 @@ function toSafeName(name: string): string {
   return `${name}.png`;
 }
 
-function parseStepchart(stepchartSongDirPath: string): Stepchart {
-  // const bannerUrl = copyBannerToPublic(stepchartSongDirPath);
-
+function parseStepchart(
+  rootDir: string,
+  mixDir: string,
+  titleDir: string
+): Omit<Stepchart, "mix"> {
+  const stepchartSongDirPath = path.join(rootDir, mixDir, titleDir);
   const songFile = getSongFile(stepchartSongDirPath);
   const stepchartPath = path.join(stepchartSongDirPath, songFile);
   const extension = path.extname(stepchartPath);
-
-  const pathParts = stepchartPath.split("/");
-  const mix = pathParts[1];
 
   const parser = parsers[extension];
 
@@ -39,18 +40,25 @@ function parseStepchart(stepchartSongDirPath: string): Stepchart {
   }
 
   const fileContents = fs.readFileSync(stepchartPath);
-  const stepchart = parser(fileContents.toString(), mix);
+  const rawStepchart = parser(fileContents.toString());
 
-  if (stepchart.banner) {
-    const publicName = toSafeName(`${mix}-${stepchart.banner}`);
+  if (rawStepchart.banner) {
+    const publicName = toSafeName(`${mixDir}-${rawStepchart.banner}`);
     fs.copyFileSync(
-      path.join(stepchartSongDirPath, stepchart.banner),
+      path.join(stepchartSongDirPath, rawStepchart.banner),
       path.join("components/bannerImages", publicName)
     );
-    stepchart.banner = publicName;
+    rawStepchart.banner = publicName;
   }
 
-  return stepchart;
+  return {
+    ...rawStepchart,
+    title: {
+      actualTitle: rawStepchart.title,
+      titleDir,
+    },
+  };
 }
 
 export { parseStepchart };
+export type { RawStepchart };

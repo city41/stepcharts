@@ -1,19 +1,21 @@
 import React from "react";
 
 type TitlePageProps = {
-  mix: string;
+  mix: Mix;
   title: Title;
+  banner: string | null;
   types: string[];
 };
 
-function buildTypeUrl(mix: string, title: string, type: string) {
-  return `/${mix}/${title}/${type}`;
+function buildTypeUrl(mix: Mix, title: string, type: string) {
+  return `/${mix.mixDir}/${title}/${type}`;
 }
 
-function TitlePage({ mix, title, types }: TitlePageProps) {
+function TitlePage({ mix, title, banner, types }: TitlePageProps) {
   return (
     <>
       <h1>{title.actualTitle}</h1>
+      {banner && <img src={require(`./bannerImages/${banner}`)} />}
       <ul>
         {types.map((type) => (
           <li key={type}>

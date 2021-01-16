@@ -5,22 +5,21 @@ import {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from "next";
-import { getAllMixes } from "../../lib/getAllMixes";
-import { getTitlesForMix } from "../../lib/getTitlesForMix";
+import { getAllStepchartData } from "../../lib/getAllStepchartData";
 import { MixPage } from "../../components/MixPage";
 
 type NextMixIndexPageProps = {
-  mix: string;
+  mix: Mix;
   titles: Title[];
 };
 
 export async function getStaticPaths(
   _context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
-  const allMixes = getAllMixes();
+  const allData = getAllStepchartData();
 
   return {
-    paths: allMixes.map((mix) => ({ params: { mix } })),
+    paths: allData.map((mix) => ({ params: { mix: mix.mixDir } })),
     fallback: false,
   };
 }
@@ -28,13 +27,14 @@ export async function getStaticPaths(
 export async function getStaticProps(
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<NextMixIndexPageProps>> {
-  const mix = context.params!.mix as string;
-  const titles = getTitlesForMix(mix);
+  const mixDir = context.params!.mix as string;
+  const allData = getAllStepchartData();
+  const mix = allData.find((m) => m.mixDir === mixDir)!;
 
   const results = {
     props: {
       mix,
-      titles,
+      titles: mix.songs.map((s) => s.title),
     },
   };
 

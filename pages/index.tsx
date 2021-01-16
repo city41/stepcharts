@@ -1,16 +1,16 @@
 import React from "react";
 import { GetStaticPropsResult } from "next";
-import { getAllMixes } from "../lib/getAllMixes";
+import { getAllStepchartData } from "../lib/getAllStepchartData";
 import { IndexPage } from "../components/IndexPage";
 
 type NextIndexProps = {
-  mixes: string[];
+  mixes: Mix[];
 };
 
 export async function getStaticProps(): Promise<
   GetStaticPropsResult<NextIndexProps>
 > {
-  const mixes = getAllMixes();
+  const mixes = getAllStepchartData();
 
   return {
     props: { mixes },

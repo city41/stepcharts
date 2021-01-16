@@ -95,7 +95,7 @@ function StepchartPage({
   return (
     <div>
       {banner && <img src={require(`./bannerImages/${banner}`)} />}
-      <h1>{title}</h1>
+      <h1>{title.actualTitle}</h1>
       <h2>{currentType}</h2>
       <div
         className={clsx(

@@ -6,7 +6,7 @@ import {
   GetStaticPropsResult,
 } from "next";
 import { parseStepchart } from "../../../lib/parseStepchart";
-import { getAllSongDifficultyTypes } from "../../../lib/getAllSongDifficultyTypes";
+import { getAllStepchartData } from "../../../lib/getAllStepchartData";
 import { StepchartPage } from "../../../components/StepchartPage";
 
 type NextSongDifficultyTypePageProps = Stepchart & {
@@ -16,10 +16,35 @@ type NextSongDifficultyTypePageProps = Stepchart & {
 export async function getStaticPaths(
   _context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
-  const allSongs = getAllSongDifficultyTypes();
+  const allData = getAllStepchartData();
+
+  const allStepcharts = allData.reduce<Stepchart[]>((building, mix) => {
+    return building.concat(mix.songs);
+  }, []);
+
+  const allSdts = allStepcharts.reduce<SongDifficultyType[]>(
+    (building, stepchart) => {
+      const sdts = stepchart.availableTypes.map((type) => {
+        return {
+          title: stepchart.title,
+          mix: stepchart.mix,
+          type,
+        };
+      });
+
+      return building.concat(sdts);
+    },
+    []
+  );
 
   return {
-    paths: allSongs.map((sdt) => ({ params: sdt })),
+    paths: allSdts.map((sdt) => ({
+      params: {
+        mix: sdt.mix.mixDir,
+        title: sdt.title.titleDir,
+        type: sdt.type,
+      },
+    })),
     fallback: false,
   };
 }
@@ -27,14 +52,19 @@ export async function getStaticPaths(
 export async function getStaticProps(
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<NextSongDifficultyTypePageProps>> {
-  const sc = parseStepchart(
-    `./stepcharts/${context.params!.mix}/${context.params!.title}`
-  );
+  const mixDir = context.params!.mix as string;
+  const titleDir = context.params!.title as string;
+  const type = context.params!.type as string;
+
+  const allData = getAllStepchartData();
+  const sc = allData
+    .find((m) => m.mixDir === mixDir)!
+    .songs.find((s) => s.title.titleDir === titleDir)!;
 
   const results = {
     props: {
       ...sc,
-      currentType: context.params!.type as string,
+      currentType: type,
     },
   };
 
