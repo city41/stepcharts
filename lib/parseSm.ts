@@ -156,6 +156,18 @@ function parseSm(sm: string): RawStepchart {
       arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
     } while (lines[i++].trim() !== ";");
 
+    // trim off empty leading measures
+    let startI = 0;
+    while (
+      startI < arrows.length &&
+      (arrows[startI].direction === "0000" ||
+        arrows[startI].direction === "00000000")
+    ) {
+      startI += 1;
+    }
+
+    arrows = arrows.slice(startI);
+
     // trim off empty trailing measures
     // TODO: I think this does trim right, but it
     // isn't showing up correctly in StepchartPage
@@ -165,7 +177,7 @@ function parseSm(sm: string): RawStepchart {
       (arrows[endI].direction === "0000" ||
         arrows[endI].direction === "00000000")
     ) {
-      --endI;
+      endI -= 1;
     }
 
     arrows = arrows.slice(0, endI);

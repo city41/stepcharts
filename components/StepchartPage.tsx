@@ -8,28 +8,27 @@ type StepchartPageProps = Stepchart & {
   currentType: string;
 };
 
-const ARROW_HEIGHT = 30;
-
-const offsets = {
-  4: ARROW_HEIGHT,
-  6: (ARROW_HEIGHT * 2) / 3,
-  8: ARROW_HEIGHT / 2,
-  12: ARROW_HEIGHT / 3,
-  16: ARROW_HEIGHT / 4,
-};
-
 function StepchartPage({
   title,
   currentType,
   arrows,
   banner,
 }: StepchartPageProps) {
-  let offset = 0;
-
-  let arrowSeen = true;
-
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
+
+  const ARROW_HEIGHT = isSingle ? 80 : 40;
+
+  const offsets = {
+    4: ARROW_HEIGHT,
+    6: (ARROW_HEIGHT * 2) / 3,
+    8: ARROW_HEIGHT / 2,
+    12: ARROW_HEIGHT / 3,
+    16: ARROW_HEIGHT / 4,
+  };
+
+  let offset = 0;
+  let arrowSeen = true;
 
   const arrowDivs = arrows[currentType].map((a) => {
     // for now, skip the empty intro
@@ -93,15 +92,22 @@ function StepchartPage({
   }
 
   return (
-    <div>
-      {banner && <img src={require(`./bannerImages/${banner}`)} />}
-      <h1>{title.actualTitle}</h1>
-      <h2>{currentType}</h2>
+    <div className="w-full sm:max-w-4xl mx-auto flex flex-col items-center bg-red-100">
+      <div className="w-full sm:w-auto text-center">
+        {banner && (
+          <img
+            className="w-full h-auto"
+            src={require(`./bannerImages/${banner}`)}
+          />
+        )}
+        <h1 className="text-3xl mt-4">{title.actualTitle}</h1>
+        <h2 className="text-2xl">{currentType}</h2>
+      </div>
       <div
         className={clsx(
           styles.container,
           styles[`container-${singleDoubleClass}`],
-          "relative flex flex-col flex-wrap"
+          "relative flex flex-col flex-wrap my-8"
         )}
         style={
           {
