@@ -97,7 +97,7 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
       socialMediaImg=""
     >
       <div className="flex flex-col sm:flex-row items-center sm:items-start">
-        <ImageFrame className="mb-8 sticky top-0 py-4 bg-focal grid place-items-center">
+        <ImageFrame className="mb-8 sticky top-0 z-10 py-4 bg-focal grid place-items-center w-full sm:w-auto">
           <Banner banner={title.banner} />
         </ImageFrame>
         <div

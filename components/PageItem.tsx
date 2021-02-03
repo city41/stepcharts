@@ -22,7 +22,7 @@ function PageItem({
     <ImageFrame className={clsx(className, "p-2")}>
       {children}
       <div className={clsx(styles.root, "mt-2 flex flex-row justify-between")}>
-        <div className="text-white font-bold break-all">{title}</div>
+        <div className="text-white font-bold break-word">{title}</div>
         {supplementary && (
           <span className="text-focal-500">{supplementary}</span>
         )}

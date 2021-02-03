@@ -46,10 +46,7 @@ function Root({
           </div>
         </div>
       </div>
-      <main
-        role="main"
-        className="flex-1 max-w-6xl w-full mx-auto mt-8 sm:mt-16"
-      >
+      <main role="main" className="flex-1 max-w-6xl w-full mx-auto">
         {children}
       </main>
       <Footer className="mt-16" />
