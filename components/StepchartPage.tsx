@@ -8,12 +8,7 @@ type StepchartPageProps = Stepchart & {
   currentType: string;
 };
 
-function StepchartPage({
-  title,
-  currentType,
-  arrows,
-  banner,
-}: StepchartPageProps) {
+function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
 
@@ -94,10 +89,10 @@ function StepchartPage({
   return (
     <div className="w-full sm:max-w-4xl mx-auto flex flex-col items-center bg-red-100">
       <div className="w-full sm:w-auto text-center">
-        {banner && (
+        {title.banner && (
           <img
             className="w-full h-auto"
-            src={require(`./bannerImages/${banner}`)}
+            src={require(`./bannerImages/${title.banner}`)}
           />
         )}
         <h1 className="text-3xl mt-4">{title.actualTitle}</h1>

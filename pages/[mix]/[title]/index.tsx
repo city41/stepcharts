@@ -12,7 +12,6 @@ import { parseStepchart } from "../../../lib/parseStepchart";
 type NextTitleIndexPageProps = {
   mix: Mix;
   title: Title;
-  banner: string | null;
   types: string[];
 };
 
@@ -47,7 +46,6 @@ export async function getStaticProps(
     props: {
       mix: sc.mix,
       title: sc.title,
-      banner: sc.banner,
       types: sc.availableTypes,
     },
   };
