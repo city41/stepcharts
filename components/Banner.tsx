@@ -20,6 +20,7 @@ function Banner({ className, banner }: BannerProps) {
       height={BANNER_HEIGHT}
       src={require(`./bannerImages/${currentBanner}`)}
       onError={() => setCurrentBanner(null)}
+      loading="lazy"
     />
   ) : (
     <div

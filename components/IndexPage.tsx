@@ -1,6 +1,6 @@
 import React from "react";
 import { Root } from "./layout/Root";
-import { ImageFrame } from "./ImageFrame";
+import { PageItem } from "./PageItem";
 
 type IndexPageProps = {
   mixes: Mix[];
@@ -25,13 +25,19 @@ function IndexPage({ mixes }: IndexPageProps) {
       metaDescription=""
       socialMediaImg=""
     >
-      <ul className="flex flex-col space-y-4">
+      <ul className="flex flex-col space-y-4 items-center sm:items-start sm:pl-4 lg:pl-0">
         {mixes.map((m) => {
           const mixBannerUrl = require(`../stepcharts/${m.mixDir}/mix-banner.png`);
           return (
             <li key={m.mixDir}>
               <a className="inline-block" href={buildMixUrl(m)}>
-                <ImageFrame className="p-2">
+                <PageItem
+                  title={m.mixName}
+                  supplementary={`${m.songCount} ${pluralize(
+                    "song",
+                    m.songCount
+                  )}`}
+                >
                   <img
                     className="border-2 border-white"
                     src={mixBannerUrl}
@@ -39,13 +45,7 @@ function IndexPage({ mixes }: IndexPageProps) {
                     height={80}
                     alt={`${m.mixName} banner`}
                   />
-                  <div className="mt-2 flex flex-row justify-between">
-                    <span className="text-white font-bold">{m.mixName}</span>
-                    <span className="text-focal-500">
-                      {m.songCount} {pluralize("song", m.songCount)}
-                    </span>
-                  </div>
-                </ImageFrame>
+                </PageItem>
               </a>
             </li>
           );

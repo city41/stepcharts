@@ -33,8 +33,10 @@ function Root({
       {/*  metaImg={socialMediaImg ?? img}*/}
       {/*/>*/}
       <div className="bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-start lg:px-4">
-        <div className="max-w-6xl w-full mx-auto">
-          <div className="text-3xl font-bold text-focal">{title}</div>
+        <div className="max-w-6xl w-full mx-auto sm:pl-4 lg:pl-0">
+          <div className="text-3xl font-bold text-focal text-center sm:text-left">
+            {title}
+          </div>
         </div>
       </div>
       <main role="main" className="flex-1 max-w-6xl w-full mx-auto pt-16">
