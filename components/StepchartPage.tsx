@@ -5,6 +5,7 @@ import styles from "./StepchartPage.module.css";
 import { ArrowSvg, ArrowSvgProps } from "./ArrowSvg";
 import { Root } from "./layout/Root";
 import { Banner } from "./Banner";
+import { ImageFrame } from "./ImageFrame";
 
 type StepchartPageProps = Stepchart & {
   currentType: string;
@@ -95,15 +96,15 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
       metaDescription=""
       socialMediaImg=""
     >
-      <div className="w-full sm:max-w-4xl mx-auto flex flex-col items-center">
-        <div className="w-full sm:w-auto text-center">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start">
+        <ImageFrame className="mb-8 sticky top-0 py-4 bg-focal grid place-items-center">
           <Banner banner={title.banner} />
-        </div>
+        </ImageFrame>
         <div
           className={clsx(
             styles.container,
             styles[`container-${singleDoubleClass}`],
-            "relative flex flex-col flex-wrap my-8"
+            "relative flex flex-col bg-indigo-100"
           )}
           style={
             {

@@ -11,7 +11,7 @@ function Footer({ className }: FooterProps) {
     <footer
       className={clsx(
         className,
-        "bg-bg text-focal-400 py-2 px-2 sm:p-4 text-center text-xs"
+        "bg-bg text-focal-400 py-2 px-2 sm:p-4 text-center text-xs border-t border-focal-400"
       )}
     >
       <div className="w-full max-w-6xl mx-auto flex flex-col space-y-2">

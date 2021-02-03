@@ -1,5 +1,4 @@
 .container-single {
-    --arrow-size: 25px;
     width: calc(var(--arrow-size) * 4);
 }
 
