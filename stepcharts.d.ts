@@ -17,6 +17,7 @@ type Stepchart = {
 type Mix = {
   mixName: string;
   mixDir: string;
+  songCount: number;
 };
 
 type Title = {

@@ -38,6 +38,7 @@ function _getAllStepchartData(): EntireMix[] {
     const mix = {
       mixName: mixDir,
       mixDir,
+      songCount: mixSongDirs.length,
     };
 
     const songs = mixSongDirs.map((songDir) => {

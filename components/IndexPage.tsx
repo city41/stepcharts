@@ -10,6 +10,13 @@ function buildMixUrl(mix: Mix): string {
   return `/${mix.mixDir}`;
 }
 
+function pluralize(str: string, count: number): string {
+  if (count === 1) {
+    return str;
+  }
+  return str + "s";
+}
+
 function IndexPage({ mixes }: IndexPageProps) {
   return (
     <Root
@@ -34,7 +41,9 @@ function IndexPage({ mixes }: IndexPageProps) {
                   />
                   <div className="mt-2 flex flex-row justify-between">
                     <span className="text-white font-bold">{m.mixName}</span>
-                    <span className="text-focal-500">2003</span>
+                    <span className="text-focal-500">
+                      {m.songCount} {pluralize("song", m.songCount)}
+                    </span>
                   </div>
                 </ImageFrame>
               </a>
