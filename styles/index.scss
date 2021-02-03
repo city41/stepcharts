@@ -1,0 +1,21 @@
+@import './theme';
+
+@tailwind base;
+
+/* Start purging... */
+@tailwind components;
+/* Stop purging. */
+
+html,
+body {
+  @apply bg-bg text-fg;
+}
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+:root {
+  @include theme;
+}
+

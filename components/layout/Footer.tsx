@@ -11,7 +11,7 @@ function Footer({ className }: FooterProps) {
     <footer
       className={clsx(
         className,
-        "bg-bg-fade py-4 px-2 sm:p-6 flex flex-row justify-between text-center text-sm border-t border-bg-fade"
+        "bg-bg py-2 px-2 sm:p-4 flex flex-row justify-between text-center text-sm"
       )}
     >
       this the footer

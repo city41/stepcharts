@@ -1,0 +1,7 @@
+.background {
+    background-image: url(./bg-grid.svg), linear-gradient(to right, #2E4902, #598E03);
+    background-size: 300px 300px, 100% 100%;
+    background-repeat: repeat;
+
+    min-height: 100vh;
+}

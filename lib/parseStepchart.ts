@@ -2,7 +2,10 @@ import * as fs from "fs";
 import * as path from "path";
 import { parseSm } from "./parseSm";
 
-type RawStepchart = Omit<Stepchart, "mix" | "title"> & { title: string };
+type RawStepchart = Omit<Stepchart, "mix" | "title"> & {
+  title: string;
+  banner: string | null;
+};
 type Parser = (chart: string) => RawStepchart;
 
 const parsers: Record<string, Parser> = {
@@ -56,6 +59,7 @@ function parseStepchart(
     title: {
       actualTitle: rawStepchart.title,
       titleDir,
+      banner: rawStepchart.banner,
     },
   };
 }
