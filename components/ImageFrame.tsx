@@ -11,7 +11,7 @@ function ImageFrame({ className, children }: ImageFrameProps) {
     <div
       className={clsx(
         className,
-        "border-2 bg-focal-600 border-focal-700 shadow-sm"
+        "border-2 bg-focal-400 border-focal-700 shadow-lg"
       )}
     >
       {children}

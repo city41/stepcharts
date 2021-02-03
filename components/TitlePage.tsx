@@ -1,4 +1,6 @@
 import React from "react";
+import { Banner } from "./Banner";
+import { Root } from "./layout/Root";
 
 type TitlePageProps = {
   mix: Mix;
@@ -12,9 +14,13 @@ function buildTypeUrl(mix: Mix, title: string, type: string) {
 
 function TitlePage({ mix, title, types }: TitlePageProps) {
   return (
-    <>
-      <h1>{title.actualTitle}</h1>
-      {title.banner && <img src={require(`./bannerImages/${title.banner}`)} />}
+    <Root
+      title={title.actualTitle}
+      metaForTitle=""
+      metaDescription=""
+      socialMediaImg=""
+    >
+      <Banner banner={title.banner} />
       <ul>
         {types.map((type) => (
           <li key={type}>
@@ -22,7 +28,7 @@ function TitlePage({ mix, title, types }: TitlePageProps) {
           </li>
         ))}
       </ul>
-    </>
+    </Root>
   );
 }
 

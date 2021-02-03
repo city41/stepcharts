@@ -1,7 +1,7 @@
 import React from "react";
 import { Root } from "./layout/Root";
 import { ImageFrame } from "./ImageFrame";
-import { FallbackBanner } from "./FallbackBanner";
+import { Banner } from "./Banner";
 
 type MixPageProps = {
   mix: Mix;
@@ -23,15 +23,10 @@ function MixPage({ mix, titles }: MixPageProps) {
       <div className="grid grid-cols-2">
         <ul>
           {titles.map((title) => {
-            const bannerEl = title.banner ? (
-              <img src={require(`./bannerImages/${title.banner}`)} />
-            ) : (
-              <FallbackBanner />
-            );
             return (
               <li key={title.actualTitle}>
                 <a href={buildTitleUrl(mix, title.titleDir)}>
-                  {bannerEl}
+                  <Banner banner={title.banner} />
                   <div>{title.actualTitle}</div>
                 </a>
               </li>

@@ -3,6 +3,8 @@ import clsx from "clsx";
 
 import styles from "./StepchartPage.module.css";
 import { ArrowSvg, ArrowSvgProps } from "./ArrowSvg";
+import { Root } from "./layout/Root";
+import { Banner } from "./Banner";
 
 type StepchartPageProps = Stepchart & {
   currentType: string;
@@ -87,37 +89,37 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
   }
 
   return (
-    <div className="w-full sm:max-w-4xl mx-auto flex flex-col items-center bg-red-100">
-      <div className="w-full sm:w-auto text-center">
-        {title.banner && (
-          <img
-            className="w-full h-auto"
-            src={require(`./bannerImages/${title.banner}`)}
-          />
-        )}
-        <h1 className="text-3xl mt-4">{title.actualTitle}</h1>
-        <h2 className="text-2xl">{currentType}</h2>
+    <Root
+      title={`${title.actualTitle} ${currentType.replace(/-/g, ", ")}`}
+      metaForTitle=""
+      metaDescription=""
+      socialMediaImg=""
+    >
+      <div className="w-full sm:max-w-4xl mx-auto flex flex-col items-center">
+        <div className="w-full sm:w-auto text-center">
+          <Banner banner={title.banner} />
+        </div>
+        <div
+          className={clsx(
+            styles.container,
+            styles[`container-${singleDoubleClass}`],
+            "relative flex flex-col flex-wrap my-8"
+          )}
+          style={
+            {
+              height: offset,
+              "--arrow-size": `${ARROW_HEIGHT}px`,
+            } as CSSProperties
+          }
+        >
+          {barDivs}
+          {!isSingle && (
+            <div className={styles.doubleDivider} style={{ height: offset }} />
+          )}
+          {arrowDivs}
+        </div>
       </div>
-      <div
-        className={clsx(
-          styles.container,
-          styles[`container-${singleDoubleClass}`],
-          "relative flex flex-col flex-wrap my-8"
-        )}
-        style={
-          {
-            height: offset,
-            "--arrow-size": `${ARROW_HEIGHT}px`,
-          } as CSSProperties
-        }
-      >
-        {barDivs}
-        {!isSingle && (
-          <div className={styles.doubleDivider} style={{ height: offset }} />
-        )}
-        {arrowDivs}
-      </div>
-    </div>
+    </Root>
   );
 }
 
