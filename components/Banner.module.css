@@ -1,0 +1,4 @@
+.bannerImage {
+    width: var(--banner-width);
+    height: var(--banner-height);
+}

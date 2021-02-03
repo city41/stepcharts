@@ -17,5 +17,8 @@ body {
 
 :root {
   @include theme;
+
+  --banner-width: 256px;
+  --banner-height: 80px;
 }
 

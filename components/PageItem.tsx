@@ -3,6 +3,8 @@ import clsx from "clsx";
 
 import { ImageFrame } from "./ImageFrame";
 
+import styles from "./PageItem.module.css";
+
 type PageItemProps = {
   className?: string;
   title: React.ReactNode;
@@ -19,8 +21,8 @@ function PageItem({
   return (
     <ImageFrame className={clsx(className, "p-2")}>
       {children}
-      <div className="mt-2 flex flex-row justify-between">
-        <span className="text-white font-bold">{title}</span>
+      <div className={clsx(styles.root, "mt-2 flex flex-row justify-between")}>
+        <div className="text-white font-bold break-all">{title}</div>
         {supplementary && (
           <span className="text-focal-500">{supplementary}</span>
         )}

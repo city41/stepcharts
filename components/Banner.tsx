@@ -8,25 +8,20 @@ type BannerProps = {
   banner: string | null;
 };
 
-const BANNER_WIDTH = 256;
-const BANNER_HEIGHT = 80;
+import styles from "./Banner.module.css";
 
 function Banner({ className, banner }: BannerProps) {
   const [currentBanner, setCurrentBanner] = useState(banner);
 
   const childEl = currentBanner ? (
     <img
-      width={BANNER_WIDTH}
-      height={BANNER_HEIGHT}
+      className={styles.bannerImage}
       src={require(`./bannerImages/${currentBanner}`)}
       onError={() => setCurrentBanner(null)}
       loading="lazy"
     />
   ) : (
-    <div
-      className="bg-focal text_focal-300"
-      style={{ width: BANNER_WIDTH, height: BANNER_HEIGHT }}
-    >
+    <div className={clsx(styles.bannerImage, "bg-focal text_focal-300")}>
       banner missing
     </div>
   );

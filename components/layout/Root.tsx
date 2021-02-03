@@ -1,7 +1,8 @@
 import React from "react";
 import clsx from "clsx";
-// import { Head } from "./Head";
 import { Footer } from "./Footer";
+
+import logoSvg from "./logoArrow.svg";
 
 import styles from "./Root.module.css";
 
@@ -32,9 +33,13 @@ function Root({
       {/*  metaDescription={metaDescription}*/}
       {/*  metaImg={socialMediaImg ?? img}*/}
       {/*/>*/}
-      <div className="bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-start lg:px-4">
+      <div className="relative bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-start lg:px-4 overflow-hidden">
+        <img
+          className={clsx(styles.logo, "lg:-mx-4 absolute sm:static")}
+          src={logoSvg}
+        />
         <div className="max-w-6xl w-full mx-auto sm:pl-4 lg:pl-0">
-          <div className="text-3xl font-bold text-focal text-center sm:text-left">
+          <div className="text-3xl font-bold text-focal text-center sm:mx-0 sm:text-left">
             {title}
           </div>
         </div>
