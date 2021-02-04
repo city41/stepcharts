@@ -118,7 +118,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       }`}
     >
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
-        <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
+        <ImageFrame className="mb-8 sticky top-0 z-10 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <Banner banner={stepchart.title.banner} />
           <TitleDetailsTable className="mt-4" stepchart={stepchart} />
           <div className="mt-6 bg-focal-400 text-focal-600 p-2 w-full">
@@ -127,9 +127,11 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
               {[1, 1.5, 2, 3].map((sm) => {
                 const id = `speedmod-${sm}`;
                 return (
-                  <div className="flex flex-row items-center space-x-1">
+                  <div
+                    key={sm}
+                    className="flex flex-row items-center space-x-1"
+                  >
                     <input
-                      key={sm}
                       id={id}
                       type="radio"
                       value={sm}
