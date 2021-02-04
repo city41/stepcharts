@@ -20,12 +20,6 @@ function StepchartTypePageItem({
   className,
   type,
 }: StepchartTypePageItemProps) {
-  const feets = [];
-
-  for (let i = 0; i < type.feet; ++i) {
-    feets.push(<Foot key={i} difficulty={type.difficulty} />);
-  }
-
   return (
     <PageItem
       className={clsx(className)}
@@ -39,8 +33,8 @@ function StepchartTypePageItem({
           width={100}
           height="auto"
         />
-        <div className="flex-1 flex flex-row bg-gray-900 p-1 items-center justify-center">
-          {feets}
+        <div className="flex-1 flex flex-row bg-gray-900 pr-3 items-center justify-end">
+          <Foot difficulty={type.difficulty} />
           <div className="ml-2">{type.feet}</div>
         </div>
       </div>
