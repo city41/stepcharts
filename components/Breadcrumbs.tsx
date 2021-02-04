@@ -76,7 +76,11 @@ function Breadcrumbs({ className, leaf, stepchart, type }: BreadcrumbsProps) {
     );
   }, []);
 
-  return <ul className={clsx(className, "flex flex-row")}>{entries}</ul>;
+  return (
+    <nav>
+      <ul className={clsx(className, "flex flex-row")}>{entries}</ul>
+    </nav>
+  );
 }
 
 export { Breadcrumbs };
