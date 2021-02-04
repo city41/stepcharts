@@ -25,12 +25,12 @@ function IndexPage({ mixes }: IndexPageProps) {
       metaDescription=""
       socialMediaImg=""
     >
-      <ul className="mt-8 sm:mt-16 flex flex-col space-y-4 items-center sm:items-start sm:pl-4 lg:pl-0">
+      <ul className="mt-8 sm:mt-16 flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-start sm:pl-4 lg:pl-0">
         {mixes.map((m) => {
           const mixBannerUrl = require(`../prodStepcharts/${m.mixDir}/mix-banner.png`);
           return (
             <li key={m.mixDir}>
-              <a className="inline-block" href={buildMixUrl(m)}>
+              <a className="inline-block m-2" href={buildMixUrl(m)}>
                 <PageItem
                   title={m.mixName}
                   supplementary={`${m.songCount} ${pluralize(
