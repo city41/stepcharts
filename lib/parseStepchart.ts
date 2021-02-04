@@ -10,13 +10,22 @@ type Parser = (chart: string) => RawStepchart;
 
 const parsers: Record<string, Parser> = {
   ".sm": parseSm,
+  ".ssc": parseSm,
 };
 
 function getSongFile(songDir: string): string {
   const files = fs.readdirSync(songDir);
 
   // TODO: support more than .sm
-  return files.find((f) => f.endsWith(".sm"))!;
+  const extensions = Object.keys(parsers);
+
+  const songFile = files.find((f) => extensions.some((ext) => f.endsWith(ext)));
+
+  if (!songFile) {
+    throw new Error(`No song file found in ${songDir}`);
+  }
+
+  return songFile;
 }
 
 function toSafeName(name: string): string {
