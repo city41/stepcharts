@@ -21,8 +21,8 @@ function MixPage({ mix, titles }: MixPageProps) {
       metaDescription=""
       socialMediaImg=""
     >
-      <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start">
-        <ImageFrame className="mb-8 sticky top-0 w-full py-4 bg-focal grid place-items-center">
+      <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
+        <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <img
             src={require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`)}
             width={280}
