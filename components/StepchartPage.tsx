@@ -1,14 +1,14 @@
 import React, { CSSProperties, useState } from "react";
 import clsx from "clsx";
 
-import styles from "./StepchartPage.module.css";
 import { ArrowSvg, ArrowSvgProps } from "./ArrowSvg";
-import { FreezeBody as FreezeBodyCmp } from "./FreezeBody";
 import { Root } from "./layout/Root";
 import { Banner } from "./Banner";
 import { ImageFrame } from "./ImageFrame";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { TitleDetailsTable } from "./TitleDetailsTable";
+
+import styles from "./StepchartPage.module.css";
 
 type StepchartPageProps = {
   stepchart: Stepchart;
@@ -107,7 +107,10 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     return (
       <div
         key={`${f.startBeat}-${f.direction}`}
-        className="absolute transition-all ease-in-out duration-500"
+        className={clsx(
+          styles.freezeBody,
+          "absolute transition-all ease-in-out duration-500"
+        )}
         style={{
           top: f.startBeat * ARROW_HEIGHT * 4 * speedMod + ARROW_HEIGHT / 2,
           left: f.direction * ARROW_HEIGHT,
@@ -116,9 +119,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             (f.endBeat - f.startBeat) * ARROW_HEIGHT * speedMod * 4 -
             (ARROW_HEIGHT / 2) * speedMod,
         }}
-      >
-        <FreezeBodyCmp />
-      </div>
+      />
     );
   });
 
