@@ -19,6 +19,12 @@ type Arrow = {
     | 192;
 };
 
+type FreezeBody = {
+  direction: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  startBeat: number;
+  endBeat: number;
+};
+
 type Mode = "single" | "double";
 type Difficulty = "beginner" | "easy" | "medium" | "hard" | "challenge";
 
@@ -34,7 +40,7 @@ type Stepchart = {
   artist: string;
   mix: Mix;
   availableTypes: StepchartType[];
-  arrows: Record<string, Arrow[]>;
+  arrows: Record<string, { arrows: Arrow[]; freezes: FreezeBody[] }>;
   bpm: number[];
 };
 

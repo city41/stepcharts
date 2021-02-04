@@ -43,11 +43,22 @@ function determineBeat(index: number, measureLength: number): Arrow["beat"] {
 function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
   return measureLines.map((mline, i) => {
     return {
-      direction: mline as Arrow["direction"],
+      // remove freeze arrows, they are captured separately
+      direction: mline.replace(/3/g, "0") as Arrow["direction"],
       beat: determineBeat(i, measureLines.length),
       measureBeatHeight: measureLines.length as Arrow["measureBeatHeight"],
     };
   });
+}
+
+function getMeasureLength(lines: string[], i: number): number {
+  let measureLength = 0;
+
+  for (; i < lines.length && lines[i][0] !== ";" && lines[i][0] !== ","; ++i) {
+    measureLength += 1;
+  }
+
+  return measureLength;
 }
 
 function parseSm(sm: string): RawStepchart {
@@ -76,6 +87,65 @@ function parseSm(sm: string): RawStepchart {
     sc.bpm = Array.from(new Set(filteredBpms));
   }
 
+  function parseFreezes(
+    lines: string[],
+    i: number,
+    trimAmount: number
+  ): FreezeBody[] {
+    const freezes: FreezeBody[] = [];
+    const open: Record<number, Partial<FreezeBody> | undefined> = {};
+
+    let curBeat = 0;
+    let curMeasureLength = getMeasureLength(lines, i);
+
+    for (; i < lines.length && !lines[i].startsWith(";"); ++i) {
+      const line = lines[i];
+
+      if (line[0] === ",") {
+        curMeasureLength = getMeasureLength(lines, i + 1);
+        continue;
+      }
+
+      if (line.indexOf("2") === -1 && line.indexOf("3") === -1) {
+        curBeat += 1 / curMeasureLength;
+        continue;
+      }
+
+      const cleanedLine = line.replace(/[^23]/g, "0");
+
+      for (let d = 0; d < cleanedLine.length; ++d) {
+        if (cleanedLine[d] === "2") {
+          if (open[d]) {
+            console.warn(
+              sc.title,
+              "error parsing freezes, found a new starting freeze before a previous one finished"
+            );
+          }
+          open[d] = {
+            direction: d as FreezeBody["direction"],
+            startBeat: curBeat - trimAmount * 0.25,
+          };
+        } else if (cleanedLine[d] === "3") {
+          if (!open[d]) {
+            console.warn(
+              sc.title,
+              "error parsing freezes, needed to close a freeze that never opened"
+            );
+            continue;
+          }
+
+          open[d]!.endBeat = curBeat - trimAmount * 0.25 + 1 / curMeasureLength;
+          freezes.push(open[d] as FreezeBody);
+          open[d] = undefined;
+        }
+      }
+
+      curBeat += 1 / curMeasureLength;
+    }
+
+    return freezes;
+  }
+
   function parseNotes(lines: string[], i: number): number {
     // move past #NOTES into the note metadata
     i++;
@@ -92,6 +162,8 @@ function parseSm(sm: string): RawStepchart {
 
     // now i is pointing at the first measure
     let arrows: Arrow[] = [];
+
+    const firstMeasureIndex = i;
 
     do {
       const measureLines = getMeasureLines(lines, i);
@@ -124,9 +196,11 @@ function parseSm(sm: string): RawStepchart {
       endI -= 1;
     }
 
+    const freezes = parseFreezes(lines, firstMeasureIndex, startI);
+
     arrows = arrows.slice(0, endI);
 
-    sc.arrows![`${mode}-${difficulty}`] = arrows;
+    sc.arrows![`${mode}-${difficulty}`] = { arrows, freezes };
     sc.availableTypes!.push({
       slug: `${mode}-${difficulty}`,
       mode,
