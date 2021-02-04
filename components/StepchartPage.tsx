@@ -116,7 +116,6 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       metaDescription={`${currentType.replace(/-/g, " ")} stepchart for ${
         stepchart.title.actualTitle
       }`}
-      socialMediaImg=""
     >
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">

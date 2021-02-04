@@ -42,7 +42,6 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
       title={mix.mixName}
       subtitle={<Breadcrumbs stepchart={stepcharts[0]} leaf="mix" />}
       metaDescription={`Step charts for DDR ${mix.mixName}`}
-      socialMediaImg=""
     >
       <div className="sm:mt-8 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
