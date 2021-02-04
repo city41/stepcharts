@@ -136,6 +136,21 @@ function parseSm(sm: string): RawStepchart {
     banner: null,
   };
 
+  function parseBpms(bpmString: string) {
+    const entries = bpmString.split(",");
+
+    const bpms = entries.map((e) => {
+      return Math.floor(Number(e.split("=")[1]));
+    });
+
+    // remove the simfile hacks like 190, 189
+    const filteredBpms = bpms.filter((b, _index, others) => {
+      return !others.some((o) => o - b === 1);
+    });
+
+    sc.bpm = Array.from(new Set(filteredBpms));
+  }
+
   function parseNotes(lines: string[], i: number): number {
     // move past #NOTES into the note metadata
     i++;
@@ -210,6 +225,8 @@ function parseSm(sm: string): RawStepchart {
       if (metaTagsToConsume.includes(tag)) {
         // @ts-ignore
         sc[tag] = value;
+      } else if (tag === "bpms") {
+        parseBpms(value);
       } else if (tag === "notes") {
         return parseNotes(lines, index);
       }

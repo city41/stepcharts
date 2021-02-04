@@ -22,6 +22,7 @@ type Stepchart = {
   mix: Mix;
   availableTypes: StepchartType[];
   arrows: Record<string, Arrow[]>;
+  bpm: number[];
 };
 
 type Mix = {

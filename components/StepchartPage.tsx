@@ -7,6 +7,7 @@ import { Root } from "./layout/Root";
 import { Banner } from "./Banner";
 import { ImageFrame } from "./ImageFrame";
 import { Breadcrumbs } from "./Breadcrumbs";
+import { TitleDetailsTable } from "./TitleDetailsTable";
 
 type StepchartPageProps = {
   stepchart: Stepchart;
@@ -120,25 +121,29 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <Banner banner={stepchart.title.banner} />
-          <div className="flex flex-row space-x-6 mt-2">
-            {[1, 1.5, 2, 3].map((sm) => {
-              const id = `speedmod-${sm}`;
-              return (
-                <div className="flex flex-row items-center space-x-1">
-                  <input
-                    key={sm}
-                    id={id}
-                    type="radio"
-                    value={sm}
-                    checked={sm === speedMod}
-                    onChange={() => setSpeedMod(sm)}
-                  />
-                  <label className="cursor-pointer" htmlFor={id}>
-                    {sm}
-                  </label>
-                </div>
-              );
-            })}
+          <TitleDetailsTable className="mt-4" stepchart={stepchart} />
+          <div className="mt-6 bg-focal-400 text-focal-600 p-2 w-full">
+            <h3 className="font-bold text-white">speedmod</h3>
+            <div className="flex flex-row justify-around space-x-6">
+              {[1, 1.5, 2, 3].map((sm) => {
+                const id = `speedmod-${sm}`;
+                return (
+                  <div className="flex flex-row items-center space-x-1">
+                    <input
+                      key={sm}
+                      id={id}
+                      type="radio"
+                      value={sm}
+                      checked={sm === speedMod}
+                      onChange={() => setSpeedMod(sm)}
+                    />
+                    <label className="cursor-pointer" htmlFor={id}>
+                      {sm}
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </ImageFrame>
         <div

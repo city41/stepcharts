@@ -48,7 +48,7 @@ function TitlePage({ stepchart }: TitlePageProps) {
       <div className="sm:mt-8 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <Banner banner={stepchart.title.banner} />
-          <TitleDetailsTable mix={stepchart.mix} />
+          <TitleDetailsTable className="mt-4" stepchart={stepchart} />
         </ImageFrame>
         <ul className="flex flex-col items-center space-y-8">
           {Object.keys(grouped).map((mode) => {
