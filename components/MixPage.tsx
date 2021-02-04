@@ -24,7 +24,7 @@ function MixPage({ mix, titles }: MixPageProps) {
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start">
         <ImageFrame className="mb-8 sticky top-0 w-full py-4 bg-focal grid place-items-center">
           <img
-            src={require(`../stepcharts/${mix.mixDir}/mix-banner.png`)}
+            src={require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`)}
             width={280}
             height={80}
             alt={`${mix.mixName} banner`}

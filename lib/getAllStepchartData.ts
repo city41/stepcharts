@@ -2,7 +2,8 @@ import * as fs from "fs";
 import * as path from "path";
 import { parseStepchart } from "./parseStepchart";
 
-const ROOT = "stepcharts";
+const ROOT =
+  process.env.NODE_ENV === "production" ? "prodStepcharts" : "devStepcharts";
 
 type EntireMix = Mix & {
   songs: Stepchart[];

@@ -5,8 +5,8 @@
 #SUBTITLETRANSLIT:;
 #ARTISTTRANSLIT:;
 #CREDIT:;
-#BANNER:.59.png;
-#BACKGROUND:.59-bg.png;
+#BANNER:dot59.png;
+#BACKGROUND:dot59-bg.png;
 #LYRICSPATH:;
 #CDTITLE:./CDTitles/beatmania IIDX 2nd style.png;
 #MUSIC:.59.ogg;
