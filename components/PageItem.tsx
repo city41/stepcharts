@@ -19,7 +19,7 @@ function PageItem({
   children,
 }: PageItemProps) {
   return (
-    <ImageFrame className={clsx(className, "p-2")}>
+    <ImageFrame className={clsx(className, "p-2 cursor-pointer")}>
       {children}
       <div className={clsx(styles.root, "mt-2 flex flex-row justify-between")}>
         <div className="text-white font-bold break-word">{title}</div>
