@@ -76,23 +76,24 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
 
   const barDivs = [];
 
+  const barHeight = ARROW_HEIGHT * speedMod;
+
   for (let i = 0; i < offset / ARROW_HEIGHT; ++i) {
     barDivs.push(
       <div
         key={i}
         className={clsx(
           styles.bar,
-          "even:bg-blue-200 odd:bg-blue-100 w-full absolute",
+          "even:bg-blue-200 odd:bg-blue-100 w-full absolute transition-all ease-in-out duration-500",
           {
             "border-b border-black": (i + 1) % 4 === 0,
             "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
-            hidden: (i + 1) % 4 !== 0 && speedMod !== 1,
           }
         )}
         style={{
           left: 0,
-          top: i * ARROW_HEIGHT * speedMod,
-          height: ARROW_HEIGHT * speedMod,
+          top: i * ARROW_HEIGHT * speedMod - (barHeight - ARROW_HEIGHT) / 2,
+          height: barHeight,
         }}
       />
     );
