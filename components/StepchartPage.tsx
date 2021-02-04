@@ -78,7 +78,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
 
   const barHeight = ARROW_HEIGHT * speedMod;
 
-  for (let i = 0; i < offset / ARROW_HEIGHT; ++i) {
+  for (let i = 0; i < offset / barHeight; ++i) {
     barDivs.push(
       <div
         key={i}
