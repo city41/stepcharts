@@ -25,7 +25,7 @@ function IndexPage({ mixes }: IndexPageProps) {
       metaDescription=""
       socialMediaImg=""
     >
-      <ul className="mt-8 sm:mt-16 flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-start sm:pl-4 lg:pl-0">
+      <ul className="mt-8 sm:mt-16 flex flex-col sm:flex-row sm:flex-wrap content-center items-center sm:items-start sm:pl-4 lg:pl-0">
         {mixes.map((m) => {
           const mixBannerUrl = require(`../prodStepcharts/${m.mixDir}/mix-banner.png`);
           return (
