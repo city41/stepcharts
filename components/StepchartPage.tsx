@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useState } from "react";
 import clsx from "clsx";
 
 import styles from "./StepchartPage.module.css";
@@ -11,11 +11,12 @@ type StepchartPageProps = Stepchart & {
   currentType: string;
 };
 
+const ARROW_HEIGHT = 40;
+
 function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
+  const [speedMod, setSpeedMod] = useState(1.5);
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
-
-  const ARROW_HEIGHT = isSingle ? 80 : 40;
 
   const offsets = {
     4: ARROW_HEIGHT,
@@ -66,7 +67,7 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
         {arrowSvgs}
       </div>
     );
-    offset += offsets[a.measureBeatHeight as 4 | 8 | 16];
+    offset += offsets[a.measureBeatHeight as 4 | 8 | 16] * speedMod;
     return el;
   });
 
@@ -82,9 +83,14 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
           {
             "border-b border-black": (i + 1) % 4 === 0,
             "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
+            hidden: (i + 1) % 4 !== 0 && speedMod !== 1,
           }
         )}
-        style={{ left: 0, top: i * ARROW_HEIGHT }}
+        style={{
+          left: 0,
+          top: i * ARROW_HEIGHT * speedMod,
+          height: ARROW_HEIGHT * speedMod,
+        }}
       />
     );
   }
@@ -96,9 +102,25 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
       metaDescription=""
       socialMediaImg=""
     >
-      <div className="flex flex-col sm:flex-row items-center sm:items-start">
-        <ImageFrame className="mb-8 sticky top-0 z-10 py-4 bg-focal grid place-items-center w-full sm:w-auto">
+      <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
+        <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <Banner banner={title.banner} />
+          <div className="flex flex-row space-x-6 mt-2">
+            {[1, 1.5, 2, 3].map((sm) => {
+              return (
+                <div className="flex flex-row items-center space-x-1">
+                  <input
+                    key={sm}
+                    type="radio"
+                    value={sm}
+                    checked={sm === speedMod}
+                    onClick={() => setSpeedMod(sm)}
+                  />
+                  <div>{sm}</div>
+                </div>
+              );
+            })}
+          </div>
         </ImageFrame>
         <div
           className={clsx(
