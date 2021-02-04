@@ -121,16 +121,20 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           <Banner banner={stepchart.title.banner} />
           <div className="flex flex-row space-x-6 mt-2">
             {[1, 1.5, 2, 3].map((sm) => {
+              const id = `speedmod-${sm}`;
               return (
                 <div className="flex flex-row items-center space-x-1">
                   <input
                     key={sm}
+                    id={id}
                     type="radio"
                     value={sm}
                     checked={sm === speedMod}
-                    onClick={() => setSpeedMod(sm)}
+                    onChange={() => setSpeedMod(sm)}
                   />
-                  <div>{sm}</div>
+                  <label className="cursor-pointer" htmlFor={id}>
+                    {sm}
+                  </label>
                 </div>
               );
             })}
