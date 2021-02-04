@@ -5,7 +5,11 @@ const metaTagsToConsume = ["title", "artist", "banner"];
 function getMeasureLines(lines: string[], i: number): string[] {
   const measureLines: string[] = [];
 
-  while (!lines[i].startsWith(",") && !lines[i].startsWith(";")) {
+  while (
+    i < lines.length &&
+    !lines[i].startsWith(",") &&
+    !lines[i].startsWith(";")
+  ) {
     measureLines.push(lines[i++]);
   }
 
@@ -154,7 +158,7 @@ function parseSm(sm: string): RawStepchart {
       i += measureLines.length;
 
       arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
-    } while (lines[i++].trim() !== ";");
+    } while (i < lines.length && lines[i++].trim() !== ";");
 
     // trim off empty leading measures
     let startI = 0;
@@ -232,7 +236,7 @@ function parseSm(sm: string): RawStepchart {
 
     return sc as RawStepchart;
   } catch (e) {
-    throw new Error(`error parsing ${sm}: ${e}`);
+    throw new Error(`error, ${e.message}, ${e.stack}, parsing ${sm}`);
   }
 }
 

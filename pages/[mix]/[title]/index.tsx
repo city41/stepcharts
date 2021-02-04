@@ -7,7 +7,6 @@ import {
 } from "next";
 import { getAllStepchartData } from "../../../lib/getAllStepchartData";
 import { TitlePage } from "../../../components/TitlePage";
-import { parseStepchart } from "../../../lib/parseStepchart";
 
 type NextTitleIndexPageProps = {
   mix: Mix;

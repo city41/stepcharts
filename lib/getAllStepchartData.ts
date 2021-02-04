@@ -43,10 +43,16 @@ function _getAllStepchartData(): EntireMix[] {
     };
 
     const songs = mixSongDirs.map((songDir) => {
-      return {
-        ...parseStepchart(ROOT, mixDir, songDir),
-        mix,
-      };
+      try {
+        return {
+          ...parseStepchart(ROOT, mixDir, songDir),
+          mix,
+        };
+      } catch (e) {
+        throw new Error(
+          `parseStepchart failed for ${ROOT}/${mixDir}/${songDir}: ${e.message} ${e.stack}`
+        );
+      }
     });
 
     return {
