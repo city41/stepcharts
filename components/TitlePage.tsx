@@ -1,11 +1,13 @@
 import React from "react";
 import { Banner } from "./Banner";
 import { Root } from "./layout/Root";
+import { StepchartTypePageItem } from "./StepchartTypePageItem";
+import { ImageFrame } from "./ImageFrame";
 
 type TitlePageProps = {
   mix: Mix;
   title: Title;
-  types: string[];
+  types: StepchartType[];
 };
 
 function buildTypeUrl(mix: Mix, title: string, type: string) {
@@ -20,14 +22,20 @@ function TitlePage({ mix, title, types }: TitlePageProps) {
       metaDescription=""
       socialMediaImg=""
     >
-      <Banner banner={title.banner} />
-      <ul>
-        {types.map((type) => (
-          <li key={type}>
-            <a href={buildTypeUrl(mix, title.titleDir, type)}>{type}</a>
-          </li>
-        ))}
-      </ul>
+      <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start">
+        <ImageFrame className="mb-8 sticky top-0 w-full py-4 bg-focal grid place-items-center">
+          <Banner banner={title.banner} />
+        </ImageFrame>
+        <ul className="flex flex-col items-center space-y-4">
+          {types.map((type) => (
+            <li key={type.slug}>
+              <a href={buildTypeUrl(mix, title.titleDir, type.slug)}>
+                <StepchartTypePageItem type={type} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Root>
   );
 }

@@ -6,11 +6,18 @@ type Arrow = {
   measureBeatHeight: 4 | 6 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 192;
 };
 
+type StepchartType = {
+  slug: string;
+  mode: "single" | "double";
+  difficulty: "easy" | "medium" | "hard" | "challenge";
+  feet: number;
+};
+
 type Stepchart = {
   title: Title;
   artist: string;
   mix: Mix;
-  availableTypes: string[];
+  availableTypes: StepchartType[];
   arrows: Record<string, Arrow[]>;
 };
 
@@ -34,5 +41,5 @@ type SongMix = {
 type SongDifficultyType = {
   title: Title;
   mix: Mix;
-  type: string;
+  type: StepchartType;
 };

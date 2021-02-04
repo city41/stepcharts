@@ -135,14 +135,14 @@ function parseSm(sm: string): RawStepchart {
   function parseNotes(lines: string[], i: number): number {
     // move past #NOTES into the note metadata
     i++;
-    const type = lines[i++].replace("dance-", "").replace(":", "");
+    const mode = lines[i++].replace("dance-", "").replace(":", "");
     i++; // skip author for now
     const difficulty = lines[i++].replace(":", "").toLowerCase();
     const feet = Number(lines[i++].replace(":", ""));
     i++; // skip groove meter data for now
 
     // skip couple, versus, etc for now
-    if (type !== "single" && type !== "double") {
+    if (mode !== "single" && mode !== "double") {
       return i + 1;
     }
 
@@ -182,8 +182,13 @@ function parseSm(sm: string): RawStepchart {
 
     arrows = arrows.slice(0, endI);
 
-    sc.arrows![`${type}-${difficulty}`] = arrows;
-    sc.availableTypes!.push(`${type}-${difficulty}`);
+    sc.arrows![`${mode}-${difficulty}`] = arrows;
+    sc.availableTypes!.push({
+      slug: `${mode}-${difficulty}`,
+      mode,
+      difficulty: difficulty as any,
+      feet,
+    });
 
     return i + 1;
   }

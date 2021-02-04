@@ -1,0 +1,15 @@
+.easy path {
+    fill: yellow;
+}
+
+.medium path {
+    fill: #FD009C;
+}
+
+.hard path {
+    fill: #63FD00;
+}
+
+.challenge path {
+    fill: purple;
+}

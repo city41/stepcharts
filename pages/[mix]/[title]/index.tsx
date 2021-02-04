@@ -12,11 +12,11 @@ import { parseStepchart } from "../../../lib/parseStepchart";
 type NextTitleIndexPageProps = {
   mix: Mix;
   title: Title;
-  types: string[];
+  types: StepchartType[];
 };
 
 export async function getStaticPaths(
-  context: GetStaticPathsContext
+  _context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
   const allData = getAllStepchartData();
   const allStepcharts = allData.reduce<Stepchart[]>((building, mix) => {
