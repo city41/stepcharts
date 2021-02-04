@@ -5,7 +5,7 @@ import styles from "./Foot.module.css";
 
 type FootProps = {
   className?: string;
-  difficulty: Difficulty;
+  difficulty: Difficulty | "icon";
 };
 
 function Foot({ className, difficulty }: FootProps) {

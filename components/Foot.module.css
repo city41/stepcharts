@@ -17,3 +17,11 @@
 .challenge path {
     fill: purple;
 }
+
+.icon {
+    width: 10px;
+}
+
+.icon path {
+    fill: var(--color-focal);
+}

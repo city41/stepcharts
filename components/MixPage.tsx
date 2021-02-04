@@ -3,6 +3,7 @@ import { Root } from "./layout/Root";
 import { ImageFrame } from "./ImageFrame";
 import { Banner } from "./Banner";
 import { PageItem } from "./PageItem";
+import { Foot } from "./Foot";
 
 type MixPageProps = {
   mix: Mix;
@@ -11,6 +12,27 @@ type MixPageProps = {
 
 function buildTitleUrl(mix: Mix, title: string) {
   return `/${mix.mixDir}/${title}`;
+}
+
+function getFeetRange(stepchart: Stepchart): string {
+  let min = Number.MAX_SAFE_INTEGER;
+  let max = Number.MIN_SAFE_INTEGER;
+
+  stepchart.availableTypes.forEach((type) => {
+    if (type.feet < min) {
+      min = type.feet;
+    }
+
+    if (type.feet > max) {
+      max = type.feet;
+    }
+  });
+
+  if (min === max) {
+    return min.toString();
+  }
+
+  return `${min} - ${max}`;
 }
 
 function MixPage({ mix, stepcharts }: MixPageProps) {
@@ -32,10 +54,20 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
         </ImageFrame>
         <ul className="flex flex-col items-center space-y-4">
           {stepcharts.map((stepchart) => {
+            const supp = (
+              <>
+                <span>{getFeetRange(stepchart)}</span>
+                <Foot difficulty="icon" />
+              </>
+            );
+
             return (
               <li key={stepchart.title.actualTitle}>
                 <a href={buildTitleUrl(mix, stepchart.title.titleDir)}>
-                  <PageItem title={stepchart.title.actualTitle}>
+                  <PageItem
+                    title={stepchart.title.actualTitle}
+                    supplementary={supp}
+                  >
                     <Banner banner={stepchart.title.banner} />
                   </PageItem>
                 </a>

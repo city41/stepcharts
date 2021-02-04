@@ -24,7 +24,9 @@ function PageItem({
       <div className={clsx(styles.root, "mt-2 flex flex-row justify-between")}>
         <div className="text-white font-bold break-word">{title}</div>
         {supplementary && (
-          <span className="text-focal-500">{supplementary}</span>
+          <div className="text-focal-500 flex flex-row space-x-1 w-20 items-center justify-end">
+            {supplementary}
+          </div>
         )}
       </div>
     </ImageFrame>
