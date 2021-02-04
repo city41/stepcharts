@@ -7,7 +7,7 @@ type ArrowSvgProps = {
   className?: string;
   size: number;
   position: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
-  beat: Arrow["beat"];
+  beat: "shock" | Arrow["beat"];
 };
 
 const arrowClasses = {

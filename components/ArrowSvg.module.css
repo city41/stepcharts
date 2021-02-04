@@ -71,3 +71,12 @@
     fill:green;
 }
 
+.beatshock .arrowColor {
+    fill: #d6f8ff;
+}
+
+.beatshock .outerBorder, .beatshock .innerWhite {
+    fill: #0fd5fa;
+}
+
+

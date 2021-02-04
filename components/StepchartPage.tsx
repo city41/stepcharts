@@ -47,6 +47,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     }
 
     const arrowSvgs = [];
+    const isShockArrow = a.direction.indexOf("0") === -1;
 
     for (let i = 0; i < a.direction.length; ++i) {
       if (a.direction[i] !== "0") {
@@ -55,7 +56,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             key={i}
             size={ARROW_HEIGHT}
             position={i as ArrowSvgProps["position"]}
-            beat={a.beat}
+            beat={isShockArrow ? "shock" : a.beat}
           />
         );
       }
@@ -76,7 +77,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         {arrowSvgs}
       </div>
     );
-    console.log("a.measureBeatHeight", a.measureBeatHeight);
+
     offset += offsets[a.measureBeatHeight as Arrow["beat"]] * speedMod;
     return el;
   });
