@@ -21,12 +21,18 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
 
-  const offsets = {
+  const offsets: Record<Arrow["measureBeatHeight"], number> = {
     4: ARROW_HEIGHT,
-    6: (ARROW_HEIGHT * 2) / 3,
+    6: ARROW_HEIGHT / 1.5,
     8: ARROW_HEIGHT / 2,
     12: ARROW_HEIGHT / 3,
     16: ARROW_HEIGHT / 4,
+    24: ARROW_HEIGHT / 6,
+    32: ARROW_HEIGHT / 8,
+    48: ARROW_HEIGHT / 12,
+    64: ARROW_HEIGHT / 16,
+    128: ARROW_HEIGHT / 32,
+    192: ARROW_HEIGHT / 48,
   };
 
   let offset = 0;
@@ -70,7 +76,8 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         {arrowSvgs}
       </div>
     );
-    offset += offsets[a.measureBeatHeight as 4 | 8 | 16] * speedMod;
+    console.log("a.measureBeatHeight", a.measureBeatHeight);
+    offset += offsets[a.measureBeatHeight as Arrow["beat"]] * speedMod;
     return el;
   });
 
