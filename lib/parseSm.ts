@@ -16,103 +16,33 @@ function getMeasureLines(lines: string[], i: number): string[] {
   return measureLines;
 }
 
+const offsetToBeat: Array<[number, Arrow["beat"]]> = [
+  [2500, 4],
+  [1250, 8],
+  [1667, 6],
+  [833, 12],
+  [625, 16],
+];
+
 function determineBeat(index: number, measureLength: number): Arrow["beat"] {
-  if (index === 0 || measureLength === 4) {
-    return 4;
+  const fractionPerEntry = Math.round((1 / measureLength) * 10000);
+
+  // anything smaller than a 16th, we'll just render as if it's a 16th
+  if (fractionPerEntry < 625) {
+    return 16;
   }
 
-  if (measureLength === 6) {
-    if (index % 2 === 1) {
-      return 6;
-    } else {
-      return 4;
-    }
+  const offset = index * fractionPerEntry;
+
+  const match = offsetToBeat.find((otb) => offset % otb[0] === 0);
+
+  if (!match) {
+    throw new Error(
+      `failed to get a beat for index: ${index} and measureLength: ${measureLength}`
+    );
   }
 
-  if (measureLength === 8) {
-    if (index % 2 === 1) {
-      return 8;
-    } else {
-      return 4;
-    }
-  }
-
-  if (measureLength === 12) {
-    if (index % 3 === 1) {
-      return 12;
-    } else if (index % 3 === 2) {
-      return 6;
-    } else {
-      return 4;
-    }
-  }
-
-  if (measureLength === 24) {
-    if (index % 6 === 1) {
-      return 24;
-    } else if (index % 6 === 2) {
-      return 12;
-    } else if (index % 6 === 3) {
-      return 6;
-    } else {
-      return 4;
-    }
-  }
-
-  if (measureLength === 48) {
-    if (index % 12 === 1) {
-      return 48;
-    } else if (index % 12 === 2) {
-      return 24;
-    } else if (index % 12 === 3) {
-      return 12;
-    } else if (index % 12 === 4) {
-      return 6;
-    } else {
-      return 4;
-    }
-  }
-
-  if (measureLength === 16) {
-    if (index % 4 === 1) {
-      return 16;
-    } else if (index % 4 === 2) {
-      return 8;
-    } else if (index % 4 === 3) {
-      return 16;
-    } else {
-      return 4;
-    }
-  }
-
-  if (measureLength === 32) {
-    if (index % 8 === 1) {
-      return 32;
-    } else if (index % 8 === 2) {
-      return 16;
-    } else if (index % 8 === 3) {
-      return 8;
-    } else {
-      return 4;
-    }
-  }
-
-  if (measureLength === 64) {
-    if (index % 16 === 1) {
-      return 64;
-    } else if (index % 16 === 2) {
-      return 32;
-    } else if (index % 16 === 3) {
-      return 16;
-    } else if (index % 16 === 4) {
-      return 8;
-    } else {
-      return 4;
-    }
-  }
-
-  // TODO: figure this out...
-  return 4;
+  return match[1];
 }
 
 function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
