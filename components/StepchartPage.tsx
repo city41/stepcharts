@@ -17,14 +17,14 @@ type StepchartPageProps = {
 const ARROW_HEIGHT = 40;
 
 function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
-  const [speedMod, setSpeedMod] = useState(1.5);
+  const [speedMod, setSpeedMod] = useState(1);
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
 
   let offset = 0;
   let arrowSeen = true;
 
-  const arrowDivs = stepchart.arrows[currentType].map((a, index) => {
+  const arrowDivs = stepchart.arrows[currentType].map((a, index, array) => {
     // for now, skip the empty intro
     arrowSeen =
       arrowSeen || (a.direction !== "0000" && a.direction !== "00000000");
@@ -58,6 +58,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         )}
         style={{
           top: offset,
+          zIndex: array.length - index,
         }}
       >
         {arrowSvgs}
