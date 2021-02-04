@@ -42,8 +42,7 @@ function TitlePage({ stepchart }: TitlePageProps) {
     <Root
       title={stepchart.title.actualTitle}
       subtitle={<Breadcrumbs leaf="title" stepchart={stepchart} />}
-      metaForTitle=""
-      metaDescription=""
+      metaDescription={`Stepcharts for ${stepchart.title.actualTitle}`}
       socialMediaImg=""
     >
       <div className="sm:mt-8 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">

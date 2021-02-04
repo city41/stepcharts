@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { Head } from "./Head";
 import { Footer } from "./Footer";
 
 import logoSvg from "./logoArrow.svg";
@@ -9,7 +10,6 @@ import styles from "./Root.module.css";
 type RootProps = {
   title: string;
   subtitle?: React.ReactNode;
-  metaForTitle?: string;
   metaDescription: string;
   socialMediaImg?: string;
   children: React.ReactNode;
@@ -18,7 +18,6 @@ type RootProps = {
 function Root({
   title,
   subtitle,
-  metaForTitle,
   metaDescription,
   socialMediaImg,
   children,
@@ -30,11 +29,11 @@ function Root({
         "flex flex-col items-start items-stretch"
       )}
     >
-      {/*<Head*/}
-      {/*  title={title}*/}
-      {/*  metaDescription={metaDescription}*/}
-      {/*  metaImg={socialMediaImg ?? img}*/}
-      {/*/>*/}
+      <Head
+        title={title}
+        metaDescription={metaDescription}
+        metaImg={socialMediaImg}
+      />
       <div className="relative bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-start lg:px-4 overflow-hidden">
         <a
           href="/"

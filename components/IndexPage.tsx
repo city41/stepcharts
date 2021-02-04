@@ -19,12 +19,7 @@ function pluralize(str: string, count: number): string {
 
 function IndexPage({ mixes }: IndexPageProps) {
   return (
-    <Root
-      title="Choose a Mix"
-      metaForTitle=""
-      metaDescription=""
-      socialMediaImg=""
-    >
+    <Root title="Stepcharts" metaDescription="DDR Stepcharts" socialMediaImg="">
       <ul className="mt-8 sm:mt-16 flex flex-col sm:flex-row sm:flex-wrap justify-center items-center sm:items-start sm:pl-4 lg:pl-0">
         {mixes.map((m) => {
           const mixBannerUrl = require(`../prodStepcharts/${m.mixDir}/mix-banner.png`);

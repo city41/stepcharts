@@ -112,8 +112,9 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           )}
         />
       }
-      metaForTitle=""
-      metaDescription=""
+      metaDescription={`${currentType.replace(/-/g, " ")} stepchart for ${
+        stepchart.title.actualTitle
+      }`}
       socialMediaImg=""
     >
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
