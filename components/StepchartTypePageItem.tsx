@@ -1,19 +1,14 @@
 import React from "react";
 import clsx from "clsx";
 
+import { Foot } from "./Foot";
+import { ImageFrame } from "./ImageFrame";
+
+import styles from "./StepchartTypePageItem.module.css";
+
 type StepchartTypePageItemProps = {
   className?: string;
   type: StepchartType;
-};
-
-import singleSvg from "./single.svg";
-import doubleSvg from "./double.svg";
-import { Foot } from "./Foot";
-import { PageItem } from "./PageItem";
-
-const imgSrcs: Record<string, string> = {
-  single: singleSvg,
-  double: doubleSvg,
 };
 
 function StepchartTypePageItem({
@@ -21,24 +16,15 @@ function StepchartTypePageItem({
   type,
 }: StepchartTypePageItemProps) {
   return (
-    <PageItem
-      className={clsx(className)}
-      title={type.difficulty}
-      supplementary={type.mode}
-    >
-      <div className="flex flex-row space-x-2">
-        <img
-          src={imgSrcs[type.mode]}
-          alt={type.mode}
-          width={100}
-          height="auto"
-        />
-        <div className="flex-1 flex flex-row bg-gray-900 pr-3 items-center justify-end">
+    <ImageFrame className={clsx(className, styles.root)}>
+      <div className="grid grid-cols-2">
+        <div className="p-2 text-right">{type.difficulty}</div>
+        <div className="px-2 flex-1 flex flex-row bg-gray-900 pr-3 items-center justify-start">
           <Foot difficulty={type.difficulty} />
           <div className="ml-2">{type.feet}</div>
         </div>
       </div>
-    </PageItem>
+    </ImageFrame>
   );
 }
 

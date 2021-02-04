@@ -6,11 +6,12 @@ type Arrow = {
   measureBeatHeight: 4 | 6 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 192;
 };
 
+type Mode = "single" | "double";
 type Difficulty = "beginner" | "easy" | "medium" | "hard" | "challenge";
 
 type StepchartType = {
   slug: string;
-  mode: "single" | "double";
+  mode: Mode;
   difficulty: Difficulty;
   feet: number;
 };
