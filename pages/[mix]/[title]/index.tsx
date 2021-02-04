@@ -13,9 +13,7 @@ export const config = {
 };
 
 type NextTitleIndexPageProps = {
-  mix: Mix;
-  title: Title;
-  types: StepchartType[];
+  stepchart: Stepchart;
 };
 
 export async function getStaticPaths(
@@ -41,15 +39,13 @@ export async function getStaticProps(
   const titleDir = context.params!.title as string;
 
   const allData = getAllStepchartData();
-  const sc = allData
+  const stepchart = allData
     .find((m) => m.mixDir === mixDir)!
     .songs.find((s) => s.title.titleDir === titleDir)!;
 
   const results = {
     props: {
-      mix: sc.mix,
-      title: sc.title,
-      types: sc.availableTypes,
+      stepchart,
     },
   };
 

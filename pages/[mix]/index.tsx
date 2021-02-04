@@ -14,7 +14,7 @@ export const config = {
 
 type NextMixIndexPageProps = {
   mix: Mix;
-  titles: Title[];
+  stepcharts: Stepchart[];
 };
 
 export async function getStaticPaths(
@@ -38,7 +38,7 @@ export async function getStaticProps(
   const results = {
     props: {
       mix,
-      titles: mix.songs.map((s) => s.title),
+      stepcharts: mix.songs.map((s) => s),
     },
   };
 

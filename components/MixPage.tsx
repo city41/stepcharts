@@ -6,14 +6,14 @@ import { PageItem } from "./PageItem";
 
 type MixPageProps = {
   mix: Mix;
-  titles: Title[];
+  stepcharts: Stepchart[];
 };
 
 function buildTitleUrl(mix: Mix, title: string) {
   return `/${mix.mixDir}/${title}`;
 }
 
-function MixPage({ mix, titles }: MixPageProps) {
+function MixPage({ mix, stepcharts }: MixPageProps) {
   return (
     <Root
       title={mix.mixName}
@@ -31,12 +31,12 @@ function MixPage({ mix, titles }: MixPageProps) {
           />
         </ImageFrame>
         <ul className="flex flex-col items-center space-y-4">
-          {titles.map((title) => {
+          {stepcharts.map((stepchart) => {
             return (
-              <li key={title.actualTitle}>
-                <a href={buildTitleUrl(mix, title.titleDir)}>
-                  <PageItem title={title.actualTitle}>
-                    <Banner banner={title.banner} />
+              <li key={stepchart.title.actualTitle}>
+                <a href={buildTitleUrl(mix, stepchart.title.titleDir)}>
+                  <PageItem title={stepchart.title.actualTitle}>
+                    <Banner banner={stepchart.title.banner} />
                   </PageItem>
                 </a>
               </li>

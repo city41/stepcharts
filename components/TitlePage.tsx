@@ -14,9 +14,7 @@ const modeSvgs = {
 };
 
 type TitlePageProps = {
-  mix: Mix;
-  title: Title;
-  types: StepchartType[];
+  stepchart: Stepchart;
 };
 
 type GroupedTypes = Record<Mode, StepchartType[]>;
@@ -32,31 +30,31 @@ function groupTypes(types: StepchartType[]): GroupedTypes {
   );
 }
 
-function buildTypeUrl(mix: Mix, title: string, type: string) {
-  return `/${mix.mixDir}/${title}/${type}`;
+function buildTypeUrl(stepchart: Stepchart, slug: string): string {
+  return `/${stepchart.mix.mixDir}/${stepchart.title.titleDir}/${slug}`;
 }
 
-function TitlePage({ mix, title, types }: TitlePageProps) {
-  const grouped = groupTypes(types);
+function TitlePage({ stepchart }: TitlePageProps) {
+  const grouped = groupTypes(stepchart.availableTypes);
 
   return (
     <Root
-      title={title.actualTitle}
+      title={stepchart.title.actualTitle}
       metaForTitle=""
       metaDescription=""
       socialMediaImg=""
     >
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
-          <Banner banner={title.banner} />
-          <TitleDetailsTable mix={mix} />
+          <Banner banner={stepchart.title.banner} />
+          <TitleDetailsTable mix={stepchart.mix} />
         </ImageFrame>
         <ul className="flex flex-col items-center space-y-8">
           {Object.keys(grouped).map((mode) => {
             const items = grouped[mode as Mode].map((type) => {
               return (
                 <li key={type.difficulty}>
-                  <a href={buildTypeUrl(mix, title.titleDir, type.slug)}>
+                  <a href={buildTypeUrl(stepchart, type.slug)}>
                     <StepchartTypePageItem type={type} />
                   </a>
                 </li>
