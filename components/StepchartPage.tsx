@@ -29,7 +29,7 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
   let offset = 0;
   let arrowSeen = true;
 
-  const arrowDivs = arrows[currentType].map((a) => {
+  const arrowDivs = arrows[currentType].map((a, index) => {
     // for now, skip the empty intro
     arrowSeen =
       arrowSeen || (a.direction !== "0000" && a.direction !== "00000000");
@@ -54,11 +54,11 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
 
     const el = (
       <div
-        key={offset}
+        key={index}
         className={clsx(
           styles.arrow,
           styles[`beat-${a.beat}`],
-          "absolute text-xs"
+          "absolute text-xs transition-all ease-in-out duration-500"
         )}
         style={{
           top: offset,
