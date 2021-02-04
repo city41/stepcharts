@@ -20,6 +20,9 @@ module.exports = {
         "heading-border": {
           DEFAULT: "var(--color-heading-border)",
         },
+        subheading: {
+          DEFAULT: "var(--color-subheading)",
+        },
         "focal-alt": {
           fade: "var(--color-focal-alt-fade)",
           DEFAULT: "var(--color-focal-alt)",

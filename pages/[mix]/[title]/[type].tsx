@@ -9,7 +9,8 @@ import {
 import { getAllStepchartData } from "../../../lib/getAllStepchartData";
 import { StepchartPage } from "../../../components/StepchartPage";
 
-type NextSongDifficultyTypePageProps = Stepchart & {
+type NextSongDifficultyTypePageProps = {
+  stepchart: Stepchart;
   currentType: string;
 };
 
@@ -57,13 +58,13 @@ export async function getStaticProps(
   const type = context.params!.type as string;
 
   const allData = getAllStepchartData();
-  const sc = allData
+  const stepchart = allData
     .find((m) => m.mixDir === mixDir)!
     .songs.find((s) => s.title.titleDir === titleDir)!;
 
   const results = {
     props: {
-      ...sc,
+      stepchart,
       currentType: type,
     },
   };

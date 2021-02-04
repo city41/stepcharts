@@ -1,0 +1,15 @@
+.breadcrumbEntry {
+    @apply text-focal;
+}
+
+.breadcrumbEntry::after {
+    content: '/';
+    display: inline-block;
+    font-weight: bold;
+    margin: 0 0.5rem;
+    color: var(--color-heading);
+}
+
+.breadcrumbEntry:last-child::after {
+    content: ''
+}

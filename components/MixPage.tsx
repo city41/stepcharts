@@ -4,6 +4,7 @@ import { ImageFrame } from "./ImageFrame";
 import { Banner } from "./Banner";
 import { PageItem } from "./PageItem";
 import { Foot } from "./Foot";
+import { Breadcrumbs } from "./Breadcrumbs";
 
 type MixPageProps = {
   mix: Mix;
@@ -39,11 +40,12 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
   return (
     <Root
       title={mix.mixName}
+      subtitle={<Breadcrumbs stepchart={stepcharts[0]} leaf="mix" />}
       metaForTitle=""
       metaDescription=""
       socialMediaImg=""
     >
-      <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
+      <div className="sm:mt-8 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <img
             src={require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`)}

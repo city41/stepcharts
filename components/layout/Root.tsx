@@ -8,6 +8,7 @@ import styles from "./Root.module.css";
 
 type RootProps = {
   title: string;
+  subtitle?: React.ReactNode;
   metaForTitle?: string;
   metaDescription: string;
   socialMediaImg?: string;
@@ -16,6 +17,7 @@ type RootProps = {
 
 function Root({
   title,
+  subtitle,
   metaForTitle,
   metaDescription,
   socialMediaImg,
@@ -42,10 +44,19 @@ function Root({
         </a>
         <div className="max-w-6xl w-full mx-auto sm:pl-4 lg:pl-0">
           <div className="text-3xl font-bold text-focal text-center sm:mx-0 sm:text-left">
-            {title}
+            Stepcharts
           </div>
         </div>
       </div>
+      {subtitle && (
+        <div className="hidden sm:block py-1 bg-subheading">
+          <div className="w-full max-w-6xl mx-auto flex flex-row items-center">
+            <h1 className="font-bold text-white text-center sm:text-left">
+              {subtitle}
+            </h1>
+          </div>
+        </div>
+      )}
       <main role="main" className="flex-1 max-w-6xl w-full mx-auto">
         {children}
       </main>

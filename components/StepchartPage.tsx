@@ -6,14 +6,16 @@ import { ArrowSvg, ArrowSvgProps } from "./ArrowSvg";
 import { Root } from "./layout/Root";
 import { Banner } from "./Banner";
 import { ImageFrame } from "./ImageFrame";
+import { Breadcrumbs } from "./Breadcrumbs";
 
-type StepchartPageProps = Stepchart & {
+type StepchartPageProps = {
+  stepchart: Stepchart;
   currentType: string;
 };
 
 const ARROW_HEIGHT = 40;
 
-function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
+function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const [speedMod, setSpeedMod] = useState(1.5);
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
@@ -29,7 +31,7 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
   let offset = 0;
   let arrowSeen = true;
 
-  const arrowDivs = arrows[currentType].map((a, index) => {
+  const arrowDivs = stepchart.arrows[currentType].map((a, index) => {
     // for now, skip the empty intro
     arrowSeen =
       arrowSeen || (a.direction !== "0000" && a.direction !== "00000000");
@@ -97,14 +99,26 @@ function StepchartPage({ title, currentType, arrows }: StepchartPageProps) {
 
   return (
     <Root
-      title={`${title.actualTitle} ${currentType.replace(/-/g, ", ")}`}
+      title={`${stepchart.title.actualTitle} ${currentType.replace(
+        /-/g,
+        ", "
+      )}`}
+      subtitle={
+        <Breadcrumbs
+          stepchart={stepchart}
+          leaf="chart"
+          type={stepchart.availableTypes.find(
+            (t) => currentType === `${t.mode}-${t.difficulty}`
+          )}
+        />
+      }
       metaForTitle=""
       metaDescription=""
       socialMediaImg=""
     >
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
-          <Banner banner={title.banner} />
+          <Banner banner={stepchart.title.banner} />
           <div className="flex flex-row space-x-6 mt-2">
             {[1, 1.5, 2, 3].map((sm) => {
               return (
