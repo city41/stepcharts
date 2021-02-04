@@ -215,7 +215,7 @@ function parseSm(sm: string): RawStepchart {
   function parseTag(lines: string[], index: number): number {
     const line = lines[index];
 
-    const r = /#([A-Z]+):([^;]*)/;
+    const r = /#([A-Za-z]+):([^;]*)/;
     const result = r.exec(line);
 
     if (result) {
