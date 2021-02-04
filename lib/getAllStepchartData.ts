@@ -3,7 +3,7 @@ import * as path from "path";
 import { parseStepchart } from "./parseStepchart";
 
 const ROOT =
-  process.env.NODE_ENV === "production" ? "prodStepcharts" : "devStepcharts";
+  process.env.NODE_ENV === "production" ? "prodStepcharts" : "prodStepcharts";
 
 type EntireMix = Mix & {
   songs: Stepchart[];

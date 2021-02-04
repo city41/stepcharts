@@ -5,7 +5,7 @@ import {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from "next";
-import { parseStepchart } from "../../../lib/parseStepchart";
+
 import { getAllStepchartData } from "../../../lib/getAllStepchartData";
 import { StepchartPage } from "../../../components/StepchartPage";
 

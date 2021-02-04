@@ -11,9 +11,9 @@ const yearReleased: Record<string, number> = {
   "1.5": 1999,
   EuroMIX: 2000,
   EuroMIX2: 2002,
-  "featuring Disney Rave": 2000,
+  "Disney Rave": 2000,
   Fusion: 2005,
-  "featuring Dreams Come True": 1999,
+  "Dreams Come True": 1999,
 };
 
 export { yearReleased };

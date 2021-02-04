@@ -8,6 +8,10 @@ import {
 import { getAllStepchartData } from "../../../lib/getAllStepchartData";
 import { TitlePage } from "../../../components/TitlePage";
 
+export const config = {
+  unstable_runtimeJS: false,
+};
+
 type NextTitleIndexPageProps = {
   mix: Mix;
   title: Title;
