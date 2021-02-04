@@ -27,19 +27,14 @@ const offsetToBeat: Array<[number, Arrow["beat"]]> = [
 function determineBeat(index: number, measureLength: number): Arrow["beat"] {
   const fractionPerEntry = Math.round((1 / measureLength) * 10000);
 
-  // anything smaller than a 16th, we'll just render as if it's a 16th
-  if (fractionPerEntry < 625) {
-    return 16;
-  }
-
   const offset = index * fractionPerEntry;
 
   const match = offsetToBeat.find((otb) => offset % otb[0] === 0);
 
   if (!match) {
-    throw new Error(
-      `failed to get a beat for index: ${index} and measureLength: ${measureLength}`
-    );
+    // didn't find anything? then it's a weirdo like a 5th note or 32nd note, they get colored
+    // the same as 16ths
+    return 16;
   }
 
   return match[1];
