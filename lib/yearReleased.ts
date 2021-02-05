@@ -1,5 +1,11 @@
 const yearReleased: Record<string, number> = {
   "1stMix": 1998,
+  "2ndMix": 1999,
+  "2nd Append -Club v1-": 1999,
+  "3rdMix": 1999,
+  "3rd Plus": 2000,
+  "3rd Korean v1": 2000,
+  "3rd Korean v2": 2000,
   "4thMix": 2000,
   "2013": 2013,
   A: 2016,
