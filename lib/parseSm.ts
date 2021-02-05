@@ -1,3 +1,4 @@
+import Fraction from "fraction.js";
 import { RawStepchart } from "./parseStepchart";
 
 const metaTagsToConsume = ["title", "artist", "banner"];
@@ -10,34 +11,34 @@ function getMeasureLines(lines: string[], i: number): string[] {
     !lines[i].startsWith(",") &&
     !lines[i].startsWith(";")
   ) {
-    measureLines.push(lines[i++]);
+    const line = lines[i++];
+    measureLines.push(line);
   }
 
   return measureLines;
 }
 
-const offsetToBeat: Array<[number, Arrow["beat"]]> = [
-  [2500, 4],
-  [1250, 8],
-  [1667, 6],
-  [833, 12],
-  [625, 16],
+const beats = [
+  new Fraction(1).div(4),
+  new Fraction(1).div(6),
+  new Fraction(1).div(8),
+  new Fraction(1).div(12),
+  new Fraction(1).div(16),
 ];
 
 function determineBeat(index: number, measureLength: number): Arrow["beat"] {
-  const fractionPerEntry = Math.round((1 / measureLength) * 10000);
+  const fractionPerEntry = new Fraction(1).div(measureLength);
+  const offset = fractionPerEntry.mul(index);
 
-  const offset = index * fractionPerEntry;
-
-  const match = offsetToBeat.find((otb) => offset % otb[0] === 0);
+  const match = beats.find((b) => offset.mod(b).n === 0);
 
   if (!match) {
     // didn't find anything? then it's a weirdo like a 5th note or 32nd note, they get colored
-    // the same as 16ths
-    return 16;
+    // the same as 6ths
+    return 6;
   }
 
-  return match[1];
+  return match.d as Arrow["beat"];
 }
 
 function convertMeasureLinesToArrows(measureLines: string[]): Arrow[] {
@@ -84,30 +85,28 @@ function parseSm(sm: string, _titleDir: string): RawStepchart {
       return !others.some((o) => o - b === 1);
     });
 
-    sc.bpm = Array.from(new Set(filteredBpms));
+    sc.bpm = Array.from(new Set(filteredBpms)).sort((a, b) => a - b);
   }
 
-  function parseFreezes(
-    lines: string[],
-    i: number,
-    trimAmount: number
-  ): FreezeBody[] {
+  function parseFreezes(lines: string[], i: number): FreezeBody[] {
     const freezes: FreezeBody[] = [];
     const open: Record<number, Partial<FreezeBody> | undefined> = {};
 
-    let curBeat = 0;
-    let curMeasureLength = getMeasureLength(lines, i);
+    let curBeat = new Fraction(0);
+    let curMeasureFraction = new Fraction(1).div(getMeasureLength(lines, i));
 
     for (; i < lines.length && !lines[i].startsWith(";"); ++i) {
       const line = lines[i];
 
       if (line[0] === ",") {
-        curMeasureLength = getMeasureLength(lines, i + 1);
+        curMeasureFraction = new Fraction(1).div(
+          getMeasureLength(lines, i + 1)
+        );
         continue;
       }
 
       if (line.indexOf("2") === -1 && line.indexOf("3") === -1) {
-        curBeat += 1 / curMeasureLength;
+        curBeat = curBeat.add(curMeasureFraction);
         continue;
       }
 
@@ -121,9 +120,10 @@ function parseSm(sm: string, _titleDir: string): RawStepchart {
               "error parsing freezes, found a new starting freeze before a previous one finished"
             );
           }
+          const startBeatFraction = curBeat;
           open[d] = {
             direction: d as FreezeBody["direction"],
-            startBeat: curBeat - trimAmount * 0.25,
+            startBeat: startBeatFraction.n / startBeatFraction.d,
           };
         } else if (cleanedLine[d] === "3") {
           if (!open[d]) {
@@ -134,13 +134,14 @@ function parseSm(sm: string, _titleDir: string): RawStepchart {
             continue;
           }
 
-          open[d]!.endBeat = curBeat - trimAmount * 0.25 + 1 / curMeasureLength;
+          const endBeatFraction = curBeat.add(new Fraction(1).div(4));
+          open[d]!.endBeat = endBeatFraction.n / endBeatFraction.d;
           freezes.push(open[d] as FreezeBody);
           open[d] = undefined;
         }
       }
 
-      curBeat += 1 / curMeasureLength;
+      curBeat = curBeat.add(curMeasureFraction);
     }
 
     return freezes;
@@ -170,35 +171,37 @@ function parseSm(sm: string, _titleDir: string): RawStepchart {
       i += measureLines.length;
 
       arrows = arrows.concat(convertMeasureLinesToArrows(measureLines));
-    } while (i < lines.length && lines[i++].trim() !== ";");
+    } while (i < lines.length && !lines[i++].startsWith(";"));
 
-    // trim off empty leading measures
-    let startI = 0;
-    while (
-      startI < arrows.length &&
-      (arrows[startI].direction === "0000" ||
-        arrows[startI].direction === "00000000")
-    ) {
-      startI += 1;
-    }
+    // // trim off empty leading measures
+    // let startI = 0;
+    // while (
+    //   startI < arrows.length &&
+    //   (arrows[startI].direction === "0000" ||
+    //     arrows[startI].direction === "00000000")
+    // ) {
+    //   startI += 1;
+    // }
+    //
+    // arrows = arrows.slice(startI);
 
-    arrows = arrows.slice(startI);
+    // TODO: actually trim empty ends, but there's more to it
+    // for starters, need to ensure to leave entire measures intact
+    // (think a measure who's last beat is a rest)
+    // let endI = arrows.length - 1;
+    // while (
+    //   endI > 0 &&
+    //   (arrows[endI].direction === "0000" ||
+    //     arrows[endI].direction === "00000000")
+    // ) {
+    //   endI -= 1;
+    // }
 
-    // trim off empty trailing measures
-    // TODO: I think this does trim right, but it
-    // isn't showing up correctly in StepchartPage
-    let endI = arrows.length - 1;
-    while (
-      endI > 0 &&
-      (arrows[endI].direction === "0000" ||
-        arrows[endI].direction === "00000000")
-    ) {
-      endI -= 1;
-    }
+    // TODO: passing in startI as trim amount is only correct if the song has nothing but
+    // quarter beat measures...
+    const freezes = parseFreezes(lines, firstMeasureIndex);
 
-    const freezes = parseFreezes(lines, firstMeasureIndex, startI);
-
-    arrows = arrows.slice(0, endI);
+    // arrows = arrows.slice(0, endI + 1);
 
     sc.arrows![`${mode}-${difficulty}`] = { arrows, freezes };
     sc.availableTypes!.push({
