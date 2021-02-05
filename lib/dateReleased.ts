@@ -2,6 +2,7 @@ const dateReleased: Record<string, string> = {
   "1.5": "1999-01-01",
   "1stMix": "1998-09-26",
   "2013": "2013-03-14",
+  "2014": "2014-05-12",
   "2nd Append -Club v1-": "1999-04-21",
   "2ndMix": "1999-01-29",
   "3rd Korean v1": "2000-04-01",
