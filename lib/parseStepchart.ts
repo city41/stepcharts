@@ -7,7 +7,7 @@ type RawStepchart = Omit<Stepchart, "mix" | "title"> & {
   title: string;
   banner: string | null;
 };
-type Parser = (chart: string) => RawStepchart;
+type Parser = (chart: string, titleDir: string) => RawStepchart;
 
 const parsers: Record<string, Parser> = {
   ".sm": parseSm,
@@ -55,7 +55,7 @@ function parseStepchart(
   }
 
   const fileContents = fs.readFileSync(stepchartPath);
-  const rawStepchart = parser(fileContents.toString());
+  const rawStepchart = parser(fileContents.toString(), titleDir);
 
   if (rawStepchart.banner) {
     const publicName = toSafeName(`${mixDir}-${rawStepchart.banner}`);

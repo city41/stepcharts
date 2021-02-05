@@ -16,7 +16,7 @@ const dwiToSMDirection: Record<string, Arrow["direction"]> = {
   B: "0110", // up-down jump
 };
 
-function parseDwi(dwi: string): RawStepchart {
+function parseDwi(dwi: string, titleDir: string): RawStepchart {
   const lines = dwi.split("\n").map((l) => l.trim());
 
   let i = 0;
@@ -24,7 +24,7 @@ function parseDwi(dwi: string): RawStepchart {
   const sc: Partial<RawStepchart> = {
     arrows: {},
     availableTypes: [],
-    banner: null,
+    banner: `${titleDir}.png`,
   };
 
   function parseNotes(mode: "single" | "double", rawNotes: string) {

@@ -61,7 +61,7 @@ function getMeasureLength(lines: string[], i: number): number {
   return measureLength;
 }
 
-function parseSm(sm: string): RawStepchart {
+function parseSm(sm: string, _titleDir: string): RawStepchart {
   const lines = sm.split("\n").map((l) => l.trim());
 
   let i = 0;
