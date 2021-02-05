@@ -34,28 +34,25 @@ function Root({
         metaDescription={metaDescription}
         metaImg={socialMediaImg}
       />
-      <div className="relative bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-start lg:px-4 overflow-hidden">
-        <a
-          href="/"
-          className={clsx(styles.logo, "block lg:-mx-4 absolute sm:static")}
-        >
-          <img className="w-full h-full" src={logoSvg} />
-        </a>
-        <div className="max-w-6xl w-full mx-auto sm:pl-4 lg:pl-0">
-          <div className="text-3xl font-bold text-focal text-center sm:mx-0 sm:text-left">
+      <header>
+        <div className="bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-start lg:px-4">
+          <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
+            <img className="w-full h-full" src={logoSvg} />
+          </a>
+          <div className="text-2xl font-bold text-focal text-center pl-4">
             Stepcharts
           </div>
         </div>
-      </div>
-      {subtitle && (
-        <div className="hidden sm:block py-1 bg-subheading">
-          <div className="w-full max-w-6xl mx-auto flex flex-row items-center">
-            <h1 className="font-bold text-white text-center sm:text-left">
-              {subtitle}
-            </h1>
+        {subtitle && (
+          <div className="hidden sm:block py-1 bg-subheading border-b-2 border-heading-border">
+            <div className="w-full max-w-6xl mx-auto flex flex-row items-center">
+              <h1 className="font-bold text-white text-center sm:text-left">
+                {subtitle}
+              </h1>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </header>
       <main role="main" className="flex-1 max-w-6xl w-full mx-auto">
         {children}
       </main>
