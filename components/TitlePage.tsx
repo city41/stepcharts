@@ -52,7 +52,13 @@ function TitlePage({ stepchart }: TitlePageProps) {
         <ImageFrame className="p-2 bg-focal">
           <ul className="flex flex-col items-center space-y-8">
             {Object.keys(grouped).map((mode) => {
-              const items = grouped[mode as Mode].map((type) => {
+              const types = grouped[mode as Mode];
+
+              if (types.length === 0) {
+                return null;
+              }
+
+              const items = types.map((type) => {
                 return (
                   <li key={type.difficulty}>
                     <a href={buildTypeUrl(stepchart, type.slug)}>

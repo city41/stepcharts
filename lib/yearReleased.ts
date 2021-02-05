@@ -1,4 +1,5 @@
 const yearReleased: Record<string, number> = {
+  "1stMix": 1998,
   "4thMix": 2000,
   "2013": 2013,
   A: 2016,

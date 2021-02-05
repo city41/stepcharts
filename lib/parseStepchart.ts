@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import { parseDwi } from "./parseDwi";
 import { parseSm } from "./parseSm";
 
 type RawStepchart = Omit<Stepchart, "mix" | "title"> & {
@@ -10,7 +11,9 @@ type Parser = (chart: string) => RawStepchart;
 
 const parsers: Record<string, Parser> = {
   ".sm": parseSm,
+  // TODO: actual ssc parser
   ".ssc": parseSm,
+  ".dwi": parseDwi,
 };
 
 function getSongFile(songDir: string): string {
