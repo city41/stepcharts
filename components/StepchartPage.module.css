@@ -1,3 +1,11 @@
+.meta {
+    /* the arrows use z-index to accomplish proper overlap, so arrows
+       can reach a z-index of count(arrows), need to make sure the meta
+       data stays on top in mobile mode
+     */
+    z-index: 99999;
+}
+
 .container-single {
     width: calc(var(--arrow-size) * 4);
 }

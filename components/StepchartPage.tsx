@@ -143,7 +143,12 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       }`}
     >
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
-        <ImageFrame className="mb-8 sticky top-0 z-10 w-full sm:w-auto p-4 bg-focal grid place-items-center">
+        <ImageFrame
+          className={clsx(
+            styles.meta,
+            "mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center"
+          )}
+        >
           <Banner banner={stepchart.title.banner} />
           <TitleDetailsTable className="mt-4" stepchart={stepchart} />
           <div className="mt-6 bg-focal-400 text-focal-600 p-2 w-full">
