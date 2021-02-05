@@ -89,6 +89,9 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
     };
   }
 
+  let bpm = null;
+  let displaybpm = null;
+
   function parseTag(lines: string[], index: number): number {
     const line = lines[index];
 
@@ -103,7 +106,9 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
         // @ts-ignore
         sc[tag] = value;
       } else if (tag === "displaybpm") {
-        sc.bpm = [Number(value)];
+        displaybpm = [Math.round(Number(value))];
+      } else if (tag === "bpm") {
+        bpm = [Math.round(Number(value))];
       } else if (tag === "single") {
         //|| tag === "double") {
         parseNotes(tag, value);
@@ -128,6 +133,12 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
         i += 1;
       }
     }
+
+    if (!displaybpm && !bpm) {
+      throw new Error(`No BPM found for ${titleDir}`);
+    }
+
+    sc.bpm = ((displaybpm ?? bpm) as unknown) as Stepchart["bpm"];
 
     return sc as RawStepchart;
   } catch (e) {

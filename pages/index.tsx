@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticPropsResult } from "next";
 import { getAllStepchartData } from "../lib/getAllStepchartData";
-import { yearReleased } from "../lib/yearReleased";
+import { dateReleased } from "../lib/dateReleased";
 import { IndexPage } from "../components/IndexPage";
 
 export const config = {
@@ -12,10 +12,10 @@ type NextIndexProps = {
   mixes: Mix[];
 };
 
-function sortByYearReleased(a: Mix, b: Mix): number {
-  return yearReleased[a.mixName]
+function sortByDateReleased(a: Mix, b: Mix): number {
+  return dateReleased[a.mixName]
     .toString()
-    .localeCompare(yearReleased[b.mixName].toString());
+    .localeCompare(dateReleased[b.mixName].toString());
 }
 
 export async function getStaticProps(): Promise<
@@ -24,7 +24,7 @@ export async function getStaticProps(): Promise<
   const mixes = getAllStepchartData();
 
   return {
-    props: { mixes: mixes.sort(sortByYearReleased) },
+    props: { mixes: mixes.sort(sortByDateReleased) },
   };
 }
 
