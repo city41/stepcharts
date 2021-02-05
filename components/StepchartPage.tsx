@@ -176,7 +176,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           className={clsx(
             styles.container,
             styles[`container-${singleDoubleClass}`],
-            "relative flex flex-col bg-indigo-100"
+            "relative flex flex-col bg-indigo-100 overflow-hidden"
           )}
           style={
             {
