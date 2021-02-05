@@ -49,28 +49,30 @@ function TitlePage({ stepchart }: TitlePageProps) {
           <Banner banner={stepchart.title.banner} />
           <TitleDetailsTable className="mt-4" stepchart={stepchart} />
         </ImageFrame>
-        <ul className="flex flex-col items-center space-y-8">
-          {Object.keys(grouped).map((mode) => {
-            const items = grouped[mode as Mode].map((type) => {
+        <ImageFrame className="p-2 bg-focal">
+          <ul className="flex flex-col items-center space-y-8">
+            {Object.keys(grouped).map((mode) => {
+              const items = grouped[mode as Mode].map((type) => {
+                return (
+                  <li key={type.difficulty}>
+                    <a href={buildTypeUrl(stepchart, type.slug)}>
+                      <StepchartTypePageItem type={type} />
+                    </a>
+                  </li>
+                );
+              });
+
               return (
-                <li key={type.difficulty}>
-                  <a href={buildTypeUrl(stepchart, type.slug)}>
-                    <StepchartTypePageItem type={type} />
-                  </a>
+                <li key={mode}>
+                  <h2 className="flex flex-row justify-between text-white font-bold mb-2 text-xl">
+                    {mode} <img src={modeSvgs[mode as Mode]} width={50} />
+                  </h2>
+                  <ul>{items}</ul>
                 </li>
               );
-            });
-
-            return (
-              <li key={mode}>
-                <h2 className="flex flex-row justify-between text-white font-bold mb-2 text-xl">
-                  {mode} <img src={modeSvgs[mode as Mode]} width={50} />
-                </h2>
-                <ul>{items}</ul>
-              </li>
-            );
-          })}
-        </ul>
+            })}
+          </ul>
+        </ImageFrame>
       </div>
     </Root>
   );
