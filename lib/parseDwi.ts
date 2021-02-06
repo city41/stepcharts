@@ -1,20 +1,20 @@
-import Fraction from 'fraction.js';
-import {RawStepchart} from './parseStepchart';
-import {determineBeat} from './util';
+import Fraction from "fraction.js";
+import { RawStepchart } from "./parseStepchart";
+import { determineBeat } from "./util";
 
-const metaTagsToConsume = ['title', 'artist'];
+const metaTagsToConsume = ["title", "artist"];
 
-const dwiToSMDirection: Record<string, Arrow['direction']> = {
-  1: '1100', // down-left
-  2: '0100', // down
-  3: '0101', // down-right
-  4: '1000', // left
-  6: '0001', // right
-  7: '1010', // up-left
-  8: '0010', // up
-  9: '0011', // up-right
-  A: '0110', // up-down jump
-  B: '1001', // left-right jump
+const dwiToSMDirection: Record<string, Arrow["direction"]> = {
+  1: "1100", // down-left
+  2: "0100", // down
+  3: "0101", // down-right
+  4: "1000", // left
+  6: "0001", // right
+  7: "1010", // up-left
+  8: "0010", // up
+  9: "0011", // up-right
+  A: "0110", // up-down jump
+  B: "1001", // left-right jump
 };
 
 type ArrowParseResult = {
@@ -24,7 +24,7 @@ type ArrowParseResult = {
 
 function combinePadsIntoOneStream(
   p1: ArrowParseResult,
-  p2: ArrowParseResult,
+  p2: ArrowParseResult
 ): ArrowParseResult {
   const arrows = p1.arrows
     .concat(p2.arrows)
@@ -56,7 +56,7 @@ function combinePadsIntoOneStream(
     } as Arrow);
   }, []);
 
-  const bumpedP2Freezes = p2.freezes.map(f => {
+  const bumpedP2Freezes = p2.freezes.map((f) => {
     return {
       ...f,
       direction: f.direction + 4,
@@ -73,6 +73,30 @@ function combinePadsIntoOneStream(
   };
 }
 
+function concludesAFreeze(
+  candidateNote: string,
+  freezeNote: string | null
+): boolean {
+  if (freezeNote === null) {
+    return false;
+  }
+
+  const cDirection = dwiToSMDirection[candidateNote];
+  const fDirection = dwiToSMDirection[freezeNote];
+
+  if (!cDirection || !fDirection) {
+    return false;
+  }
+
+  for (let d = 0; d < fDirection.length; ++d) {
+    if (fDirection[d] === "1" && cDirection[d] !== "1") {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function parseArrowStream(notes: string): ArrowParseResult {
   const arrows: Arrow[] = [];
   const freezes: FreezeBody[] = [];
@@ -84,11 +108,11 @@ function parseArrowStream(notes: string): ArrowParseResult {
   // dwi's default increment is 8th notes
   let curMeasureFraction = new Fraction(1).div(8);
 
-  for (let i = 0; i < notes.length && notes[i] !== ';'; ++i) {
+  for (let i = 0; i < notes.length && notes[i] !== ";"; ++i) {
     const note = notes[i];
     const nextNote = notes[i + 1];
 
-    if (nextNote === '!') {
+    if (nextNote === "!") {
       // B!602080B
       // this means the freeze starts with B (left and right), but then only right (6) has the freeze body
       // during the freeze there is down (2) then up (8), concluding with the second B
@@ -98,9 +122,9 @@ function parseArrowStream(notes: string): ArrowParseResult {
       const smDirection = dwiToSMDirection[freezeNote];
 
       for (let d = 0; d < smDirection.length; ++d) {
-        if (smDirection[d] === '1') {
+        if (smDirection[d] === "1") {
           openFreezes[d] = {
-            direction: d as FreezeBody['direction'],
+            direction: d as FreezeBody["direction"],
             startOffset: curOffset.n / curOffset.d,
           };
         }
@@ -110,20 +134,20 @@ function parseArrowStream(notes: string): ArrowParseResult {
       arrows.push({
         direction: dwiToSMDirection[note].replace(
           /1/g,
-          '2',
-        ) as Arrow['direction'],
+          "2"
+        ) as Arrow["direction"],
         beat: determineBeat(curOffset),
         offset: curOffset.n / curOffset.d,
       });
 
       // remember the direction to know when to close the freeze
-      currentFreezeDirection = note;
+      currentFreezeDirection = freezeNote;
 
       // move past the exclamation and trailing note
       i += 2;
       curOffset = curOffset.add(curMeasureFraction);
-    } else if (note === currentFreezeDirection) {
-      openFreezes.forEach(of => {
+    } else if (concludesAFreeze(note, currentFreezeDirection)) {
+      openFreezes.forEach((of) => {
         of.endOffset = curOffset.n / curOffset.d + 0.25;
         freezes.push(of as FreezeBody);
       });
@@ -131,16 +155,16 @@ function parseArrowStream(notes: string): ArrowParseResult {
       // now when closing out a freeze, any arrows not part of the freeze
       // become normal arrows, see Max, Candy, single, maniac as a good example
 
-      const smDirection = dwiToSMDirection[note].split('');
+      const smDirection = dwiToSMDirection[note].split("");
 
       for (let i = 0; i < smDirection.length; ++i) {
         if (openFreezes[i]) {
-          smDirection[i] = '0';
+          smDirection[i] = "0";
         }
       }
 
       arrows.push({
-        direction: smDirection.join('') as Arrow['direction'],
+        direction: smDirection.join("") as Arrow["direction"],
         beat: determineBeat(curOffset),
         offset: curOffset.n / curOffset.d,
       });
@@ -148,17 +172,17 @@ function parseArrowStream(notes: string): ArrowParseResult {
       openFreezes = [];
       curOffset = curOffset.add(curMeasureFraction);
       currentFreezeDirection = null;
-    } else if (note === '(') {
+    } else if (note === "(") {
       curMeasureFraction = new Fraction(1).div(16);
-    } else if (note === '[') {
+    } else if (note === "[") {
       curMeasureFraction = new Fraction(1).div(24);
-    } else if (note === '{') {
+    } else if (note === "{") {
       curMeasureFraction = new Fraction(1).div(64);
-    } else if (note === '`') {
+    } else if (note === "`") {
       curMeasureFraction = new Fraction(1).div(192);
-    } else if ([')', ']', '}', "'"].includes(note)) {
+    } else if ([")", "]", "}", "'"].includes(note)) {
       curMeasureFraction = new Fraction(1).div(8);
-    } else if (note === '0') {
+    } else if (note === "0") {
       curOffset = curOffset.add(curMeasureFraction);
     } else {
       const direction = dwiToSMDirection[note];
@@ -175,10 +199,10 @@ function parseArrowStream(notes: string): ArrowParseResult {
     }
   }
 
-  return {arrows, freezes};
+  return { arrows, freezes };
 }
 function parseDwi(dwi: string, titleDir: string): RawStepchart {
-  const lines = dwi.split('\n').map(l => l.trim());
+  const lines = dwi.split("\n").map((l) => l.trim());
 
   let i = 0;
 
@@ -188,15 +212,15 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
     banner: `${titleDir}.png`,
   };
 
-  function parseNotes(mode: 'single' | 'double', rawNotes: string) {
-    const values = rawNotes.split(':');
+  function parseNotes(mode: "single" | "double", rawNotes: string) {
+    const values = rawNotes.split(":");
     const difficulty = values[0].toLowerCase();
     const feet = Number(values[1]);
     const notes = values[2];
 
     let arrowResult = parseArrowStream(notes);
 
-    if (mode === 'double') {
+    if (mode === "double") {
       const playerTwoArrows = values[3];
       const playerTwoResult = parseArrowStream(playerTwoArrows);
 
@@ -232,11 +256,11 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
       if (metaTagsToConsume.includes(tag)) {
         // @ts-ignore
         sc[tag] = value;
-      } else if (tag === 'displaybpm') {
+      } else if (tag === "displaybpm") {
         displaybpm = [Math.round(Number(value))];
-      } else if (tag === 'bpm') {
+      } else if (tag === "bpm") {
         bpm = [Math.round(Number(value))];
-      } else if (tag === 'single' || tag === 'double') {
+      } else if (tag === "single" || tag === "double") {
         parseNotes(tag, value);
       }
     }
@@ -248,12 +272,12 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
     while (i < lines.length) {
       const line = lines[i];
 
-      if (!line.length || line.startsWith('//')) {
+      if (!line.length || line.startsWith("//")) {
         i += 1;
         continue;
       }
 
-      if (line.startsWith('#')) {
+      if (line.startsWith("#")) {
         i = parseTag(lines, i);
       } else {
         i += 1;
@@ -264,7 +288,7 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
       throw new Error(`No BPM found for ${titleDir}`);
     }
 
-    sc.bpm = ((displaybpm ?? bpm) as unknown) as Stepchart['bpm'];
+    sc.bpm = ((displaybpm ?? bpm) as unknown) as Stepchart["bpm"];
 
     return sc as RawStepchart;
   } catch (e) {
@@ -272,4 +296,4 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
   }
 }
 
-export {parseDwi};
+export { parseDwi };
