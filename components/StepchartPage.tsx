@@ -2,6 +2,7 @@ import React, { CSSProperties, useState } from "react";
 import clsx from "clsx";
 
 import { ArrowSvg, ArrowSvgProps } from "./ArrowSvg";
+import { FreezeBody } from "./FreezeBody";
 import { Root } from "./layout/Root";
 import { Banner } from "./Banner";
 import { ImageFrame } from "./ImageFrame";
@@ -101,10 +102,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
-        className={clsx(
-          styles.freezeBody,
-          "absolute transition-all ease-in-out duration-500"
-        )}
+        className={clsx("absolute transition-all ease-in-out duration-500")}
         style={{
           top: f.startOffset * MEASURE_HEIGHT * speedMod + ARROW_HEIGHT / 2,
           left: f.direction * ARROW_HEIGHT,
@@ -113,7 +111,9 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             (f.endOffset - f.startOffset) * MEASURE_HEIGHT * speedMod -
             (ARROW_HEIGHT / 2) * speedMod,
         }}
-      />
+      >
+        <FreezeBody />
+      </div>
     );
   });
 
