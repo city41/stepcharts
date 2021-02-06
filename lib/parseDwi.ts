@@ -17,6 +17,155 @@ const dwiToSMDirection: Record<string, Arrow["direction"]> = {
   B: "1001", // left-right jump
 };
 
+type ArrowParseResult = {
+  arrows: Arrow[];
+  freezes: FreezeBody[];
+};
+
+function combinePadsIntoOneStream(
+  p1: ArrowParseResult,
+  p2: ArrowParseResult
+): ArrowParseResult {
+  const arrows = p1.arrows
+    .concat(p2.arrows)
+    .sort((a, b) => a.offset - b.offset);
+
+  const combinedArrows = arrows.reduce<Arrow[]>((building, arrow, i, rest) => {
+    const prevArrow = rest[i - 1];
+
+    // since previous offset matches, the previous one already
+    // grabbed and combined with this arrow, throw it away
+    if (prevArrow?.offset === arrow.offset) {
+      return building;
+    }
+
+    const nextArrow = rest[i + 1];
+
+    if (nextArrow?.offset === arrow.offset) {
+      return building.concat({
+        ...arrow,
+        direction: arrow.direction + nextArrow.direction,
+      } as Arrow);
+    }
+
+    return building.concat({
+      ...arrow,
+      direction: p1.arrows.includes(arrow)
+        ? `${arrow.direction}0000`
+        : `0000${arrow.direction}`,
+    } as Arrow);
+  }, []);
+
+  return {
+    arrows: combinedArrows,
+    freezes: [],
+  };
+}
+
+function parseArrowStream(notes: string): ArrowParseResult {
+  const arrows: Arrow[] = [];
+  const freezes: FreezeBody[] = [];
+
+  let currentFreezeDirection: string | null = null;
+  let openFreezes: Array<Partial<FreezeBody>> = [];
+
+  let curOffset = new Fraction(0);
+  // dwi's default increment is 8th notes
+  let curMeasureFraction = new Fraction(1).div(8);
+
+  for (let i = 0; i < notes.length && notes[i] !== ";"; ++i) {
+    const note = notes[i];
+    const nextNote = notes[i + 1];
+
+    if (nextNote === "!") {
+      // B!602080B
+      // this means the freeze starts with B (left and right), but then only right (6) has the freeze body
+      // during the freeze there is down (2) then up (8), concluding with the second B
+
+      const freezeNote = notes[i + 2];
+
+      const smDirection = dwiToSMDirection[freezeNote];
+
+      for (let d = 0; d < smDirection.length; ++d) {
+        if (smDirection[d] === "1") {
+          openFreezes[d] = {
+            direction: d as FreezeBody["direction"],
+            startOffset: curOffset.n / curOffset.d,
+          };
+        }
+      }
+
+      // the head of a freeze is still an arrow
+      arrows.push({
+        direction: dwiToSMDirection[note].replace(
+          /1/g,
+          "2"
+        ) as Arrow["direction"],
+        beat: determineBeat(curOffset),
+        offset: curOffset.n / curOffset.d,
+      });
+
+      // remember the direction to know when to close the freeze
+      currentFreezeDirection = note;
+
+      // move past the exclamation and trailing note
+      i += 2;
+      curOffset = curOffset.add(curMeasureFraction);
+    } else if (note === currentFreezeDirection) {
+      openFreezes.forEach((of) => {
+        of.endOffset = curOffset.n / curOffset.d + 0.25;
+        freezes.push(of as FreezeBody);
+      });
+
+      // now when closing out a freeze, any arrows not part of the freeze
+      // become normal arrows, see Max, Candy, single, maniac as a good example
+
+      const smDirection = dwiToSMDirection[note].split("");
+
+      for (let i = 0; i < smDirection.length; ++i) {
+        if (openFreezes[i]) {
+          smDirection[i] = "0";
+        }
+      }
+
+      arrows.push({
+        direction: smDirection.join("") as Arrow["direction"],
+        beat: determineBeat(curOffset),
+        offset: curOffset.n / curOffset.d,
+      });
+
+      openFreezes = [];
+      curOffset = curOffset.add(curMeasureFraction);
+      currentFreezeDirection = null;
+    } else if (note === "(") {
+      curMeasureFraction = new Fraction(1).div(16);
+    } else if (note === "[") {
+      curMeasureFraction = new Fraction(1).div(24);
+    } else if (note === "{") {
+      curMeasureFraction = new Fraction(1).div(64);
+    } else if (note === "`") {
+      curMeasureFraction = new Fraction(1).div(192);
+    } else if ([")", "]", "}", "'"].includes(note)) {
+      curMeasureFraction = new Fraction(1).div(8);
+    } else if (note === "0") {
+      curOffset = curOffset.add(curMeasureFraction);
+    } else {
+      const direction = dwiToSMDirection[note];
+
+      if (direction) {
+        arrows.push({
+          direction,
+          beat: determineBeat(curOffset),
+          offset: curOffset.n / curOffset.d,
+        });
+      }
+
+      curOffset = curOffset.add(curMeasureFraction);
+    }
+  }
+
+  return { arrows, freezes };
+}
 function parseDwi(dwi: string, titleDir: string): RawStepchart {
   const lines = dwi.split("\n").map((l) => l.trim());
 
@@ -28,122 +177,20 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
     banner: `${titleDir}.png`,
   };
 
-  function parseArrowStream(
-    notes: string
-  ): { arrows: Arrow[]; freezes: FreezeBody[] } {
-    const arrows: Arrow[] = [];
-    const freezes: FreezeBody[] = [];
-
-    let currentFreezeDirection: string | null = null;
-    let openFreezes: Array<Partial<FreezeBody>> = [];
-
-    let curOffset = new Fraction(0);
-    // dwi's default increment is 8th notes
-    let curMeasureFraction = new Fraction(1).div(8);
-
-    for (let i = 0; i < notes.length && notes[i] !== ";"; ++i) {
-      const note = notes[i];
-      const nextNote = notes[i + 1];
-
-      if (nextNote === "!") {
-        // B!602080B
-        // this means the freeze starts with B (left and right), but then only right (6) has the freeze body
-        // during the freeze there is down (2) then up (8), concluding with the second B
-
-        const freezeNote = notes[i + 2];
-
-        const smDirection = dwiToSMDirection[freezeNote];
-
-        for (let d = 0; d < smDirection.length; ++d) {
-          if (smDirection[d] === "1") {
-            openFreezes[d] = {
-              direction: d as FreezeBody["direction"],
-              startOffset: curOffset.n / curOffset.d,
-            };
-          }
-        }
-
-        // the head of a freeze is still an arrow
-        arrows.push({
-          direction: dwiToSMDirection[note].replace(
-            /1/g,
-            "2"
-          ) as Arrow["direction"],
-          beat: determineBeat(curOffset),
-          offset: curOffset.n / curOffset.d,
-        });
-
-        // remember the direction to know when to close the freeze
-        currentFreezeDirection = note;
-
-        // move past the exclamation and trailing note
-        i += 2;
-        curOffset = curOffset.add(curMeasureFraction);
-      } else if (note === currentFreezeDirection) {
-        openFreezes.forEach((of) => {
-          of.endOffset = curOffset.n / curOffset.d + 0.25;
-          freezes.push(of as FreezeBody);
-        });
-
-        // now when closing out a freeze, any arrows not part of the freeze
-        // become normal arrows, see Max, Candy, single, maniac as a good example
-
-        const smDirection = dwiToSMDirection[note].split("");
-
-        for (let i = 0; i < smDirection.length; ++i) {
-          if (openFreezes[i]) {
-            smDirection[i] = "0";
-          }
-        }
-
-        arrows.push({
-          direction: smDirection.join("") as Arrow["direction"],
-          beat: determineBeat(curOffset),
-          offset: curOffset.n / curOffset.d,
-        });
-
-        openFreezes = [];
-        curOffset = curOffset.add(curMeasureFraction);
-        currentFreezeDirection = null;
-      } else if (note === "(") {
-        curMeasureFraction = new Fraction(1).div(16);
-      } else if (note === "[") {
-        curMeasureFraction = new Fraction(1).div(24);
-      } else if (note === "{") {
-        curMeasureFraction = new Fraction(1).div(64);
-      } else if (note === "`") {
-        curMeasureFraction = new Fraction(1).div(192);
-      } else if ([")", "]", "}", "'"].includes(note)) {
-        curMeasureFraction = new Fraction(1).div(8);
-      } else if (note === "0") {
-        curOffset = curOffset.add(curMeasureFraction);
-      } else {
-        const direction = dwiToSMDirection[note];
-
-        if (!direction) {
-          throw new Error(`Failed to find a value for dwi note ${note}`);
-        }
-
-        arrows.push({
-          direction,
-          beat: determineBeat(curOffset),
-          offset: curOffset.n / curOffset.d,
-        });
-
-        curOffset = curOffset.add(curMeasureFraction);
-      }
-    }
-
-    return { arrows, freezes };
-  }
-
   function parseNotes(mode: "single" | "double", rawNotes: string) {
     const values = rawNotes.split(":");
     const difficulty = values[0].toLowerCase();
     const feet = Number(values[1]);
     const notes = values[2];
 
-    const playerOneResult = parseArrowStream(notes);
+    let arrowResult = parseArrowStream(notes);
+
+    if (mode === "double") {
+      const playerTwoArrows = values[3];
+      const playerTwoResult = parseArrowStream(playerTwoArrows);
+
+      arrowResult = combinePadsIntoOneStream(arrowResult, playerTwoResult);
+    }
 
     sc.availableTypes!.push({
       slug: `${mode}-${difficulty}`,
@@ -153,8 +200,8 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
     });
 
     sc.arrows![`${mode}-${difficulty}`] = {
-      arrows: playerOneResult.arrows,
-      freezes: playerOneResult.freezes,
+      arrows: arrowResult.arrows,
+      freezes: arrowResult.freezes,
     };
   }
 
@@ -178,8 +225,7 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
         displaybpm = [Math.round(Number(value))];
       } else if (tag === "bpm") {
         bpm = [Math.round(Number(value))];
-      } else if (tag === "single") {
-        //|| tag === "double") {
+      } else if (tag === "single" || tag === "double") {
         parseNotes(tag, value);
       }
     }
