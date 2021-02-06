@@ -23,6 +23,7 @@
     "prettier": "^2.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-icons": "^4.1.0",
     "sass": "^1.32.6",
     "ts-jest": "^26.5.0",
     "typescript": "^4.1.3"

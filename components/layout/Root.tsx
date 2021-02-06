@@ -38,13 +38,21 @@ function Root({
           metaImg={socialMediaImg}
         />
         <header>
-          <div className="bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-start lg:px-4">
-            <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
-              <img className="w-full h-full" src={logoSvg} />
-            </a>
-            <div className="text-2xl font-bold text-focal text-center pl-4">
-              Stepcharts
+          <div className="bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-between lg:px-4">
+            <div className="flex flex-row items-center">
+              <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
+                <img className="w-full h-full" src={logoSvg} />
+              </a>
+              <div className="text-2xl font-bold text-focal text-center pl-4">
+                Stepcharts
+              </div>
             </div>
+            <a
+              className="text-focal hover:border-focal border-b-2 border-transparent"
+              href="/roadmap"
+            >
+              roadmap
+            </a>
           </div>
           {subtitle && (
             <div className="hidden sm:block py-1 bg-subheading border-b-2 border-heading-border">
