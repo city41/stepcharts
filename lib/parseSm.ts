@@ -28,6 +28,35 @@ function isRest(line: string): boolean {
   return line.split("").every((d) => d === "0");
 }
 
+function findFirstNonEmptyMeasure(
+  mode: "single" | "double",
+  lines: string[],
+  i: number
+): number {
+  let measureIndex = i;
+
+  for (; i < lines.length && !lines[i].startsWith(";"); ++i) {
+    const line = lines[i];
+    if (line.trim() === "") {
+      continue;
+    }
+
+    if (line.startsWith(",")) {
+      measureIndex = i + 1;
+      i += 1;
+      continue;
+    }
+
+    if (!isRest(trimNoteLine(line, mode))) {
+      return measureIndex;
+    }
+  }
+
+  throw new Error(
+    "findFirstNonEmptyMeasure, failed to find a non-empty measure in entire song"
+  );
+}
+
 function parseSm(sm: string, _titleDir: string): RawStepchart {
   const lines = sm.split("\n").map((l) => l.trim());
 
@@ -135,6 +164,8 @@ function parseSm(sm: string, _titleDir: string): RawStepchart {
 
     // now i is pointing at the first measure
     let arrows: Arrow[] = [];
+
+    i = findFirstNonEmptyMeasure(mode, lines, i);
 
     const firstMeasureIndex = i;
     let curOffset = new Fraction(0);
