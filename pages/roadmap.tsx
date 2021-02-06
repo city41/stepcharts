@@ -1,8 +1,10 @@
 import React from "react";
 import { RoadmapPage } from "../components/RoadmapPage";
 
-function NextRoadmapPage() {
+export const config = {
+  unstable_runtimeJS: false,
+};
+
+export default function NextRoadmapPage() {
   return <RoadmapPage />;
 }
-
-export default NextRoadmapPage;
