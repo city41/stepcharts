@@ -35,7 +35,7 @@ function RoadmapPage() {
       metaDescription="Upcoming features for stepcharts.com"
     >
       <ImageFrame className="text-white p-4 mt-8 mx-auto max-w-3xl">
-        <h1 className="text-2xl font-bold mb-4">Roadmap</h1>
+        <h1 className="text-3xl font-bold mb-4">Roadmap</h1>
         <p className="mb-4">
           Stepcharts.com's goal is to be a useful resource for the dance game
           community. These upcoming features will allow us to reach that goal.
@@ -71,6 +71,22 @@ function RoadmapPage() {
             </Feature>
           </li>
         </ul>
+        <h2 className="text-2xl text-white font-bold mt-6 mb-2">Contact Me</h2>
+        <p>
+          If you have some ideas for the site, you can{" "}
+          <a className="text-focal" href="mailto:matt.e.greer@gmail.com">
+            email me
+          </a>
+          ,{" "}
+          <a className="text-focal" href="https://twitter.com/mattegreer">
+            talk with me on Twitter
+          </a>
+          , or we can also chat over at{" "}
+          <a className="text-focal" href="https://github.com/city41/stepcharts">
+            the GitHub repo
+          </a>
+          .
+        </p>
       </ImageFrame>
     </Root>
   );
