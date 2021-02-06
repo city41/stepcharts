@@ -17,6 +17,13 @@ const dwiToSMDirection: Record<string, Arrow["direction"]> = {
   B: "1001", // left-right jump
 };
 
+const smToDwiDirection = Object.entries(dwiToSMDirection).reduce<
+  Record<string, string>
+>((building, entry) => {
+  building[entry[1]] = entry[0];
+  return building;
+}, {});
+
 type ArrowParseResult = {
   arrows: Arrow[];
   freezes: FreezeBody[];
@@ -124,8 +131,31 @@ function parseArrowStream(notes: string): ArrowParseResult {
     i < notes.length && notes[i] !== ";";
     ++i
   ) {
-    const note = notes[i];
+    let note = notes[i];
     const nextNote = notes[i + 1];
+
+    if (concludesAFreeze(note, currentFreezeDirection)) {
+      openFreezes.forEach((of) => {
+        of.endOffset = curOffset.n / curOffset.d + 0.25;
+        freezes.push(of as FreezeBody);
+      });
+
+      // now when closing out a freeze, any arrows not part of the freeze
+      // become normal arrows, see Max, Candy, single, maniac as a good example
+
+      const smDirection = dwiToSMDirection[note].split("");
+
+      for (let i = 0; i < smDirection.length; ++i) {
+        if (openFreezes[i]) {
+          smDirection[i] = "0";
+        }
+      }
+
+      note = smToDwiDirection[smDirection.join("")];
+
+      openFreezes = [];
+      currentFreezeDirection = null;
+    }
 
     if (nextNote === "!") {
       // B!602080B
