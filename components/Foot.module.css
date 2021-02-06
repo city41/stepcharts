@@ -2,15 +2,15 @@
     fill: pink;
 }
 
-.easy path {
+.easy path, .basic path {
     fill: yellow;
 }
 
-.medium path {
+.medium path, .another path, .trick path {
     fill: #FD009C;
 }
 
-.hard path {
+.hard path, .maniac path {
     fill: #63FD00;
 }
 
