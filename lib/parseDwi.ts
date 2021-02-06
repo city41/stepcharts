@@ -5,6 +5,7 @@ import { determineBeat } from "./util";
 const metaTagsToConsume = ["title", "artist"];
 
 const dwiToSMDirection: Record<string, Arrow["direction"]> = {
+  0: "0000",
   1: "1100", // down-left
   2: "0100", // down
   3: "0101", // down-right
