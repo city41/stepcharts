@@ -73,12 +73,10 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const barDivs = [];
 
   const barHeight = ARROW_HEIGHT * speedMod;
-  const lastArrowOffset = arrows[arrows.length - 1]?.offset ?? 0;
+  const lastArrowOffset = (arrows[arrows.length - 1]?.offset ?? 0) + 0.25;
   const lastFreezeOffset = freezes[freezes.length - 1]?.endOffset ?? 0;
   const totalSongHeight =
-    (Math.max(lastArrowOffset, lastFreezeOffset) + 0.25) *
-    MEASURE_HEIGHT *
-    speedMod;
+    Math.max(lastArrowOffset, lastFreezeOffset) * MEASURE_HEIGHT * speedMod;
 
   for (let i = 0; i < totalSongHeight / barHeight; ++i) {
     barDivs.push(
