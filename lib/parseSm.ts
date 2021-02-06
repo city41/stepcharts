@@ -8,7 +8,9 @@ function getMeasureLength(lines: string[], i: number): number {
   let measureLength = 0;
 
   for (; i < lines.length && lines[i][0] !== ";" && lines[i][0] !== ","; ++i) {
-    measureLength += 1;
+    if (lines[i].trim() !== "") {
+      measureLength += 1;
+    }
   }
 
   return measureLength;
@@ -63,6 +65,10 @@ function parseSm(sm: string, _titleDir: string): RawStepchart {
 
     for (; i < lines.length && !lines[i].startsWith(";"); ++i) {
       const line = lines[i];
+
+      if (line.trim() === "") {
+        continue;
+      }
 
       if (line[0] === ",") {
         curMeasureFraction = new Fraction(1).div(
@@ -142,6 +148,10 @@ function parseSm(sm: string, _titleDir: string): RawStepchart {
       // for now, remove freeze ends as they are handled in parseFreezes
       // TODO: deal with freezes here, no need to have two functions doing basically the same thing
       const line = trimNoteLine(lines[i], mode).replace(/3/g, "0");
+
+      if (line.trim() === "") {
+        continue;
+      }
 
       if (line.startsWith(",")) {
         curMeasureFraction = new Fraction(1).div(
