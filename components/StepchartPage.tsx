@@ -6,7 +6,7 @@ import { Root } from "./layout/Root";
 import { Banner } from "./Banner";
 import { ImageFrame } from "./ImageFrame";
 import { Breadcrumbs } from "./Breadcrumbs";
-import { TitleDetailsTable } from "./TitleDetailsTable";
+import { TitleDetailsTable, TitleDetailsRow } from "./TitleDetailsTable";
 
 import styles from "./StepchartPage.module.css";
 
@@ -22,6 +22,9 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const [speedMod, setSpeedMod] = useState(1);
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
+  const currentTypeMeta = stepchart.availableTypes.find(
+    (at) => at.slug === currentType
+  )!;
 
   const { arrows, freezes } = stepchart.arrows[currentType];
 
@@ -136,8 +139,13 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="z-10 mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <Banner banner={stepchart.title.banner} />
-          <TitleDetailsTable className="mt-4" stepchart={stepchart} />
-          <div className="mt-6 bg-focal-400 text-focal-600 p-2 w-full">
+          <TitleDetailsTable className="mt-4" stepchart={stepchart}>
+            <TitleDetailsRow
+              name="difficulty"
+              value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
+            />
+          </TitleDetailsTable>
+          <div className="hidden sm:block mt-6 bg-focal-400 text-focal-600 p-2 w-full">
             <h3 className="font-bold text-white">speedmod</h3>
             <div className="flex flex-row justify-around space-x-6">
               {[1, 1.5, 2, 3].map((sm) => {

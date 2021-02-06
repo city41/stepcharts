@@ -1,11 +1,13 @@
 import React from "react";
+import clsx from "clsx";
 
 type TitleDetailsTableProps = {
   className?: string;
   stepchart: Stepchart;
+  children?: React.ReactNode;
 };
 
-function Row({ name, value }: { name: string; value: string }) {
+function TitleDetailsRow({ name, value }: { name: string; value: string }) {
   return (
     <tr>
       <td className="text-right text-focal-400 pr-1">{name}</td>
@@ -14,16 +16,21 @@ function Row({ name, value }: { name: string; value: string }) {
   );
 }
 
-function TitleDetailsTable({ className, stepchart }: TitleDetailsTableProps) {
+function TitleDetailsTable({
+  className,
+  stepchart,
+  children,
+}: TitleDetailsTableProps) {
   return (
-    <table className={className}>
+    <table className={clsx(className, "text-xs sm:text-base")}>
       <tbody>
-        <Row name="BPM" value={stepchart.bpm.join(", ")} />
-        <Row name="Artist" value={stepchart.artist} />
-        <Row name="Mix" value={stepchart.mix.mixName} />
+        <TitleDetailsRow name="BPM" value={stepchart.bpm.join(", ")} />
+        <TitleDetailsRow name="Artist" value={stepchart.artist} />
+        <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
+        {children}
       </tbody>
     </table>
   );
 }
 
-export { TitleDetailsTable };
+export { TitleDetailsTable, TitleDetailsRow };
