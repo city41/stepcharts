@@ -1,28 +1,20 @@
 type Arrow = {
+  // other beats such as 5ths and 32nds end up being colored
+  // the same as 6ths. This probably should be "color" not "beat" TODO
+  beat: 4 | 6 | 8 | 12 | 16;
   direction:
-    | `${0 | 1}${0 | 1}${0 | 1}${0 | 1}`
-    | `${0 | 1}${0 | 1}${0 | 1}${0 | 1}${0 | 1}${0 | 1}${0 | 1}${0 | 1}`;
-  beat: 4 | 5 | 6 | 8 | 12 | 16 | 32;
-  measureBeatHeight:
-    | 4
-    | 5
-    | 6
-    | 8
-    | 12
-    | 13
-    | 16
-    | 24
-    | 32
-    | 48
-    | 64
-    | 128
-    | 192;
+    | `${0 | 1 | 2}${0 | 1 | 2}${0 | 1 | 2}${0 | 1 | 2}`
+    | `${0 | 1 | 2}${0 | 1 | 2}${0 | 1 | 2}${0 | 1 | 2}${0 | 1 | 2}${
+        | 0
+        | 1
+        | 2}${0 | 1 | 2}${0 | 1 | 2}`;
+  offset: number;
 };
 
 type FreezeBody = {
   direction: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
-  startBeat: number;
-  endBeat: number;
+  startOffset: number;
+  endOffset: number;
 };
 
 type Mode = "single" | "double";

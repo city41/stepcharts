@@ -62,7 +62,7 @@ ${notes}
      Beginner:
      5:
      :
-,
+;
 `;
 
       const result = parseSm(stepchart, "test");
@@ -85,10 +85,8 @@ ${notes}
       const result = parse(notes);
 
       expect(result.arrows["single-beginner"].arrows).toEqual([
-        { beat: 4, direction: "1000", measureBeatHeight: 4 },
-        { beat: 4, direction: "0000", measureBeatHeight: 4 },
-        { beat: 4, direction: "0100", measureBeatHeight: 4 },
-        { beat: 4, direction: "0000", measureBeatHeight: 4 },
+        { beat: 4, direction: "1000", offset: 0 / 4 },
+        { beat: 4, direction: "0100", offset: 2 / 4 },
       ]);
     });
 
@@ -98,45 +96,43 @@ ${notes}
 0001
 0100
 1000
-0100
+0000
 0001
 0100`;
 
       const result = parse(notes);
 
       expect(result.arrows["single-beginner"].arrows).toEqual([
-        { beat: 4, direction: "1000", measureBeatHeight: 8 },
-        { beat: 8, direction: "0100", measureBeatHeight: 8 },
-        { beat: 4, direction: "0001", measureBeatHeight: 8 },
-        { beat: 8, direction: "0100", measureBeatHeight: 8 },
-        { beat: 4, direction: "1000", measureBeatHeight: 8 },
-        { beat: 8, direction: "0100", measureBeatHeight: 8 },
-        { beat: 4, direction: "0001", measureBeatHeight: 8 },
-        { beat: 8, direction: "0100", measureBeatHeight: 8 },
+        { beat: 4, direction: "1000", offset: 0 / 8 },
+        { beat: 8, direction: "0100", offset: 1 / 8 },
+        { beat: 4, direction: "0001", offset: 2 / 8 },
+        { beat: 8, direction: "0100", offset: 3 / 8 },
+        { beat: 4, direction: "1000", offset: 4 / 8 },
+        { beat: 4, direction: "0001", offset: 6 / 8 },
+        { beat: 8, direction: "0100", offset: 7 / 8 },
       ]);
     });
 
     it("should parse a sixth note measure correctly", () => {
-      // X, Afronova Special, very end of the song
+      // X, Afronova Special, very end of the song, but with one row set to empty
       const notes = `1001
 0110
 1100
-0101
+0000
 0011
 1010`;
 
       const result = parse(notes);
       expect(result.arrows["single-beginner"].arrows).toEqual([
-        { beat: 4, direction: "1001", measureBeatHeight: 6 },
-        { beat: 6, direction: "0110", measureBeatHeight: 6 },
-        { beat: 6, direction: "1100", measureBeatHeight: 6 },
-        { beat: 4, direction: "0101", measureBeatHeight: 6 },
-        { beat: 6, direction: "0011", measureBeatHeight: 6 },
-        { beat: 6, direction: "1010", measureBeatHeight: 6 },
+        { beat: 4, direction: "1001", offset: 0 / 6 },
+        { beat: 6, direction: "0110", offset: 1 / 6 },
+        { beat: 6, direction: "1100", offset: 2 / 6 },
+        { beat: 6, direction: "0011", offset: 4 / 6 },
+        { beat: 6, direction: "1010", offset: 5 / 6 },
       ]);
     });
 
-    it.only("should parse freeze arrows in a 24th beat measure correctly", () => {
+    it("should parse freeze arrows in a 24th beat measure correctly", () => {
       // X, Saber Wing Headshot Mix, challenge, second LR freeze in the chart
       const notes = `0001
 0000
@@ -165,143 +161,49 @@ ${notes}
 
       const result = parse(notes);
 
-      console.log(
-        JSON.stringify(result.arrows["single-beginner"].freezes, null, 2)
-      );
-
       expect(result.arrows["single-beginner"].arrows).toEqual([
         {
           direction: "0001",
           beat: 4,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 12,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 8,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
+          offset: 0 / 24,
         },
         {
           direction: "2002",
           beat: 4,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 8,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 12,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 4,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 12,
-          measureBeatHeight: 24,
+          offset: 6 / 24,
         },
         {
           direction: "0100",
           beat: 8,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
+          offset: 15 / 24,
         },
         {
           direction: "0010",
           beat: 4,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
+          offset: 18 / 24,
         },
         {
           direction: "0001",
           beat: 6,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 8,
-          measureBeatHeight: 24,
+          offset: 20 / 24,
         },
         {
           direction: "0100",
           beat: 12,
-          measureBeatHeight: 24,
-        },
-        {
-          direction: "0000",
-          beat: 6,
-          measureBeatHeight: 24,
+          offset: 22 / 24,
         },
       ]);
 
       expect(result.arrows["single-beginner"].freezes).toEqual([
         {
           direction: 0,
-          startBeat: 0.25,
-          endBeat: 0.75,
+          startOffset: 0.25,
+          endOffset: 0.75,
         },
         {
           direction: 3,
-          startBeat: 0.25,
-          endBeat: 0.75,
+          startOffset: 0.25,
+          endOffset: 0.75,
         },
       ]);
     });

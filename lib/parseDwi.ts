@@ -1,4 +1,6 @@
+import Fraction from "fraction.js";
 import { RawStepchart } from "./parseStepchart";
+import { determineBeat } from "./util";
 
 const metaTagsToConsume = ["title", "artist"];
 
@@ -42,7 +44,9 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
 
     const arrows: Arrow[] = [];
 
-    let curBeatType = 4;
+    let curOffset = new Fraction(0);
+    // dwi's default increment is 8th notes
+    let curMeasureFraction = new Fraction(1).div(8);
 
     for (let i = 0; i < notes.length && notes[i] !== ";"; ++i) {
       const note = notes[i];
@@ -53,15 +57,15 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
       }
 
       if (note === "(") {
-        curBeatType = 16;
+        curMeasureFraction = new Fraction(1).div(16);
       } else if (note === "[") {
-        curBeatType = 24;
+        curMeasureFraction = new Fraction(1).div(24);
       } else if (note === "{") {
-        curBeatType = 64;
+        curMeasureFraction = new Fraction(1).div(64);
       } else if (note === "`") {
-        curBeatType = 192;
+        curMeasureFraction = new Fraction(1).div(192);
       } else if ([")", "]", "}", "'"].includes(note)) {
-        curBeatType = 4;
+        curMeasureFraction = new Fraction(1).div(8);
       } else {
         const direction = dwiToSMDirection[note];
 
@@ -71,20 +75,16 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
 
         arrows.push({
           direction,
-          beat: curBeatType as any,
-          measureBeatHeight: 4,
+          beat: determineBeat(curOffset),
+          offset: curOffset.n / curOffset.d,
         });
+
+        curOffset = curOffset.add(curMeasureFraction);
       }
     }
 
-    let startI = 0;
-
-    while (arrows[startI].direction === "0000") {
-      startI += 1;
-    }
-
     sc.arrows![`${mode}-${difficulty}`] = {
-      arrows: arrows.slice(startI),
+      arrows,
       freezes: [],
     };
   }

@@ -16,73 +16,67 @@ type StepchartPageProps = {
 };
 
 const ARROW_HEIGHT = 40;
+const MEASURE_HEIGHT = ARROW_HEIGHT * 4;
 
 function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const [speedMod, setSpeedMod] = useState(1);
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
 
-  let offset = 0;
-  let arrowSeen = true;
+  const arrows = stepchart.arrows[currentType].arrows;
 
-  const arrowDivs = stepchart.arrows[currentType].arrows.map(
-    (a, index, array) => {
-      // for now, skip the empty intro
-      arrowSeen =
-        arrowSeen || (a.direction !== "0000" && a.direction !== "00000000");
-      if (!arrowSeen) {
-        return null;
+  const arrowDivs = [];
+
+  for (let ai = arrows.length - 1; ai >= 0; --ai) {
+    const a = arrows[ai];
+    const arrowSvgs = [];
+    const isShockArrow = a.direction.indexOf("0") === -1;
+
+    for (let i = 0; i < a.direction.length; ++i) {
+      if (a.direction[i] !== "0") {
+        arrowSvgs.push(
+          <ArrowSvg
+            key={i}
+            size={ARROW_HEIGHT}
+            position={i as ArrowSvgProps["position"]}
+            beat={
+              isShockArrow
+                ? "shock"
+                : a.direction[i] === "2"
+                ? "freeze"
+                : a.beat
+            }
+          />
+        );
       }
-
-      const arrowSvgs = [];
-      const isShockArrow = a.direction.indexOf("0") === -1;
-
-      for (let i = 0; i < a.direction.length; ++i) {
-        if (a.direction[i] !== "0") {
-          arrowSvgs.push(
-            <ArrowSvg
-              key={i}
-              size={ARROW_HEIGHT}
-              position={i as ArrowSvgProps["position"]}
-              beat={
-                isShockArrow
-                  ? "shock"
-                  : a.direction[i] === "2"
-                  ? "freeze"
-                  : a.beat
-              }
-            />
-          );
-        }
-      }
-
-      const el = (
-        <div
-          key={index}
-          className={clsx(
-            styles.arrow,
-            styles[`beat-${a.beat}`],
-            "absolute text-xs transition-all ease-in-out duration-500"
-          )}
-          style={{
-            top: offset,
-            zIndex: array.length - index,
-          }}
-        >
-          {arrowSvgs}
-        </div>
-      );
-
-      offset += (ARROW_HEIGHT / (a.measureBeatHeight / 4)) * speedMod;
-      return el;
     }
-  );
+
+    const el = (
+      <div
+        key={a.offset}
+        className={clsx(
+          styles.arrow,
+          styles[`beat-${a.beat}`],
+          "absolute text-xs transition-all ease-in-out duration-500"
+        )}
+        style={{
+          top: a.offset * MEASURE_HEIGHT * speedMod,
+        }}
+      >
+        {arrowSvgs}
+      </div>
+    );
+
+    arrowDivs.push(el);
+  }
 
   const barDivs = [];
 
   const barHeight = ARROW_HEIGHT * speedMod;
+  const totalSongHeight =
+    (arrows[arrows.length - 1].offset + 0.25) * MEASURE_HEIGHT * speedMod;
 
-  for (let i = 0; i < offset / barHeight; ++i) {
+  for (let i = 0; i < totalSongHeight / barHeight; ++i) {
     barDivs.push(
       <div
         key={i}
@@ -106,17 +100,17 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const freezeDivs = stepchart.arrows[currentType].freezes.map((f) => {
     return (
       <div
-        key={`${f.startBeat}-${f.direction}`}
+        key={`${f.startOffset}-${f.direction}`}
         className={clsx(
           styles.freezeBody,
           "absolute transition-all ease-in-out duration-500"
         )}
         style={{
-          top: f.startBeat * ARROW_HEIGHT * 4 * speedMod + ARROW_HEIGHT / 2,
+          top: f.startOffset * MEASURE_HEIGHT * speedMod + ARROW_HEIGHT / 2,
           left: f.direction * ARROW_HEIGHT,
           width: ARROW_HEIGHT,
           height:
-            (f.endBeat - f.startBeat) * ARROW_HEIGHT * speedMod * 4 -
+            (f.endOffset - f.startOffset) * MEASURE_HEIGHT * speedMod -
             (ARROW_HEIGHT / 2) * speedMod,
         }}
       />
@@ -143,12 +137,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       }`}
     >
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
-        <ImageFrame
-          className={clsx(
-            styles.meta,
-            "mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center"
-          )}
-        >
+        <ImageFrame className="z-10 mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <Banner banner={stepchart.title.banner} />
           <TitleDetailsTable className="mt-4" stepchart={stepchart} />
           <div className="mt-6 bg-focal-400 text-focal-600 p-2 w-full">
@@ -185,7 +174,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           )}
           style={
             {
-              height: offset,
+              height: totalSongHeight,
               "--arrow-size": `${ARROW_HEIGHT}px`,
             } as CSSProperties
           }
@@ -193,7 +182,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           {barDivs}
           {freezeDivs}
           {!isSingle && (
-            <div className={styles.doubleDivider} style={{ height: offset }} />
+            <div className={clsx(styles.doubleDivider, "h-full")} />
           )}
           {arrowDivs}
         </div>
