@@ -36,6 +36,12 @@ function buildTypeUrl(stepchart: Stepchart, slug: string): string {
 }
 
 function TitlePage({ stepchart }: TitlePageProps) {
+  if (stepchart.availableTypes.length === 0) {
+    throw new Error(
+      `TitlePage: empty title! ${stepchart.title.actualTitle}, ${stepchart.mix.mixName}`
+    );
+  }
+
   const grouped = groupTypes(stepchart.availableTypes);
 
   return (
