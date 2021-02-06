@@ -70,8 +70,9 @@ function TitlePage({ stepchart }: TitlePageProps) {
 
               return (
                 <li key={mode}>
-                  <h2 className="flex flex-row justify-between text-white font-bold mb-2 text-xl">
-                    {mode} <img src={modeSvgs[mode as Mode]} width={50} />
+                  <h2 className="flex flex-row items-center justify-between text-white font-bold mb-2 text-xl items-center">
+                    <span>{mode}</span>
+                    <img src={modeSvgs[mode as Mode]} width={50} />
                   </h2>
                   <ul>{items}</ul>
                 </li>
