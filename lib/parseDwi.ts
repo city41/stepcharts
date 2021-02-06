@@ -97,6 +97,17 @@ function concludesAFreeze(
   return true;
 }
 
+function findFirstNonEmptyMeasure(notes: string): number {
+  let i = 0;
+
+  while (notes.startsWith("00000000")) {
+    notes = notes.substring(8);
+    i += 8;
+  }
+
+  return i;
+}
+
 function parseArrowStream(notes: string): ArrowParseResult {
   const arrows: Arrow[] = [];
   const freezes: FreezeBody[] = [];
@@ -108,7 +119,11 @@ function parseArrowStream(notes: string): ArrowParseResult {
   // dwi's default increment is 8th notes
   let curMeasureFraction = new Fraction(1).div(8);
 
-  for (let i = 0; i < notes.length && notes[i] !== ";"; ++i) {
+  for (
+    let i = findFirstNonEmptyMeasure(notes);
+    i < notes.length && notes[i] !== ";";
+    ++i
+  ) {
     const note = notes[i];
     const nextNote = notes[i + 1];
 
