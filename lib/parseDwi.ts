@@ -5,7 +5,6 @@ import { determineBeat } from "./util";
 const metaTagsToConsume = ["title", "artist"];
 
 const dwiToSMDirection: Record<string, Arrow["direction"]> = {
-  0: "0000", // rest
   1: "1100", // down-left
   2: "0100", // down
   3: "0101", // down-right
@@ -14,8 +13,8 @@ const dwiToSMDirection: Record<string, Arrow["direction"]> = {
   7: "1010", // up-left
   8: "0010", // up
   9: "0011", // up-right
-  A: "1001", // left-right jump
-  B: "0110", // up-down jump
+  A: "0110", // up-down jump
+  B: "1001", // left-right jump
 };
 
 function parseDwi(dwi: string, titleDir: string): RawStepchart {
@@ -43,6 +42,10 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
     });
 
     const arrows: Arrow[] = [];
+    const freezes: FreezeBody[] = [];
+
+    let currentFreezeDirection: string | null = null;
+    const openFreezes: Array<Partial<FreezeBody> | null> = [];
 
     let curOffset = new Fraction(0);
     // dwi's default increment is 8th notes
@@ -50,13 +53,48 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
 
     for (let i = 0; i < notes.length && notes[i] !== ";"; ++i) {
       const note = notes[i];
+      const nextNote = notes[i + 1];
 
-      // TODO: implement freeze arrows
-      if (note === "!") {
-        continue;
-      }
+      if (nextNote === "!") {
+        // 8!80008
+        const smDirection = dwiToSMDirection[note];
 
-      if (note === "(") {
+        for (let d = 0; d < smDirection.length; ++d) {
+          if (smDirection[d] === "1") {
+            openFreezes[d] = {
+              direction: d as FreezeBody["direction"],
+              startOffset: curOffset.n / curOffset.d,
+            };
+          }
+        }
+
+        // the head of a freeze is still an arrow
+        arrows.push({
+          direction: smDirection.replace(/1/g, "2") as Arrow["direction"],
+          beat: determineBeat(curOffset),
+          offset: curOffset.n / curOffset.d,
+        });
+
+        // remember the direction to know when to close the freeze
+        currentFreezeDirection = note;
+
+        // move past the exclamation and trailing note
+        i += 2;
+        curOffset = curOffset.add(curMeasureFraction);
+      } else if (note === currentFreezeDirection) {
+        const smDirection = dwiToSMDirection[note];
+
+        for (let d = 0; d < smDirection.length; ++d) {
+          if (smDirection[d] === "1") {
+            openFreezes[d]!.endOffset = curOffset.n / curOffset.d + 0.25;
+            freezes.push(openFreezes[d] as FreezeBody);
+            openFreezes[d] = null;
+          }
+        }
+
+        curOffset = curOffset.add(curMeasureFraction);
+        currentFreezeDirection = null;
+      } else if (note === "(") {
         curMeasureFraction = new Fraction(1).div(16);
       } else if (note === "[") {
         curMeasureFraction = new Fraction(1).div(24);
@@ -66,6 +104,8 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
         curMeasureFraction = new Fraction(1).div(192);
       } else if ([")", "]", "}", "'"].includes(note)) {
         curMeasureFraction = new Fraction(1).div(8);
+      } else if (note === "0") {
+        curOffset = curOffset.add(curMeasureFraction);
       } else {
         const direction = dwiToSMDirection[note];
 
@@ -85,7 +125,7 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
 
     sc.arrows![`${mode}-${difficulty}`] = {
       arrows,
-      freezes: [],
+      freezes,
     };
   }
 
