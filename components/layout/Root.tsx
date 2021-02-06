@@ -41,7 +41,11 @@ function Root({
           <div className="bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-between lg:px-4">
             <div className="flex flex-row items-center">
               <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
-                <img className="w-full h-full" src={logoSvg} />
+                <img
+                  className="w-full h-full"
+                  src={logoSvg}
+                  alt="Stepcharts logo"
+                />
               </a>
               <div className="text-2xl font-bold text-focal text-center pl-4">
                 Stepcharts

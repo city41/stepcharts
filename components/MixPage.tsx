@@ -69,7 +69,10 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
                     title={stepchart.title.actualTitle}
                     supplementary={supp}
                   >
-                    <Banner banner={stepchart.title.banner} />
+                    <Banner
+                      banner={stepchart.title.banner}
+                      title={stepchart.title.actualTitle}
+                    />
                   </PageItem>
                 </a>
               </li>

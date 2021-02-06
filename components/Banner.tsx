@@ -5,21 +5,23 @@ import { ImageFrame } from "./ImageFrame";
 
 type BannerProps = {
   className?: string;
+  title: string;
   banner: string | null;
 };
 
 import styles from "./Banner.module.css";
 
-function Banner({ className, banner }: BannerProps) {
+function Banner({ className, title, banner }: BannerProps) {
   const [currentBanner, setCurrentBanner] = useState(banner);
 
   if (currentBanner) {
     return (
       <img
-        className={clsx(styles.bannerImage, "border-2 border-white")}
+        className={clsx(className, styles.bannerImage, "border-2 border-white")}
         src={require(`./bannerImages/${currentBanner}`)}
         onError={() => setCurrentBanner(null)}
         loading="lazy"
+        alt={`Banner for ${title}`}
       />
     );
   } else {

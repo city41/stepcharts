@@ -138,7 +138,10 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     >
       <div className="sm:mt-16 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="z-10 mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
-          <Banner banner={stepchart.title.banner} />
+          <Banner
+            banner={stepchart.title.banner}
+            title={stepchart.title.actualTitle}
+          />
           <TitleDetailsTable className="mt-4" stepchart={stepchart}>
             <TitleDetailsRow
               name="difficulty"
@@ -183,6 +186,8 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
               "--arrow-size": `${ARROW_HEIGHT}px`,
             } as CSSProperties
           }
+          role="image"
+          aria-label={`${currentType} step chart for ${stepchart.title.actualTitle}`}
         >
           {barDivs}
           {freezeDivs}

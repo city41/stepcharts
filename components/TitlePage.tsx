@@ -46,7 +46,10 @@ function TitlePage({ stepchart }: TitlePageProps) {
     >
       <div className="sm:mt-8 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
-          <Banner banner={stepchart.title.banner} />
+          <Banner
+            banner={stepchart.title.banner}
+            title={stepchart.title.actualTitle}
+          />
           <TitleDetailsTable className="mt-4" stepchart={stepchart} />
         </ImageFrame>
         <ImageFrame className="p-2 bg-focal">
@@ -72,7 +75,11 @@ function TitlePage({ stepchart }: TitlePageProps) {
                 <li key={mode}>
                   <h2 className="flex flex-row items-center justify-between text-white font-bold mb-2 text-xl items-center">
                     <span>{mode}</span>
-                    <img src={modeSvgs[mode as Mode]} width={50} />
+                    <img
+                      src={modeSvgs[mode as Mode]}
+                      width={50}
+                      alt={`Icon for ${mode} mode`}
+                    />
                   </h2>
                   <ul>{items}</ul>
                 </li>
