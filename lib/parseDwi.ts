@@ -28,24 +28,14 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
     banner: `${titleDir}.png`,
   };
 
-  function parseNotes(mode: "single" | "double", rawNotes: string) {
-    const values = rawNotes.split(":");
-    const difficulty = values[0].toLowerCase();
-    const feet = Number(values[1]);
-    const notes = values[2];
-
-    sc.availableTypes!.push({
-      slug: `${mode}-${difficulty}`,
-      mode,
-      difficulty: difficulty as any,
-      feet,
-    });
-
+  function parseArrowStream(
+    notes: string
+  ): { arrows: Arrow[]; freezes: FreezeBody[] } {
     const arrows: Arrow[] = [];
     const freezes: FreezeBody[] = [];
 
     let currentFreezeDirection: string | null = null;
-    const openFreezes: Array<Partial<FreezeBody> | null> = [];
+    let openFreezes: Array<Partial<FreezeBody>> = [];
 
     let curOffset = new Fraction(0);
     // dwi's default increment is 8th notes
@@ -56,8 +46,13 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
       const nextNote = notes[i + 1];
 
       if (nextNote === "!") {
-        // 8!80008
-        const smDirection = dwiToSMDirection[note];
+        // B!602080B
+        // this means the freeze starts with B (left and right), but then only right (6) has the freeze body
+        // during the freeze there is down (2) then up (8), concluding with the second B
+
+        const freezeNote = notes[i + 2];
+
+        const smDirection = dwiToSMDirection[freezeNote];
 
         for (let d = 0; d < smDirection.length; ++d) {
           if (smDirection[d] === "1") {
@@ -70,7 +65,10 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
 
         // the head of a freeze is still an arrow
         arrows.push({
-          direction: smDirection.replace(/1/g, "2") as Arrow["direction"],
+          direction: dwiToSMDirection[note].replace(
+            /1/g,
+            "2"
+          ) as Arrow["direction"],
           beat: determineBeat(curOffset),
           offset: curOffset.n / curOffset.d,
         });
@@ -82,16 +80,29 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
         i += 2;
         curOffset = curOffset.add(curMeasureFraction);
       } else if (note === currentFreezeDirection) {
-        const smDirection = dwiToSMDirection[note];
+        openFreezes.forEach((of) => {
+          of.endOffset = curOffset.n / curOffset.d + 0.25;
+          freezes.push(of as FreezeBody);
+        });
 
-        for (let d = 0; d < smDirection.length; ++d) {
-          if (smDirection[d] === "1") {
-            openFreezes[d]!.endOffset = curOffset.n / curOffset.d + 0.25;
-            freezes.push(openFreezes[d] as FreezeBody);
-            openFreezes[d] = null;
+        // now when closing out a freeze, any arrows not part of the freeze
+        // become normal arrows, see Max, Candy, single, maniac as a good example
+
+        const smDirection = dwiToSMDirection[note].split("");
+
+        for (let i = 0; i < smDirection.length; ++i) {
+          if (openFreezes[i]) {
+            smDirection[i] = "0";
           }
         }
 
+        arrows.push({
+          direction: smDirection.join("") as Arrow["direction"],
+          beat: determineBeat(curOffset),
+          offset: curOffset.n / curOffset.d,
+        });
+
+        openFreezes = [];
         curOffset = curOffset.add(curMeasureFraction);
         currentFreezeDirection = null;
       } else if (note === "(") {
@@ -123,9 +134,27 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
       }
     }
 
+    return { arrows, freezes };
+  }
+
+  function parseNotes(mode: "single" | "double", rawNotes: string) {
+    const values = rawNotes.split(":");
+    const difficulty = values[0].toLowerCase();
+    const feet = Number(values[1]);
+    const notes = values[2];
+
+    const playerOneResult = parseArrowStream(notes);
+
+    sc.availableTypes!.push({
+      slug: `${mode}-${difficulty}`,
+      mode,
+      difficulty: difficulty as any,
+      feet,
+    });
+
     sc.arrows![`${mode}-${difficulty}`] = {
-      arrows,
-      freezes,
+      arrows: playerOneResult.arrows,
+      freezes: playerOneResult.freezes,
     };
   }
 
