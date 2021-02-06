@@ -48,11 +48,11 @@ function Root({
                 />
               </a>
               <div className="text-2xl font-bold text-focal text-center pl-4">
-                Stepcharts
+                <a href="/">Stepcharts</a>
               </div>
             </div>
             <a
-              className="text-focal hover:border-focal border-b-2 border-transparent"
+              className="mr-4 lg:mr-0 text-focal hover:border-focal border-b-2 border-transparent"
               href="/roadmap"
             >
               roadmap
