@@ -30,7 +30,7 @@ function BrandNewModal() {
       <div
         id="brand_new_modal"
         className="hidden fixed top-0 left-0 w-full h-full"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.75)" }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.75)", zIndex: 99999 }}
       >
         <div className="max-w-full mx-auto w-64 sm:w-96 mt-16 bg-focal p-4 border-2 border-white">
           <h1 className="text-2xl font-bold text-white mb-4 w-full text-center">
