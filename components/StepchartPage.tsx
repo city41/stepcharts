@@ -31,6 +31,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     const a = arrows[ai];
     const arrowSvgs = [];
     const isShockArrow = a.direction.indexOf("0") === -1;
+    const isFreezeArrow = a.direction.indexOf("2") > -1;
 
     for (let i = 0; i < a.direction.length; ++i) {
       if (a.direction[i] !== "0") {
@@ -39,13 +40,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             key={i}
             size={ARROW_HEIGHT}
             position={i as ArrowSvgProps["position"]}
-            beat={
-              isShockArrow
-                ? "shock"
-                : a.direction[i] === "2"
-                ? "freeze"
-                : a.beat
-            }
+            beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
           />
         );
       }
