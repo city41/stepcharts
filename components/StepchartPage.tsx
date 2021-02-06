@@ -23,7 +23,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
 
-  const arrows = stepchart.arrows[currentType].arrows;
+  const { arrows, freezes } = stepchart.arrows[currentType];
 
   const arrowDivs = [];
 
@@ -73,8 +73,12 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const barDivs = [];
 
   const barHeight = ARROW_HEIGHT * speedMod;
+  const lastArrowOffset = arrows[arrows.length - 1]?.offset ?? 0;
+  const lastFreezeOffset = freezes[freezes.length - 1]?.endOffset ?? 0;
   const totalSongHeight =
-    (arrows[arrows.length - 1].offset + 0.25) * MEASURE_HEIGHT * speedMod;
+    (Math.max(lastArrowOffset, lastFreezeOffset) + 0.25) *
+    MEASURE_HEIGHT *
+    speedMod;
 
   for (let i = 0; i < totalSongHeight / barHeight; ++i) {
     barDivs.push(
@@ -97,7 +101,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     );
   }
 
-  const freezeDivs = stepchart.arrows[currentType].freezes.map((f) => {
+  const freezeDivs = freezes.map((f) => {
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
