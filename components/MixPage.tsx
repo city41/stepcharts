@@ -50,7 +50,7 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
       metaDescription={`Step charts for DDR ${mix.mixName}`}
     >
       <div className="sm:mt-8 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
-        <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
+        <ImageFrame className="mb-8 mt-2 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <img
             className="border-2 border-white"
             src={require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`)}
@@ -59,7 +59,7 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
             alt={`${mix.mixName} banner`}
           />
         </ImageFrame>
-        <ul className="flex flex-col items-center space-y-4">
+        <ul className="flex-1 flex flex-col sm:flex-row sm:flex-wrap items-center">
           {stepcharts.sort(sortByTitleCaseInsensitive).map((stepchart) => {
             const supp = (
               <>
@@ -69,7 +69,7 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
             );
 
             return (
-              <li key={stepchart.title.actualTitle}>
+              <li className="m-2" key={stepchart.title.actualTitle}>
                 <a href={buildTitleUrl(mix, stepchart.title.titleDir)}>
                   <PageItem
                     title={stepchart.title.actualTitle}
