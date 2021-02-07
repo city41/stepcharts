@@ -42,6 +42,14 @@ class MyDocument extends Document {
           <link rel="shortcut icon" href="/favicon.ico?v=2020" />
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="theme-color" content="#ffffff" />
+          <noscript>
+            <style
+              type="text/css"
+              dangerouslySetInnerHTML={{
+                __html: ".hide-if-noscript { display: none !important; }",
+              }}
+            />
+          </noscript>
         </Head>
         <body>
           <Main />

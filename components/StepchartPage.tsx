@@ -135,7 +135,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
               value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
             />
           </TitleDetailsTable>
-          <div className="hidden sm:block mt-6 bg-focal-400 text-focal-600 p-2 w-full">
+          <div className="hide-if-noscript hidden sm:block mt-6 bg-focal-400 text-focal-600 p-2 w-full">
             <div className="font-bold text-white">speedmod</div>
             <div className="flex flex-row justify-around space-x-6">
               {[1, 1.5, 2, 3].map((sm) => {
