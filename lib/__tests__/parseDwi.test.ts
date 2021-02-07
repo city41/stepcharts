@@ -10,7 +10,7 @@ describe("parseDwi", () => {
   }
 
   describe("freezes", () => {
-    it.only("should allow multiple open freezes at once (Maxx Unlimited)", () => {
+    it("should allow multiple open freezes at once (Maxx Unlimited)", () => {
       const result = parse("8!84!4860B");
       const { arrows, freezes } = result.arrows["single-beginner"];
 

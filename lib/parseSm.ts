@@ -4,10 +4,22 @@ import { determineBeat } from "./util";
 
 const metaTagsToConsume = ["title", "artist", "banner"];
 
+function concludesANoteTag(line: string | undefined): boolean {
+  if (line === undefined) {
+    return true;
+  }
+
+  return line[0] === ";" || (line[0] === "," && line[1] === ";");
+}
+
 function getMeasureLength(lines: string[], i: number): number {
   let measureLength = 0;
 
-  for (; i < lines.length && lines[i][0] !== ";" && lines[i][0] !== ","; ++i) {
+  for (
+    ;
+    i < lines.length && !concludesANoteTag(lines[i]) && lines[i][0] !== ",";
+    ++i
+  ) {
     if (lines[i].trim() !== "") {
       measureLength += 1;
     }
@@ -35,7 +47,7 @@ function findFirstNonEmptyMeasure(
 ): number {
   let measureIndex = i;
 
-  for (; i < lines.length && !lines[i].startsWith(";"); ++i) {
+  for (; i < lines.length && !concludesANoteTag(lines[i]); ++i) {
     const line = lines[i];
     if (line.trim() === "") {
       continue;
@@ -92,7 +104,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
       getMeasureLength(lines, i) || 1
     );
 
-    for (; i < lines.length && !lines[i].startsWith(";"); ++i) {
+    for (; i < lines.length && !concludesANoteTag(lines[i]); ++i) {
       const line = lines[i];
 
       if (line.trim() === "") {
@@ -175,7 +187,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
       getMeasureLength(lines, i) || 1
     );
 
-    for (; i < lines.length && !lines[i].startsWith(";"); ++i) {
+    for (; i < lines.length && !concludesANoteTag(lines[i]); ++i) {
       // for now, remove freeze ends as they are handled in parseFreezes
       // TODO: deal with freezes here, no need to have two functions doing basically the same thing
       const line = trimNoteLine(lines[i], mode).replace(/3/g, "0");
@@ -284,7 +296,9 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
 
     return sc as RawStepchart;
   } catch (e) {
-    throw new Error(`error, ${e.message}, ${e.stack}, parsing ${sm}`);
+    throw new Error(
+      `error, ${e.message}, ${e.stack}, parsing ${sm.substring(0, 300)}`
+    );
   }
 }
 
