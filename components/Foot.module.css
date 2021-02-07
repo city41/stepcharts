@@ -1,21 +1,21 @@
 .beginner path {
-    fill: pink;
+    fill: #00B0C6;
 }
 
 .easy path, .basic path {
-    fill: yellow;
+    fill: #D68B00;
 }
 
 .medium path, .another path, .trick path {
-    fill: #FD009C;
+    fill: #CE1A87;
 }
 
 .hard path, .maniac path {
-    fill: #63FD00;
+    fill: #6BDE13;
 }
 
 .challenge path, .smaniac path {
-    fill: purple;
+    fill: #7D72FE;
 }
 
 .icon {
