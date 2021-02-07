@@ -138,7 +138,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             />
           </TitleDetailsTable>
           <div className="hidden sm:block mt-6 bg-focal-400 text-focal-600 p-2 w-full">
-            <h3 className="font-bold text-white">speedmod</h3>
+            <div className="font-bold text-white">speedmod</div>
             <div className="flex flex-row justify-around space-x-6">
               {[1, 1.5, 2, 3].map((sm) => {
                 const id = `speedmod-${sm}`;
