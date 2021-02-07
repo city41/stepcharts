@@ -42,12 +42,10 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         arrowImgs.push(
           <ArrowImg
             key={i}
-            className={clsx(
-              styles.arrow,
-              "absolute text-xs transition-all ease-in-out duration-500"
-            )}
+            className={clsx(styles.arrow, "absolute text-xs")}
             style={{
               top: a.offset * MEASURE_HEIGHT * speedMod,
+              transition: "top 500ms",
             }}
             size={ARROW_HEIGHT}
             position={i as ArrowImgProps["position"]}
