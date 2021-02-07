@@ -5,7 +5,8 @@
     "develop": "next",
     "build": "node scripts/removeSpacesInDirectories.js && next build",
     "start": "next start",
-    "type-check": "tsc --noemit"
+    "type-check": "tsc --noemit",
+    "test": "yarn jest"
   },
   "dependencies": {
     "@types/jest": "^26.0.20",

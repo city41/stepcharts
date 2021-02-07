@@ -158,13 +158,11 @@ function parseArrowStream(
     let note = notes[i];
     const nextNote = notes[i + 1];
 
-    const freezeThatConcludes = currentFreezeDirections.find((cfd) =>
-      concludesAFreeze(note, cfd)
-    );
+    const smDirection = dwiToSMDirection[note];
 
-    if (freezeThatConcludes) {
-      const smDirection = dwiToSMDirection[note].split("");
-
+    // give the current note a chance to conclude any freezes that may be pending
+    if (smDirection) {
+      const smDirectionSplit = smDirection.split("");
       for (let d = 0; d < smDirection.length; ++d) {
         if (
           smDirection[d] === "1" &&
@@ -174,14 +172,11 @@ function parseArrowStream(
           of!.endOffset = curOffset.n / curOffset.d + 0.25;
           freezes.push(of as FreezeBody);
           openFreezes[d as FreezeBody["direction"]] = null;
-          smDirection[d] = "0";
+          smDirectionSplit[d] = "0";
         }
       }
 
-      note = smToDwiDirection[smDirection.join("")];
-      currentFreezeDirections = currentFreezeDirections.filter(
-        (c) => c !== freezeThatConcludes
-      );
+      note = smToDwiDirection[smDirectionSplit.join("")];
     }
 
     if (nextNote === "!") {
