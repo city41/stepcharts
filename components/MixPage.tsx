@@ -59,7 +59,7 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
             alt={`${mix.mixName} banner`}
           />
         </ImageFrame>
-        <ul className="flex-1 flex flex-col sm:flex-row sm:flex-wrap items-center">
+        <ul className="flex-1 flex flex-col sm:flex-row sm:flex-wrap items-start">
           {stepcharts.sort(sortByTitleCaseInsensitive).map((stepchart) => {
             const supp = (
               <>
