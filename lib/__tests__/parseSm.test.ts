@@ -216,5 +216,40 @@ ${notes}
         },
       ]);
     });
+
+    it("should handle a freeze as the sole opener (2013, Straight Oath, single, hard)", () => {
+      const notes = `0000
+0000
+0000
+0000
+,
+0000
+0000
+0000
+0000
+,
+0020
+0000
+0000
+0000
+,
+0230
+0000
+0000
+0300`;
+
+      const result = parse(notes);
+      const { arrows, freezes } = result.arrows["single-beginner"];
+
+      expect(arrows).toEqual([
+        { beat: 4, offset: 0, direction: "0020" },
+        { beat: 4, offset: 1, direction: "0200" },
+      ]);
+
+      expect(freezes).toEqual([
+        { direction: 2, startOffset: 0, endOffset: 1.25 },
+        { direction: 1, startOffset: 1, endOffset: 2 },
+      ]);
+    });
   });
 });

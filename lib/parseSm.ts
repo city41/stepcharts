@@ -55,7 +55,6 @@ function findFirstNonEmptyMeasure(
 
     if (line.startsWith(",")) {
       measureIndex = i + 1;
-      i += 1;
       continue;
     }
 
@@ -95,7 +94,12 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
     sc.bpm = Array.from(new Set(filteredBpms)).sort((a, b) => a - b);
   }
 
-  function parseFreezes(lines: string[], i: number): FreezeBody[] {
+  function parseFreezes(
+    lines: string[],
+    i: number,
+    mode: string,
+    difficulty: string
+  ): FreezeBody[] {
     const freezes: FreezeBody[] = [];
     const open: Record<number, Partial<FreezeBody> | undefined> = {};
 
@@ -128,9 +132,8 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
       for (let d = 0; d < cleanedLine.length; ++d) {
         if (cleanedLine[d] === "2") {
           if (open[d]) {
-            console.warn(
-              sc.title,
-              "error parsing freezes, found a new starting freeze before a previous one finished"
+            throw new Error(
+              `${sc.title}, ${mode}, ${difficulty} -- error parsing freezes, found a new starting freeze before a previous one finished`
             );
           }
           const startBeatFraction = curOffset;
@@ -140,11 +143,9 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
           };
         } else if (cleanedLine[d] === "3") {
           if (!open[d]) {
-            console.warn(
-              sc.title,
-              "error parsing freezes, needed to close a freeze that never opened"
+            throw new Error(
+              `${sc.title}, ${mode}, ${difficulty} -- error parsing freezes, needed to close a freeze that never opened`
             );
-            continue;
           }
 
           const endBeatFraction = curOffset.add(new Fraction(1).div(4));
@@ -214,35 +215,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
       curOffset = curOffset.add(curMeasureFraction);
     }
 
-    // // trim off empty leading measures
-    // let startI = 0;
-    // while (
-    //   startI < arrows.length &&
-    //   (arrows[startI].direction === "0000" ||
-    //     arrows[startI].direction === "00000000")
-    // ) {
-    //   startI += 1;
-    // }
-    //
-    // arrows = arrows.slice(startI);
-
-    // TODO: actually trim empty ends, but there's more to it
-    // for starters, need to ensure to leave entire measures intact
-    // (think a measure who's last beat is a rest)
-    // let endI = arrows.length - 1;
-    // while (
-    //   endI > 0 &&
-    //   (arrows[endI].direction === "0000" ||
-    //     arrows[endI].direction === "00000000")
-    // ) {
-    //   endI -= 1;
-    // }
-
-    // TODO: passing in startI as trim amount is only correct if the song has nothing but
-    // quarter beat measures...
-    const freezes = parseFreezes(lines, firstMeasureIndex);
-
-    // arrows = arrows.slice(0, endI + 1);
+    const freezes = parseFreezes(lines, firstMeasureIndex, mode, difficulty);
 
     sc.arrows![`${mode}-${difficulty}`] = { arrows, freezes };
     sc.availableTypes!.push({
