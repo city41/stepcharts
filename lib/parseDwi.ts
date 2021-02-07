@@ -1,3 +1,4 @@
+import fs from "fs";
 import Fraction from "fraction.js";
 import { RawStepchart } from "./parseStepchart";
 import { determineBeat } from "./util";
@@ -257,7 +258,18 @@ function parseArrowStream(
 
   return { arrows, freezes };
 }
-function parseDwi(dwi: string, titleDir: string): RawStepchart {
+
+function findBanner(titlePath: string): string | null {
+  const files = fs.readdirSync(titlePath);
+
+  const bannerFile = files.find(
+    (f) => f.endsWith(".png") && f.indexOf("-bg.png") === -1
+  );
+
+  return bannerFile ?? null;
+}
+
+function parseDwi(dwi: string, titlePath: string): RawStepchart {
   const lines = dwi.split("\n").map((l) => l.trim());
 
   let i = 0;
@@ -265,7 +277,7 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
   const sc: Partial<RawStepchart> = {
     arrows: {},
     availableTypes: [],
-    banner: `${titleDir}.png`,
+    banner: findBanner(titlePath),
   };
 
   function parseNotes(mode: "single" | "double", rawNotes: string) {
@@ -349,7 +361,7 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
     }
 
     if (!displaybpm && !bpm) {
-      throw new Error(`No BPM found for ${titleDir}`);
+      throw new Error(`No BPM found for ${titlePath}`);
     }
 
     sc.bpm = ((displaybpm ?? bpm) as unknown) as Stepchart["bpm"];

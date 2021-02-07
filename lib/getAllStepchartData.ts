@@ -37,7 +37,7 @@ function _getAllStepchartData(): EntireMix[] {
     const mixSongDirs = getDirectories(ROOT, mixDir);
 
     const mix = {
-      mixName: mixDir,
+      mixName: mixDir.replace(/-/g, " "),
       mixDir,
       songCount: mixSongDirs.length,
     };

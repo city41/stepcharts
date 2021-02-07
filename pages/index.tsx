@@ -13,9 +13,9 @@ type NextIndexProps = {
 };
 
 function sortByDateReleased(a: Mix, b: Mix): number {
-  return dateReleased[a.mixName]
+  return dateReleased[a.mixDir]
     .toString()
-    .localeCompare(dateReleased[b.mixName].toString());
+    .localeCompare(dateReleased[b.mixDir].toString());
 }
 
 export async function getStaticProps(): Promise<

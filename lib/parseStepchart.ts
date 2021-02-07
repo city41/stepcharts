@@ -55,7 +55,7 @@ function parseStepchart(
   }
 
   const fileContents = fs.readFileSync(stepchartPath);
-  const rawStepchart = parser(fileContents.toString(), titleDir);
+  const rawStepchart = parser(fileContents.toString(), stepchartSongDirPath);
 
   if (rawStepchart.banner) {
     const publicName = toSafeName(`${mixDir}-${rawStepchart.banner}`);

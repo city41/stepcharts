@@ -57,7 +57,7 @@ function findFirstNonEmptyMeasure(
   );
 }
 
-function parseSm(sm: string, _titleDir: string): RawStepchart {
+function parseSm(sm: string, _titlePath: string): RawStepchart {
   const lines = sm.split("\n").map((l) => l.trim());
 
   let i = 0;
