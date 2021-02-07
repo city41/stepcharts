@@ -1,0 +1,1 @@
+rm -f prodStepcharts/**/*.{mp3,mp4,ogg,avi,lrc}
