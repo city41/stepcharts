@@ -6,8 +6,5 @@ Deployed here: https://ddr.stepcharts.com
 
 ## Status
 
-A basic first version of the site has been deployed. 
-
-Still a lot more work to do, more info in the [roadmap](https://stepcharts.com/roadmap)
-
+A basic first version of the site has been deployed. I plan to add several more features to make it more useful.
 
