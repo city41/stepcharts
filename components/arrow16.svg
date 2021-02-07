@@ -5,11 +5,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="100"
    height="100"
    viewBox="0 0 100 100"
    version="1.1"
-   id="svg1954">
+   id="svg1954"
+   sodipodi:docname="arrow16.svg"
+   inkscape:version="1.0.2 (1.0.2+r75+1)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1900"
+     inkscape:window-height="1032"
+     id="namedview908"
+     showgrid="false"
+     inkscape:zoom="8.72"
+     inkscape:cx="50"
+     inkscape:cy="50"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1954" />
   <defs
      id="defs1948" />
   <metadata
@@ -20,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -30,7 +54,7 @@
      d="M 48.986564,0 0,47.403201 v 12.89912 l 10.225258,10.281641 h 12.703525 l 9.087065,-9.136943 V 84.262264 L 47.667531,100 h 4.664938 L 67.984158,84.262264 V 61.447019 l 9.087056,9.136943 H 89.774743 L 100,60.302321 V 47.403201 L 51.013436,0 h -0.658357 -0.710388 z" />
   <path
      id="path2081"
-     style="fill:#cd6adc;fill-opacity:1;stroke:none;stroke-width:0.118723px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     style="fill:#8f3fd2;fill-opacity:1;stroke:none;stroke-width:0.118723px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      d="M 48.438278,6.7345167 5.3447994,50.389939 v 8.519573 l 6.9163516,6.954489 h 9.587478 L 37.171254,50.456674 v 33.512139 l 11.087809,11.14893 h 1.805569 0.478452 1.805569 L 63.436462,83.968813 V 50.456674 l 15.322624,15.407327 h 9.587479 l 6.916351,-6.954489 V 50.389939 L 52.169438,6.7345167 h -0.732819 -0.867172 z" />
   <path
      id="path2086"
