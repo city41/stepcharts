@@ -131,8 +131,20 @@ function parseArrowStream(
   const arrows: Arrow[] = [];
   const freezes: FreezeBody[] = [];
 
-  let currentFreezeDirection: string | null = null;
-  let openFreezes: Array<Partial<FreezeBody>> = [];
+  let currentFreezeDirections: string[] = [];
+  const openFreezes: Record<
+    FreezeBody["direction"],
+    Partial<FreezeBody> | null
+  > = {
+    0: null,
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
+  };
 
   let curOffset = new Fraction(0);
   // dwi's default increment is 8th notes
@@ -146,27 +158,30 @@ function parseArrowStream(
     let note = notes[i];
     const nextNote = notes[i + 1];
 
-    if (concludesAFreeze(note, currentFreezeDirection)) {
-      openFreezes.forEach((of) => {
-        of.endOffset = curOffset.n / curOffset.d + 0.25;
-        freezes.push(of as FreezeBody);
-      });
+    const freezeThatConcludes = currentFreezeDirections.find((cfd) =>
+      concludesAFreeze(note, cfd)
+    );
 
-      // now when closing out a freeze, any arrows not part of the freeze
-      // become normal arrows, see Max, Candy, single, maniac as a good example
-
+    if (freezeThatConcludes) {
       const smDirection = dwiToSMDirection[note].split("");
 
-      for (let i = 0; i < smDirection.length; ++i) {
-        if (openFreezes[i]) {
-          smDirection[i] = "0";
+      for (let d = 0; d < smDirection.length; ++d) {
+        if (
+          smDirection[d] === "1" &&
+          openFreezes[d as FreezeBody["direction"]]
+        ) {
+          const of = openFreezes[d as FreezeBody["direction"]];
+          of!.endOffset = curOffset.n / curOffset.d + 0.25;
+          freezes.push(of as FreezeBody);
+          openFreezes[d as FreezeBody["direction"]] = null;
+          smDirection[d] = "0";
         }
       }
 
       note = smToDwiDirection[smDirection.join("")];
-
-      openFreezes = [];
-      currentFreezeDirection = null;
+      currentFreezeDirections = currentFreezeDirections.filter(
+        (c) => c !== freezeThatConcludes
+      );
     }
 
     if (nextNote === "!") {
@@ -180,7 +195,7 @@ function parseArrowStream(
 
       for (let d = 0; d < smDirection.length; ++d) {
         if (smDirection[d] === "1") {
-          openFreezes[d] = {
+          openFreezes[d as FreezeBody["direction"]] = {
             direction: d as FreezeBody["direction"],
             startOffset: curOffset.n / curOffset.d,
           };
@@ -198,37 +213,11 @@ function parseArrowStream(
       });
 
       // remember the direction to know when to close the freeze
-      currentFreezeDirection = freezeNote;
+      currentFreezeDirections.push(freezeNote);
 
       // move past the exclamation and trailing note
       i += 2;
       curOffset = curOffset.add(curMeasureFraction);
-    } else if (concludesAFreeze(note, currentFreezeDirection)) {
-      openFreezes.forEach((of) => {
-        of.endOffset = curOffset.n / curOffset.d + 0.25;
-        freezes.push(of as FreezeBody);
-      });
-
-      // now when closing out a freeze, any arrows not part of the freeze
-      // become normal arrows, see Max, Candy, single, maniac as a good example
-
-      const smDirection = dwiToSMDirection[note].split("");
-
-      for (let i = 0; i < smDirection.length; ++i) {
-        if (openFreezes[i]) {
-          smDirection[i] = "0";
-        }
-      }
-
-      arrows.push({
-        direction: smDirection.join("") as Arrow["direction"],
-        beat: determineBeat(curOffset),
-        offset: curOffset.n / curOffset.d,
-      });
-
-      openFreezes = [];
-      curOffset = curOffset.add(curMeasureFraction);
-      currentFreezeDirection = null;
     } else if (note === "(") {
       curMeasureFraction = new Fraction(1).div(16);
     } else if (note === "[") {
@@ -269,7 +258,7 @@ function findBanner(titlePath: string): string | null {
   return bannerFile ?? null;
 }
 
-function parseDwi(dwi: string, titlePath: string): RawStepchart {
+function parseDwi(dwi: string, titlePath?: string): RawStepchart {
   const lines = dwi.split("\n").map((l) => l.trim());
 
   let i = 0;
@@ -277,7 +266,7 @@ function parseDwi(dwi: string, titlePath: string): RawStepchart {
   const sc: Partial<RawStepchart> = {
     arrows: {},
     availableTypes: [],
-    banner: findBanner(titlePath),
+    banner: titlePath ? findBanner(titlePath) : null,
   };
 
   function parseNotes(mode: "single" | "double", rawNotes: string) {
