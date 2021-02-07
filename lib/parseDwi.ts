@@ -105,18 +105,28 @@ function concludesAFreeze(
   return true;
 }
 
-function findFirstNonEmptyMeasure(notes: string): number {
+function findFirstNonEmptyMeasure(
+  p1Notes: string,
+  p2Notes: string | undefined
+): number {
   let i = 0;
 
-  while (notes.startsWith("00000000")) {
-    notes = notes.substring(8);
+  while (
+    p1Notes.startsWith("00000000") &&
+    (!p2Notes || p2Notes.startsWith("00000000"))
+  ) {
+    p1Notes = p1Notes.substring(8);
+    p2Notes = p2Notes?.substring(8);
     i += 8;
   }
 
   return i;
 }
 
-function parseArrowStream(notes: string): ArrowParseResult {
+function parseArrowStream(
+  notes: string,
+  firstNonEmptyMeasureIndex: number
+): ArrowParseResult {
   const arrows: Arrow[] = [];
   const freezes: FreezeBody[] = [];
 
@@ -128,7 +138,7 @@ function parseArrowStream(notes: string): ArrowParseResult {
   let curMeasureFraction = new Fraction(1).div(8);
 
   for (
-    let i = findFirstNonEmptyMeasure(notes);
+    let i = firstNonEmptyMeasureIndex;
     i < notes.length && notes[i] !== ";";
     ++i
   ) {
@@ -263,12 +273,20 @@ function parseDwi(dwi: string, titleDir: string): RawStepchart {
     const difficulty = values[0].toLowerCase();
     const feet = Number(values[1]);
     const notes = values[2];
+    const playerTwoNotes = values[3];
 
-    let arrowResult = parseArrowStream(notes);
+    const firstNonEmptyMeasureIndex = findFirstNonEmptyMeasure(
+      notes,
+      playerTwoNotes
+    );
+
+    let arrowResult = parseArrowStream(notes, firstNonEmptyMeasureIndex);
 
     if (mode === "double") {
-      const playerTwoArrows = values[3];
-      const playerTwoResult = parseArrowStream(playerTwoArrows);
+      const playerTwoResult = parseArrowStream(
+        playerTwoNotes,
+        firstNonEmptyMeasureIndex
+      );
 
       arrowResult = combinePadsIntoOneStream(arrowResult, playerTwoResult);
     }
