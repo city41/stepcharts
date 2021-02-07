@@ -46,6 +46,8 @@ function Root({
                   className="w-full h-full"
                   src={logoSvg}
                   alt="Stepcharts logo"
+                  width={52}
+                  height={52}
                 />
               </a>
               <div className="text-2xl font-bold text-focal text-center pl-4">

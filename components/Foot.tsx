@@ -14,7 +14,6 @@ function Foot({ className, difficulty }: FootProps) {
       className={clsx(className, styles[difficulty])}
       viewBox="0 0 52.243954 90.153709"
       width={16}
-      height="auto"
       aria-label="Foot icon"
     >
       <g transform="translate(-184.03278,-44.125525)">

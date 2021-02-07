@@ -186,7 +186,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
               "--arrow-size": `${ARROW_HEIGHT}px`,
             } as CSSProperties
           }
-          role="image"
+          role="img"
           aria-label={`${currentType} step chart for ${stepchart.title.actualTitle}`}
         >
           {barDivs}

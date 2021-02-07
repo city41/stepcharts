@@ -22,6 +22,8 @@ function Banner({ className, title, banner }: BannerProps) {
         onError={() => setCurrentBanner(null)}
         loading="lazy"
         alt={`Banner for ${title}`}
+        width={256}
+        height={80}
       />
     );
   } else {
