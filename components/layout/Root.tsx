@@ -7,6 +7,7 @@ import { ReportAnIssue } from "../ReportAnIssue";
 import logoSvg from "./logoArrow.svg";
 
 import styles from "./Root.module.css";
+import { BrandNewModal } from "../BrandNewModal";
 
 type RootProps = {
   title: string;
@@ -24,48 +25,51 @@ function Root({
   children,
 }: RootProps) {
   return (
-    <div
-      className={clsx(
-        styles.background,
-        "flex flex-col items-start items-stretch"
-      )}
-    >
-      <Head
-        title={title}
-        metaDescription={metaDescription}
-        metaImg={socialMediaImg}
-      />
-      <header>
-        <div className="bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-between lg:px-4">
-          <div className="flex flex-row items-center">
-            <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
-              <img
-                className="w-full h-full"
-                src={logoSvg}
-                alt="Stepcharts logo"
-              />
-            </a>
-            <div className="text-2xl font-bold text-focal text-center pl-4">
-              <a href="/">Stepcharts</a>
-            </div>
-          </div>
-          <ReportAnIssue className="text-focal mr-4 lg:mr-0" />
-        </div>
-        {subtitle && (
-          <div className="hidden sm:block py-1 bg-subheading border-b-2 border-heading-border">
-            <div className="w-full max-w-6xl mx-auto flex flex-row items-center">
-              <h1 className="font-bold text-white text-center sm:text-left">
-                {subtitle}
-              </h1>
-            </div>
-          </div>
+    <>
+      <BrandNewModal />
+      <div
+        className={clsx(
+          styles.background,
+          "flex flex-col items-start items-stretch"
         )}
-      </header>
-      <main role="main" className="flex-1 max-w-6xl w-full mx-auto">
-        {children}
-      </main>
-      <Footer className="mt-16" />
-    </div>
+      >
+        <Head
+          title={title}
+          metaDescription={metaDescription}
+          metaImg={socialMediaImg}
+        />
+        <header>
+          <div className="bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-between lg:px-4">
+            <div className="flex flex-row items-center">
+              <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
+                <img
+                  className="w-full h-full"
+                  src={logoSvg}
+                  alt="Stepcharts logo"
+                />
+              </a>
+              <div className="text-2xl font-bold text-focal text-center pl-4">
+                <a href="/">Stepcharts</a>
+              </div>
+            </div>
+            <ReportAnIssue className="text-focal mr-4 lg:mr-0" />
+          </div>
+          {subtitle && (
+            <div className="hidden sm:block py-1 bg-subheading border-b-2 border-heading-border">
+              <div className="w-full max-w-6xl mx-auto flex flex-row items-center">
+                <h1 className="font-bold text-white text-center sm:text-left">
+                  {subtitle}
+                </h1>
+              </div>
+            </div>
+          )}
+        </header>
+        <main role="main" className="flex-1 max-w-6xl w-full mx-auto">
+          {children}
+        </main>
+        <Footer className="mt-16" />
+      </div>
+    </>
   );
 }
 
