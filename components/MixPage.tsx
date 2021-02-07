@@ -36,6 +36,12 @@ function getFeetRange(stepchart: Stepchart): string {
   return `${min} - ${max}`;
 }
 
+function sortByTitleCaseInsensitive(a: Stepchart, b: Stepchart) {
+  return a.title.actualTitle
+    .toLowerCase()
+    .localeCompare(b.title.actualTitle.toLowerCase());
+}
+
 function MixPage({ mix, stepcharts }: MixPageProps) {
   return (
     <Root
@@ -54,7 +60,7 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
           />
         </ImageFrame>
         <ul className="flex flex-col items-center space-y-4">
-          {stepcharts.map((stepchart) => {
+          {stepcharts.sort(sortByTitleCaseInsensitive).map((stepchart) => {
             const supp = (
               <>
                 <span>{getFeetRange(stepchart)}</span>
