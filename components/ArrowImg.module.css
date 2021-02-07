@@ -1,18 +1,8 @@
 .arrowSvg {
-    @apply absolute;
+    @apply absolute block;
+    width: var(--arrow-size);
+    height: var(--arrow-size);
     transform-origin: center;
-}
-
-.outerBorder {
-    fill: black;
-}
-
-.arrowColor {
-    fill: red;
-}
-
-.innerWhite {
-    fill: white;
 }
 
 .left1 {
@@ -54,33 +44,4 @@
     left: calc(var(--arrow-size) * 7);
     transform: rotate(90deg);
 }
-
-.beat4 .arrowColor {
-    fill: red;
-}
-
-.beat8 .arrowColor {
-    fill: blue;
-}
-
-.beat16 .arrowColor {
-    fill: yellow;
-}
-
-.beat6 .arrowColor, .beat12 .arrowColor {
-    fill:green;
-}
-
-.beatshock .arrowColor {
-    fill: #d6f8ff;
-}
-
-.beatshock .outerBorder, .beatshock .innerWhite {
-    fill: #0fd5fa;
-}
-
-.beatfreeze .arrowColor {
-    fill: #34DD39;
-}
-
 

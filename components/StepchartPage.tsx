@@ -1,7 +1,8 @@
 import React, { CSSProperties, useState } from "react";
 import clsx from "clsx";
 
-import { ArrowSvg, ArrowSvgProps } from "./ArrowSvg";
+import { ArrowImg } from "./ArrowImg";
+import type { ArrowImgProps } from "./ArrowImg";
 import { FreezeBody } from "./FreezeBody";
 import { Root } from "./layout/Root";
 import { Banner } from "./Banner";
@@ -29,44 +30,32 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
 
   const { arrows, freezes } = stepchart.arrows[currentType];
 
-  const arrowDivs = [];
+  const arrowImgs = [];
 
   for (let ai = arrows.length - 1; ai >= 0; --ai) {
     const a = arrows[ai];
-    const arrowSvgs = [];
     const isShockArrow = a.direction.indexOf("0") === -1;
     const isFreezeArrow = a.direction.indexOf("2") > -1;
 
     for (let i = 0; i < a.direction.length; ++i) {
       if (a.direction[i] !== "0") {
-        arrowSvgs.push(
-          <ArrowSvg
+        arrowImgs.push(
+          <ArrowImg
             key={i}
+            className={clsx(
+              styles.arrow,
+              "absolute text-xs transition-all ease-in-out duration-500"
+            )}
+            style={{
+              top: a.offset * MEASURE_HEIGHT * speedMod,
+            }}
             size={ARROW_HEIGHT}
-            position={i as ArrowSvgProps["position"]}
+            position={i as ArrowImgProps["position"]}
             beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
           />
         );
       }
     }
-
-    const el = (
-      <div
-        key={a.offset}
-        className={clsx(
-          styles.arrow,
-          styles[`beat-${a.beat}`],
-          "absolute text-xs transition-all ease-in-out duration-500"
-        )}
-        style={{
-          top: a.offset * MEASURE_HEIGHT * speedMod,
-        }}
-      >
-        {arrowSvgs}
-      </div>
-    );
-
-    arrowDivs.push(el);
   }
 
   const barDivs = [];
@@ -194,7 +183,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           {!isSingle && (
             <div className={clsx(styles.doubleDivider, "h-full")} />
           )}
-          {arrowDivs}
+          {arrowImgs}
         </div>
       </div>
     </Root>
