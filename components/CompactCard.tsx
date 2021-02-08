@@ -90,27 +90,33 @@ function CompactCard({ className, title, mix, bpm, types }: CompactCardProps) {
           <div className="font-bold text-white">
             {title.translitTitleName || title.titleName}
           </div>
-          <div className="px-2 py-0.5 bg-focal-700 text-xs text-white grid place-items-center xrounded-full">
+          <div className="ml-2 px-2 py-0.5 bg-focal-700 text-xs text-white grid place-items-center xrounded-full">
             {shortMixNames[mix.mixDir]}
           </div>
         </div>
 
-        <div className="flex flex-row justify-items-stretch pt-1 mx-2 mb-1 space-x-2">
+        <div className="flex flex-row justify-items-stretch pt-1 mx-2 mb-2 space-x-2">
           <Types types={types.filter((t) => t.mode === "single")} />
           <Types types={types.filter((t) => t.mode === "double")} />
         </div>
-        <div className="text-gray-900 xbg-gray-200 text-sm px-2 py-1 text-center flex flex-row justify-between">
-          <div>
-            <span className="font-bold">{getBpmRange(bpm)}</span> bpm
-          </div>
-          <div>
-            glp <span className="font-bold">48</span>
+        <div className="text-gray-100 bg-gray-400 text-sm px-2 py-1 text-center flex flex-row justify-between">
+          <div className="px-1 -ml-2 -my-1  bg-gray-900 text-gray-200 grid place-items-center">
+            {getBpmRange(bpm)} bpm
           </div>
           <div>
             jmp <span className="font-bold">21</span>
           </div>
           <div>
+            crs <span className="font-bold">40</span>
+          </div>
+          <div>
+            drl <span className="font-bold">60</span>
+          </div>
+          <div>
             frz <span className="font-bold">30</span>
+          </div>
+          <div>
+            glp <span className="font-bold">48</span>
           </div>
         </div>
       </ImageFrame>

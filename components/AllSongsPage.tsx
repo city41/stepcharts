@@ -88,7 +88,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
         {titles.map((t) => {
           return (
             <CompactCard
-              className="w-full h-full"
+              className="w-full h-auto"
               key={`${t.mix.mixDir}-${t.title.titleDir}`}
               title={t.title}
               mix={t.mix}
