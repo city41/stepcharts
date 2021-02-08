@@ -41,7 +41,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       if (a.direction[i] !== "0") {
         arrowImgs.push(
           <ArrowImg
-            key={i}
+            key={`Arrow-${ai}-${i}`}
             className={clsx(styles.arrow, "absolute text-xs")}
             style={{
               top: a.offset * MEASURE_HEIGHT * speedMod,
@@ -67,7 +67,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   for (let i = 0; i < totalSongHeight / barHeight; ++i) {
     barDivs.push(
       <div
-        key={i}
+        key={`barDiv-${i}`}
         className={clsx(
           styles.bar,
           "even:bg-blue-200 odd:bg-blue-100 w-full absolute transition-all ease-in-out duration-500",
