@@ -100,23 +100,25 @@ function CompactCard({ className, title, mix, bpm, types }: CompactCardProps) {
           <Types types={types.filter((t) => t.mode === "double")} />
         </div>
         <div className="text-gray-100 bg-gray-400 text-sm px-2 py-1 text-center flex flex-row justify-between">
-          <div className="px-1 -ml-2 -my-1  bg-gray-900 text-gray-200 grid place-items-center">
-            {getBpmRange(bpm)} bpm
+          <div className="px-2 -ml-2 -my-1  bg-gray-700 text-gray-200 grid place-items-center">
+            <div>
+              <span className="font-bold">{getBpmRange(bpm)}</span>
+            </div>
           </div>
           <div>
-            jmp <span className="font-bold">21</span>
+            J <span className="font-bold">21</span>
           </div>
           <div>
-            crs <span className="font-bold">40</span>
+            C <span className="font-bold">40</span>
           </div>
           <div>
-            drl <span className="font-bold">60</span>
+            D <span className="font-bold">60</span>
           </div>
           <div>
-            frz <span className="font-bold">30</span>
+            F <span className="font-bold">30</span>
           </div>
           <div>
-            glp <span className="font-bold">48</span>
+            G <span className="font-bold">48</span>
           </div>
         </div>
       </ImageFrame>
