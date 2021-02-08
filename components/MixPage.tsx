@@ -9,6 +9,7 @@ import { Breadcrumbs } from "./Breadcrumbs";
 type MixPageTitle = {
   titleDir: string;
   titleName: string;
+  translitTitleName: string | null;
   banner: string | null;
   feet: [number, number];
 };
@@ -33,7 +34,9 @@ function getFeetRange(title: MixPageTitle): string {
 }
 
 function sortByTitleCaseInsensitive(a: MixPageTitle, b: MixPageTitle) {
-  return a.titleName.toLowerCase().localeCompare(b.titleName.toLowerCase());
+  return (a.translitTitleName || a.titleName)
+    .toLowerCase()
+    .localeCompare((b.translitTitleName || b.titleName).toLowerCase());
 }
 
 function MixPage({ mix, titles }: MixPageProps) {
@@ -69,8 +72,14 @@ function MixPage({ mix, titles }: MixPageProps) {
             return (
               <li className="m-2" key={title.titleName}>
                 <a href={buildTitleUrl(mix, title.titleDir)}>
-                  <PageItem title={title.titleName} supplementary={supp}>
-                    <Banner banner={title.banner} title={title.titleName} />
+                  <PageItem
+                    title={title.translitTitleName || title.titleName}
+                    supplementary={supp}
+                  >
+                    <Banner
+                      banner={title.banner}
+                      title={title.translitTitleName || title.titleName}
+                    />
                   </PageItem>
                 </a>
               </li>

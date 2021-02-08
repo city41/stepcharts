@@ -106,10 +106,9 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
 
   return (
     <Root
-      title={`${stepchart.title.actualTitle} ${currentType.replace(
-        /-/g,
-        ", "
-      )}`}
+      title={`${
+        stepchart.title.translitTitleName || stepchart.title.titleName
+      } ${currentType.replace(/-/g, ", ")}`}
       subtitle={
         <Breadcrumbs
           crumbs={[
@@ -118,7 +117,8 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
               pathSegment: stepchart.mix.mixDir,
             },
             {
-              display: stepchart.title.actualTitle,
+              display:
+                stepchart.title.translitTitleName || stepchart.title.titleName,
               pathSegment: stepchart.title.titleDir,
             },
             {
@@ -129,16 +129,24 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         />
       }
       metaDescription={`${currentType.replace(/-/g, " ")} stepchart for ${
-        stepchart.title.actualTitle
+        stepchart.title.translitTitleName || stepchart.title.titleName
       }`}
     >
       <div className="sm:mt-10 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="z-10 mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
           <Banner
             banner={stepchart.title.banner}
-            title={stepchart.title.actualTitle}
+            title={
+              stepchart.title.translitTitleName || stepchart.title.titleName
+            }
           />
           <TitleDetailsTable className="mt-4">
+            {stepchart.title.translitTitleName && (
+              <TitleDetailsRow
+                name="Native title"
+                value={stepchart.title.titleName}
+              />
+            )}
             <TitleDetailsRow name="BPM" value={stepchart.bpm.join(", ")} />
             <TitleDetailsRow name="Artist" value={stepchart.artist} />
             <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
@@ -186,7 +194,9 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             } as CSSProperties
           }
           role="img"
-          aria-label={`${currentType} step chart for ${stepchart.title.actualTitle}`}
+          aria-label={`${currentType} step chart for ${
+            stepchart.title.translitTitleName || stepchart.title.titleName
+          }`}
         >
           {barDivs}
           {freezeDivs}

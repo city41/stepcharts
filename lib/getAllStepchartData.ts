@@ -31,9 +31,6 @@ function _getAllStepchartData(): EntireMix[] {
   const mixDirs = getDirectories(ROOT);
 
   return mixDirs.map((mixDir) => {
-    const mixBannerFile = getFiles(ROOT, mixDir).find((f) =>
-      f.endsWith(".png")
-    );
     const mixSongDirs = getDirectories(ROOT, mixDir);
 
     const mix = {

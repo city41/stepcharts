@@ -21,6 +21,7 @@ type TitlePageMix = {
 
 type TitlePageProps = {
   name: string;
+  translitName: string | null;
   dir: string;
   banner: string | null;
   bpm: number[];
@@ -48,6 +49,7 @@ function buildTypeUrl(mixDir: string, titleDir: string, slug: string): string {
 
 function TitlePage({
   name,
+  translitName,
   dir,
   banner,
   bpm,
@@ -56,7 +58,9 @@ function TitlePage({
   types,
 }: TitlePageProps) {
   if (types.length === 0) {
-    throw new Error(`TitlePage: empty title! ${name}, ${mix.mixName}`);
+    throw new Error(
+      `TitlePage: empty title! ${translitName || name}, ${mix.mixName}`
+    );
   }
 
   const grouped = groupTypes(types);
@@ -65,21 +69,24 @@ function TitlePage({
     <Breadcrumbs
       crumbs={[
         { display: mix.mixName, pathSegment: mix.mixDir },
-        { display: name, pathSegment: dir },
+        { display: translitName || name, pathSegment: dir },
       ]}
     />
   );
 
   return (
     <Root
-      title={name}
+      title={translitName || name}
       subtitle={breadcrumbs}
-      metaDescription={`Step charts for ${name}`}
+      metaDescription={`Step charts for ${translitName || name}`}
     >
       <div className="sm:mt-10 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
-          <Banner banner={banner} title={name} />
+          <Banner banner={banner} title={translitName || name} />
           <TitleDetailsTable className="mt-4">
+            {translitName && (
+              <TitleDetailsRow name="Native title" value={name} />
+            )}
             <TitleDetailsRow name="BPM" value={bpm.join(", ")} />
             <TitleDetailsRow name="Artist" value={artist ?? "unknown"} />
             <TitleDetailsRow name="Mix" value={mix.mixName} />

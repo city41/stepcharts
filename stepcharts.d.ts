@@ -43,7 +43,8 @@ type Mix = {
 };
 
 type Title = {
-  actualTitle: string;
+  titleName: string;
+  translitTitleName: string | null;
   titleDir: string;
   banner: string | null;
 };

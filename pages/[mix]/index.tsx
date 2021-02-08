@@ -54,7 +54,8 @@ export async function getStaticProps(
       titles: mix.stepcharts.map((sc) => {
         return {
           titleDir: sc.title.titleDir,
-          titleName: sc.title.actualTitle,
+          titleName: sc.title.titleName,
+          translitTitleName: sc.title.translitTitleName,
           banner: sc.title.banner,
           feet: getMinMaxFeet(sc),
         };

@@ -2,7 +2,7 @@ import Fraction from "fraction.js";
 import { RawStepchart } from "./parseStepchart";
 import { determineBeat } from "./util";
 
-const metaTagsToConsume = ["artist", "banner"];
+const metaTagsToConsume = ["title", "titletranslit", "artist", "banner"];
 
 function concludesANoteTag(line: string | undefined): boolean {
   if (line === undefined) {
@@ -241,12 +241,6 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
       if (metaTagsToConsume.includes(tag)) {
         // @ts-ignore
         sc[tag] = value;
-        // allow translit titles to beat titles, but titles
-        // will be the result if there is no translit title
-      } else if (tag === "titletranslit") {
-        sc.title = value;
-      } else if (tag === "title" && !sc.title) {
-        sc.title = value;
       } else if (tag === "bpms") {
         parseBpms(value);
       } else if (tag === "notes") {

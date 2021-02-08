@@ -5,6 +5,7 @@ import { parseSm } from "./parseSm";
 
 type RawStepchart = Omit<Stepchart, "mix" | "title"> & {
   title: string;
+  titletranslit: string | null;
   banner: string | null;
 };
 type Parser = (chart: string, titleDir: string) => RawStepchart;
@@ -69,7 +70,8 @@ function parseStepchart(
   return {
     ...rawStepchart,
     title: {
-      actualTitle: rawStepchart.title,
+      titleName: rawStepchart.title,
+      translitTitleName: rawStepchart.titletranslit ?? null,
       titleDir,
       banner: rawStepchart.banner,
     },
