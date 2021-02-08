@@ -15,17 +15,20 @@ type BreadcrumbsProps = {
 
 function buildLink(crumb: Crumb, crumbs: Crumb[]): string {
   const targetCrumbIndex = crumbs.indexOf(crumb);
-
-  return crumbs.reduce<string>((building, curCrumb, index) => {
+  const gathered = crumbs.reduce<string[]>((building, curCrumb, index) => {
     if (index > targetCrumbIndex) {
       return building;
     }
 
-    return `${building}/${curCrumb.pathSegment}`;
-  }, "");
+    return building.concat(curCrumb.pathSegment);
+  }, []);
+
+  const path = `${gathered.join("/")}`;
+
+  return path || "/";
 }
 
-const ROOT_CRUMB = { display: "Mixes", pathSegment: "/" };
+const ROOT_CRUMB = { display: "Mixes", pathSegment: "" };
 
 function Breadcrumbs({ className, crumbs }: BreadcrumbsProps) {
   const entries = [ROOT_CRUMB].concat(crumbs).map((crumb, index, array) => {
