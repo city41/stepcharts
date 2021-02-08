@@ -6,28 +6,24 @@ import { PageItem } from "./PageItem";
 import { Foot } from "./Foot";
 import { Breadcrumbs } from "./Breadcrumbs";
 
+type MixPageTitle = {
+  titleDir: string;
+  titleName: string;
+  banner: string | null;
+  feet: [number, number];
+};
+
 type MixPageProps = {
   mix: Mix;
-  stepcharts: Stepchart[];
+  titles: MixPageTitle[];
 };
 
 function buildTitleUrl(mix: Mix, title: string) {
   return `/${mix.mixDir}/${title}`;
 }
 
-function getFeetRange(stepchart: Stepchart): string {
-  let min = Number.MAX_SAFE_INTEGER;
-  let max = Number.MIN_SAFE_INTEGER;
-
-  stepchart.availableTypes.forEach((type) => {
-    if (type.feet < min) {
-      min = type.feet;
-    }
-
-    if (type.feet > max) {
-      max = type.feet;
-    }
-  });
+function getFeetRange(title: MixPageTitle): string {
+  const [min, max] = title.feet;
 
   if (min === max) {
     return min.toString();
@@ -36,17 +32,19 @@ function getFeetRange(stepchart: Stepchart): string {
   return `${min} - ${max}`;
 }
 
-function sortByTitleCaseInsensitive(a: Stepchart, b: Stepchart) {
-  return a.title.actualTitle
-    .toLowerCase()
-    .localeCompare(b.title.actualTitle.toLowerCase());
+function sortByTitleCaseInsensitive(a: MixPageTitle, b: MixPageTitle) {
+  return a.titleName.toLowerCase().localeCompare(b.titleName.toLowerCase());
 }
 
-function MixPage({ mix, stepcharts }: MixPageProps) {
+function MixPage({ mix, titles }: MixPageProps) {
   return (
     <Root
       title={mix.mixName}
-      subtitle={<Breadcrumbs stepchart={stepcharts[0]} leaf="mix" />}
+      subtitle={
+        <Breadcrumbs
+          crumbs={[{ display: mix.mixName, pathSegment: mix.mixDir }]}
+        />
+      }
       metaDescription={`Step charts for DDR ${mix.mixName}`}
     >
       <div className="sm:mt-8 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
@@ -60,25 +58,19 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
           />
         </ImageFrame>
         <ul className="flex-1 flex flex-col sm:flex-row sm:flex-wrap items-start">
-          {stepcharts.sort(sortByTitleCaseInsensitive).map((stepchart) => {
+          {titles.sort(sortByTitleCaseInsensitive).map((title) => {
             const supp = (
               <>
-                <span>{getFeetRange(stepchart)}</span>
+                <span>{getFeetRange(title)}</span>
                 <Foot difficulty="icon" />
               </>
             );
 
             return (
-              <li className="m-2" key={stepchart.title.actualTitle}>
-                <a href={buildTitleUrl(mix, stepchart.title.titleDir)}>
-                  <PageItem
-                    title={stepchart.title.actualTitle}
-                    supplementary={supp}
-                  >
-                    <Banner
-                      banner={stepchart.title.banner}
-                      title={stepchart.title.actualTitle}
-                    />
+              <li className="m-2" key={title.titleName}>
+                <a href={buildTitleUrl(mix, title.titleDir)}>
+                  <PageItem title={title.titleName} supplementary={supp}>
+                    <Banner banner={title.banner} title={title.titleName} />
                   </PageItem>
                 </a>
               </li>
@@ -91,3 +83,4 @@ function MixPage({ mix, stepcharts }: MixPageProps) {
 }
 
 export { MixPage };
+export type { MixPageProps };

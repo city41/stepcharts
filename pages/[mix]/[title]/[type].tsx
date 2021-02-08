@@ -20,7 +20,7 @@ export async function getStaticPaths(
   const allData = getAllStepchartData();
 
   const allStepcharts = allData.reduce<Stepchart[]>((building, mix) => {
-    return building.concat(mix.songs);
+    return building.concat(mix.stepcharts);
   }, []);
 
   const allSdts = allStepcharts.reduce<SongDifficultyType[]>(
@@ -60,7 +60,7 @@ export async function getStaticProps(
   const allData = getAllStepchartData();
   const stepchart = allData
     .find((m) => m.mixDir === mixDir)!
-    .songs.find((s) => s.title.titleDir === titleDir)!;
+    .stepcharts.find((s) => s.title.titleDir === titleDir)!;
 
   const results = {
     props: {

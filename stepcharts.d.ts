@@ -48,11 +48,6 @@ type Title = {
   banner: string | null;
 };
 
-type SongMix = {
-  title: string;
-  mix: string;
-};
-
 type SongDifficultyType = {
   title: Title;
   mix: Mix;

@@ -41,7 +41,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       if (a.direction[i] !== "0") {
         arrowImgs.push(
           <ArrowImg
-            key={i}
+            key={`Arrow-${ai}-${i}`}
             className={clsx(styles.arrow, "absolute text-xs")}
             style={{
               top: a.offset * MEASURE_HEIGHT * speedMod,
@@ -67,7 +67,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   for (let i = 0; i < totalSongHeight / barHeight; ++i) {
     barDivs.push(
       <div
-        key={i}
+        key={`barDiv-${i}`}
         className={clsx(
           styles.bar,
           "even:bg-blue-200 odd:bg-blue-100 w-full absolute transition-all ease-in-out duration-500",
@@ -112,11 +112,20 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       )}`}
       subtitle={
         <Breadcrumbs
-          stepchart={stepchart}
-          leaf="chart"
-          type={stepchart.availableTypes.find(
-            (t) => currentType === `${t.mode}-${t.difficulty}`
-          )}
+          crumbs={[
+            {
+              display: stepchart.mix.mixName,
+              pathSegment: stepchart.mix.mixDir,
+            },
+            {
+              display: stepchart.title.actualTitle,
+              pathSegment: stepchart.title.titleDir,
+            },
+            {
+              display: currentType.replace(/-/g, " "),
+              pathSegment: currentType,
+            },
+          ]}
         />
       }
       metaDescription={`${currentType.replace(/-/g, " ")} stepchart for ${
@@ -129,7 +138,10 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             banner={stepchart.title.banner}
             title={stepchart.title.actualTitle}
           />
-          <TitleDetailsTable className="mt-4" stepchart={stepchart}>
+          <TitleDetailsTable className="mt-4">
+            <TitleDetailsRow name="BPM" value={stepchart.bpm.join(", ")} />
+            <TitleDetailsRow name="Artist" value={stepchart.artist} />
+            <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
             <TitleDetailsRow
               name="difficulty"
               value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
