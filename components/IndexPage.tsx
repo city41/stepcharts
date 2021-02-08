@@ -22,11 +22,7 @@ function IndexPage({ mixes }: IndexPageProps) {
     const mixesInGroup = mixes[groupName].map((mix) => {
       const mixBannerUrl = require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`);
       return (
-        <a
-          key={mix.mixDir}
-          className="inline-block m-2"
-          href={buildMixUrl(mix)}
-        >
+        <a key={mix.mixDir} className="inline-block" href={buildMixUrl(mix)}>
           <PageItem
             title={mix.mixName}
             supplementary={`${mix.songCount} ${pluralize(
@@ -37,7 +33,7 @@ function IndexPage({ mixes }: IndexPageProps) {
             <img
               className="border-2 border-white"
               src={mixBannerUrl}
-              width={260}
+              width={256}
               height={80}
               alt={`${mix.mixName} banner`}
             />
@@ -48,8 +44,16 @@ function IndexPage({ mixes }: IndexPageProps) {
 
     return (
       <React.Fragment key={groupName}>
-        <h2 className="ml-4 font-bold text-white mt-8 mt-4">{groupName}</h2>
-        <ul className="flex flex-row flex-wrap justify-center sm:justify-start">
+        <h2 className="font-bold text-white text-lg mt-12 mb-4 text-center sm:text-left">
+          {groupName}
+        </h2>
+        <ul
+          className="grid justify-items-center"
+          style={{
+            gridTemplateColumns: "repeat(auto-fill, minmax(276px, 1fr))",
+            rowGap: "1rem",
+          }}
+        >
           {mixesInGroup}
         </ul>
       </React.Fragment>
