@@ -21,7 +21,12 @@ function removeSpaces(dirPath) {
 }
 
 function main() {
-  removeSpaces(path.join(__dirname, "../prodStepcharts"));
+  if (!process.argv[2]) {
+    console.log("usage: node removeSpacesInDirectories.js [root-dir]");
+    process.exit(1);
+  }
+
+  removeSpaces(path.join(process.cwd(), process.argv[2]));
 }
 
 main();

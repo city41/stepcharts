@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "develop": "next",
-    "build": "node scripts/removeSpacesInDirectories.js && next build",
+    "build": "node scripts/removeSpacesInDirectories.js ./prodStepcharts && next build",
     "start": "next start",
     "type-check": "tsc --noemit",
     "test": "yarn jest",
