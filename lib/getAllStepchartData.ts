@@ -6,7 +6,7 @@ const ROOT =
   process.env.NODE_ENV === "production" ? "prodStepcharts" : "devStepcharts";
 
 type EntireMix = Mix & {
-  songs: Stepchart[];
+  stepcharts: Stepchart[];
 };
 
 function getFiles(...dirPath: string[]): string[] {
@@ -42,7 +42,7 @@ function _getAllStepchartData(): EntireMix[] {
       songCount: mixSongDirs.length,
     };
 
-    const songs = mixSongDirs.map((songDir) => {
+    const stepcharts = mixSongDirs.map((songDir) => {
       try {
         return {
           ...parseStepchart(ROOT, mixDir, songDir),
@@ -57,7 +57,7 @@ function _getAllStepchartData(): EntireMix[] {
 
     return {
       ...mix,
-      songs,
+      stepcharts,
     };
   });
 }

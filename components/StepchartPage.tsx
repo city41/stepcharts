@@ -112,11 +112,20 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       )}`}
       subtitle={
         <Breadcrumbs
-          stepchart={stepchart}
-          leaf="chart"
-          type={stepchart.availableTypes.find(
-            (t) => currentType === `${t.mode}-${t.difficulty}`
-          )}
+          crumbs={[
+            {
+              display: stepchart.mix.mixName,
+              pathSegment: stepchart.mix.mixDir,
+            },
+            {
+              display: stepchart.title.actualTitle,
+              pathSegment: stepchart.title.titleDir,
+            },
+            {
+              display: currentType.replace(/-/g, " "),
+              pathSegment: currentType,
+            },
+          ]}
         />
       }
       metaDescription={`${currentType.replace(/-/g, " ")} stepchart for ${
@@ -129,7 +138,10 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             banner={stepchart.title.banner}
             title={stepchart.title.actualTitle}
           />
-          <TitleDetailsTable className="mt-4" stepchart={stepchart}>
+          <TitleDetailsTable className="mt-4">
+            <TitleDetailsRow name="BPM" value={stepchart.bpm.join(", ")} />
+            <TitleDetailsRow name="Artist" value={stepchart.artist} />
+            <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
             <TitleDetailsRow
               name="difficulty"
               value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}

@@ -3,7 +3,7 @@ import { Banner } from "./Banner";
 import { Root } from "./layout/Root";
 import { StepchartTypePageItem } from "./StepchartTypePageItem";
 import { ImageFrame } from "./ImageFrame";
-import { TitleDetailsTable } from "./TitleDetailsTable";
+import { TitleDetailsRow, TitleDetailsTable } from "./TitleDetailsTable";
 
 import singleSvg from "./single.svg";
 import doubleSvg from "./double.svg";
@@ -14,8 +14,19 @@ const modeSvgs = {
   double: doubleSvg,
 };
 
+type TitlePageMix = {
+  mixName: string;
+  mixDir: string;
+};
+
 type TitlePageProps = {
-  stepchart: Stepchart;
+  name: string;
+  dir: string;
+  banner: string | null;
+  bpm: number[];
+  artist: string | null;
+  mix: TitlePageMix;
+  types: StepchartType[];
 };
 
 type GroupedTypes = Record<Mode, StepchartType[]>;
@@ -31,32 +42,48 @@ function groupTypes(types: StepchartType[]): GroupedTypes {
   );
 }
 
-function buildTypeUrl(stepchart: Stepchart, slug: string): string {
-  return `/${stepchart.mix.mixDir}/${stepchart.title.titleDir}/${slug}`;
+function buildTypeUrl(mixDir: string, titleDir: string, slug: string): string {
+  return `/${mixDir}/${titleDir}/${slug}`;
 }
 
-function TitlePage({ stepchart }: TitlePageProps) {
-  if (stepchart.availableTypes.length === 0) {
-    throw new Error(
-      `TitlePage: empty title! ${stepchart.title.actualTitle}, ${stepchart.mix.mixName}`
-    );
+function TitlePage({
+  name,
+  dir,
+  banner,
+  bpm,
+  artist,
+  mix,
+  types,
+}: TitlePageProps) {
+  if (types.length === 0) {
+    throw new Error(`TitlePage: empty title! ${name}, ${mix.mixName}`);
   }
 
-  const grouped = groupTypes(stepchart.availableTypes);
+  const grouped = groupTypes(types);
+
+  const breadcrumbs = (
+    <Breadcrumbs
+      crumbs={[
+        { display: mix.mixName, pathSegment: mix.mixDir },
+        { display: name, pathSegment: dir },
+      ]}
+    />
+  );
 
   return (
     <Root
-      title={stepchart.title.actualTitle}
-      subtitle={<Breadcrumbs leaf="title" stepchart={stepchart} />}
-      metaDescription={`Step charts for ${stepchart.title.actualTitle}`}
+      title={name}
+      subtitle={breadcrumbs}
+      metaDescription={`Step charts for ${name}`}
     >
       <div className="sm:mt-10 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
         <ImageFrame className="mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
-          <Banner
-            banner={stepchart.title.banner}
-            title={stepchart.title.actualTitle}
-          />
-          <TitleDetailsTable className="mt-4" stepchart={stepchart} />
+          <Banner banner={banner} title={name} />
+          <TitleDetailsTable className="mt-4">
+            <TitleDetailsRow name="BPM" value={bpm.join(", ")} />
+            <TitleDetailsRow name="Artist" value={artist ?? "unknown"} />
+            <TitleDetailsRow name="Mix" value={mix.mixName} />
+          </TitleDetailsTable>
         </ImageFrame>
         <ImageFrame className="p-2 bg-focal">
           <ul className="flex flex-col items-center space-y-8">
@@ -70,7 +97,7 @@ function TitlePage({ stepchart }: TitlePageProps) {
               const items = types.map((type) => {
                 return (
                   <li key={type.difficulty}>
-                    <a href={buildTypeUrl(stepchart, type.slug)}>
+                    <a href={buildTypeUrl(mix.mixDir, dir, type.slug)}>
                       <StepchartTypePageItem type={type} />
                     </a>
                   </li>
@@ -99,3 +126,4 @@ function TitlePage({ stepchart }: TitlePageProps) {
 }
 
 export { TitlePage };
+export type { TitlePageProps };
