@@ -1,0 +1,20 @@
+
+.beginner {
+    color: var(--beginner-color);
+}
+
+.easy, .basic {
+    color: var(--easy-color);
+}
+
+.medium, .another, .trick {
+    color: var(--medium-color);
+}
+
+.hard, .maniac {
+    color: var(--hard-color);
+}
+
+.challenge, .smaniac {
+    color: var(--challenge-color);
+}

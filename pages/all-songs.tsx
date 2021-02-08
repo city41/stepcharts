@@ -26,6 +26,8 @@ export async function getStaticProps(
             mixName: sc.mix.mixName,
             mixDir: sc.mix.mixDir,
           },
+          types: sc.availableTypes,
+          bpm: sc.bpm,
         };
       }),
     },

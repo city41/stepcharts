@@ -14,6 +14,7 @@ type RootProps = {
   subtitle?: React.ReactNode;
   metaDescription: string;
   socialMediaImg?: string;
+  noBackgroundImage?: boolean;
   children: React.ReactNode;
 };
 
@@ -22,6 +23,7 @@ function Root({
   subtitle,
   metaDescription,
   socialMediaImg,
+  noBackgroundImage,
   children,
 }: RootProps) {
   return (
@@ -30,7 +32,8 @@ function Root({
       <div
         className={clsx(
           styles.background,
-          "flex flex-col items-start items-stretch"
+          "flex flex-col items-start items-stretch",
+          {}
         )}
       >
         <Head

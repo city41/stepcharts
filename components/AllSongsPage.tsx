@@ -13,6 +13,8 @@ type AllSongsPageTitle = {
     mixName: string;
     mixDir: string;
   };
+  types: StepchartType[];
+  bpm: number[];
 };
 
 type AllSongsPageProps = {
@@ -73,11 +75,14 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     <Root
       title="All Songs"
       metaDescription="All songs available at stepcharts.com"
+      noBackgroundImage
     >
       <div
-        className="grid mx-auto"
+        className="grid mt-8"
         style={{
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr)",
+          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+          columnGap: "2rem",
+          rowGap: "2rem",
         }}
       >
         {titles.map((t) => {
@@ -87,8 +92,8 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
               key={`${t.mix.mixDir}-${t.title.titleDir}`}
               title={t.title}
               mix={t.mix}
-              bpm={[0]}
-              types={[]}
+              bpm={t.bpm}
+              types={t.types}
             />
           );
         })}
