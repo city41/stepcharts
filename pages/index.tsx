@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticPropsResult } from "next";
 import { getAllStepchartData } from "../lib/getAllStepchartData";
-import { dateReleased } from "../lib/dateReleased";
+import { groupedOrder } from "../lib/meta";
 import { IndexPage } from "../components/IndexPage";
 
 export const config = {
@@ -9,22 +9,42 @@ export const config = {
 };
 
 type NextIndexProps = {
-  mixes: Mix[];
+  mixes: Record<string, Mix[]>;
 };
-
-function sortByDateReleased(a: Mix, b: Mix): number {
-  return dateReleased[a.mixDir]
-    .toString()
-    .localeCompare(dateReleased[b.mixDir].toString());
-}
 
 export async function getStaticProps(): Promise<
   GetStaticPropsResult<NextIndexProps>
 > {
-  const mixes = getAllStepchartData();
+  const entireMixes = getAllStepchartData();
+  const mixes: Mix[] = entireMixes.map((em) => {
+    return {
+      mixName: em.mixName,
+      mixDir: em.mixDir,
+      songCount: em.songCount,
+    };
+  });
+
+  const grouped = Object.keys(groupedOrder).reduce<Record<string, Mix[]>>(
+    (building, groupTitle) => {
+      building[groupTitle] = (groupedOrder[groupTitle] as string[]).reduce<
+        Mix[]
+      >((buildingGroup, mixDir) => {
+        const mix = mixes.find((m) => m.mixDir === mixDir);
+
+        if (mix) {
+          return buildingGroup.concat(mix);
+        } else {
+          return buildingGroup;
+        }
+      }, []);
+
+      return building;
+    },
+    {}
+  );
 
   return {
-    props: { mixes: mixes.sort(sortByDateReleased) },
+    props: { mixes: grouped },
   };
 }
 

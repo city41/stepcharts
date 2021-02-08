@@ -13,3 +13,6 @@
     padding: 4px;
 }
 
+.main {
+    max-width: min(calc(100vw - 4rem), 80rem);
+}

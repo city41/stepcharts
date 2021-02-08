@@ -66,7 +66,10 @@ function Root({
             </div>
           )}
         </header>
-        <main role="main" className="flex-1 max-w-6xl w-full mx-auto">
+        <main
+          role="main"
+          className={clsx(styles.main, "flex-1 w-full mx-auto")}
+        >
           {children}
         </main>
         <Footer className="mt-16" />

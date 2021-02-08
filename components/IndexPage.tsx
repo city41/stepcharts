@@ -3,7 +3,7 @@ import { Root } from "./layout/Root";
 import { PageItem } from "./PageItem";
 
 type IndexPageProps = {
-  mixes: Mix[];
+  mixes: Record<string, Mix[]>;
 };
 
 function buildMixUrl(mix: Mix): string {
@@ -18,34 +18,47 @@ function pluralize(str: string, count: number): string {
 }
 
 function IndexPage({ mixes }: IndexPageProps) {
+  const mixEls = Object.keys(mixes).map((groupName) => {
+    const mixesInGroup = mixes[groupName].map((mix) => {
+      const mixBannerUrl = require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`);
+      return (
+        <a
+          key={mix.mixDir}
+          className="inline-block m-2"
+          href={buildMixUrl(mix)}
+        >
+          <PageItem
+            title={mix.mixName}
+            supplementary={`${mix.songCount} ${pluralize(
+              "song",
+              mix.songCount
+            )}`}
+          >
+            <img
+              className="border-2 border-white"
+              src={mixBannerUrl}
+              width={260}
+              height={80}
+              alt={`${mix.mixName} banner`}
+            />
+          </PageItem>
+        </a>
+      );
+    });
+
+    return (
+      <React.Fragment key={groupName}>
+        <h2 className="ml-4 font-bold text-white mt-8 mt-4">{groupName}</h2>
+        <ul className="flex flex-row flex-wrap justify-center sm:justify-start">
+          {mixesInGroup}
+        </ul>
+      </React.Fragment>
+    );
+  });
+
   return (
     <Root title="Stepcharts" metaDescription="DDR Stepcharts">
-      <ul className="mt-8 sm:mt-16 flex flex-col sm:flex-row sm:flex-wrap justify-center items-center sm:items-start sm:pl-4 lg:pl-0">
-        {mixes.map((m) => {
-          const mixBannerUrl = require(`../prodStepcharts/${m.mixDir}/mix-banner.png`);
-          return (
-            <li key={m.mixDir}>
-              <a className="inline-block m-2" href={buildMixUrl(m)}>
-                <PageItem
-                  title={m.mixName}
-                  supplementary={`${m.songCount} ${pluralize(
-                    "song",
-                    m.songCount
-                  )}`}
-                >
-                  <img
-                    className="border-2 border-white"
-                    src={mixBannerUrl}
-                    width={260}
-                    height={80}
-                    alt={`${m.mixName} banner`}
-                  />
-                </PageItem>
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+      {mixEls}
     </Root>
   );
 }

@@ -1,5 +1,4 @@
 const dateReleased: Record<string, string> = {
-  "1.5": "1999-01-01",
   "1stMix": "1998-09-26",
   "2013": "2013-03-14",
   "2014": "2014-05-12",
@@ -31,4 +30,36 @@ const dateReleased: Record<string, string> = {
   "X3-vs-2nd-Mix": "2011-11-16",
 };
 
-export { dateReleased };
+type GroupedOrder = Record<string, Array<keyof typeof dateReleased>>;
+
+const groupedOrder: GroupedOrder = {
+  "Main DDR": [
+    "1stMix",
+    "2ndMix",
+    "2nd-Append-Club-v1",
+    "2nd-Append-Club-v2",
+    "3rdMix",
+    "3rd-Plus",
+    "3rd-Korean-v1",
+    "3rd-Korean-v2",
+    "4thMix",
+    "4th-Plus",
+    "5thMix",
+    "Max",
+    "Max2",
+    "Extreme",
+    "SuperNOVA",
+    "SuperNOVA2",
+    "X",
+    "X2",
+    "X3-vs-2nd-Mix",
+    "2013",
+    "2014",
+    "A",
+  ],
+  "Dancing Stage": ["EuroMIX", "EuroMIX2", "Fusion"],
+  "Spin-offs": ["Solo-Bass", "Solo-2000", "Disney-Rave", "Dreams-Come-True"],
+};
+
+export { dateReleased, groupedOrder };
+export type { GroupedOrder };
