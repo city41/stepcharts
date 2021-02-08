@@ -122,7 +122,7 @@ function TitlePage({
                     <span>{mode}</span>
                     <img
                       src={modeSvgs[mode as Mode]}
-                      width={modeSvgWidths[mode]}
+                      width={modeSvgWidths[mode as Mode]}
                       alt={`Icon for ${mode} mode`}
                     />
                   </h2>

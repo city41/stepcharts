@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { ImageFrame } from "./ImageFrame";
+import { shortMixNames } from "../lib/meta";
 
 import styles from "./CompactCard.module.css";
 
@@ -86,11 +87,11 @@ function CompactCard({ className, title, mix, bpm, types }: CompactCardProps) {
           className="grid bg-focal-400 items-center py-1 px-2"
           style={{ gridTemplateColumns: "1fr max-content" }}
         >
-          <div className="font-bold text-white whitespace-nowrap overflow-ellipsis overflow-x-hidden">
+          <div className="font-bold text-white">
             {title.translitTitleName || title.titleName}
           </div>
-          <div className="px-2 py-0.5 bg-focal-700 text-xs text-white grid place-items-center rounded-full">
-            {mix.mixName}
+          <div className="px-2 py-0.5 bg-focal-700 text-xs text-white grid place-items-center xrounded-full">
+            {shortMixNames[mix.mixDir]}
           </div>
         </div>
 
@@ -109,7 +110,7 @@ function CompactCard({ className, title, mix, bpm, types }: CompactCardProps) {
             jmp <span className="font-bold">21</span>
           </div>
           <div>
-            frz <span className="font-bold">0</span>
+            frz <span className="font-bold">30</span>
           </div>
         </div>
       </ImageFrame>
