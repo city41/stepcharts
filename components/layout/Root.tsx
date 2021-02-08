@@ -54,6 +54,9 @@ function Root({
                 <a href="/">Stepcharts</a>
               </div>
             </div>
+            <a className="text-focal" href="/all-songs">
+              All Songs
+            </a>
             <ReportAnIssue className="text-focal mr-4 lg:mr-0" />
           </div>
           {subtitle && (
