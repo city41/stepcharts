@@ -20,4 +20,22 @@ function determineBeat(offset: Fraction): Arrow["beat"] {
   return match.d as Arrow["beat"];
 }
 
-export { determineBeat };
+const normalizedDifficultyMap: Record<string, Difficulty> = {
+  beginner: "beginner",
+  easy: "basic",
+  basic: "basic",
+  trick: "difficult",
+  another: "difficult",
+  medium: "difficult",
+  difficult: "expert",
+  expert: "expert",
+  maniac: "expert",
+  ssr: "expert",
+  hard: "expert",
+  challenge: "challenge",
+  smaniac: "challenge",
+  // TODO: filter edits out altogether
+  edit: "edit",
+};
+
+export { determineBeat, normalizedDifficultyMap };

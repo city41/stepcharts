@@ -18,7 +18,13 @@ type FreezeBody = {
 };
 
 type Mode = "single" | "double";
-type Difficulty = "beginner" | "easy" | "medium" | "hard" | "challenge";
+type Difficulty =
+  | "beginner"
+  | "basic"
+  | "difficult"
+  | "expert"
+  | "challenge"
+  | "edit";
 
 type StepchartType = {
   slug: string;

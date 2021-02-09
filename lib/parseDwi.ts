@@ -1,7 +1,7 @@
 import fs from "fs";
 import Fraction from "fraction.js";
 import { RawStepchart } from "./parseStepchart";
-import { determineBeat } from "./util";
+import { determineBeat, normalizedDifficultyMap } from "./util";
 
 const metaTagsToConsume = ["title", "artist"];
 
@@ -266,7 +266,7 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
 
   function parseNotes(mode: "single" | "double", rawNotes: string) {
     const values = rawNotes.split(":");
-    const difficulty = values[0].toLowerCase();
+    const difficulty = normalizedDifficultyMap[values[0].toLowerCase()];
     const feet = Number(values[1]);
     const notes = values[2];
     const playerTwoNotes = values[3];
