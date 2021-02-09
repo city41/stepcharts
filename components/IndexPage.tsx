@@ -57,3 +57,4 @@ function IndexPage({ mixes }: IndexPageProps) {
 }
 
 export { IndexPage };
+export type { IndexPageMix, IndexPageProps };

@@ -3,20 +3,17 @@ import { GetStaticPropsResult } from "next";
 import { getAllStepchartData } from "../lib/getAllStepchartData";
 import { dateReleased, groupedOrder } from "../lib/meta";
 import { IndexPage } from "../components/IndexPage";
+import { IndexPageMix, IndexPageProps } from "../components/IndexPage";
 
 export const config = {
   unstable_runtimeJS: false,
 };
 
-type NextIndexProps = {
-  mixes: Record<string, Mix[]>;
-};
-
 export async function getStaticProps(): Promise<
-  GetStaticPropsResult<NextIndexProps>
+  GetStaticPropsResult<IndexPageProps>
 > {
   const entireMixes = getAllStepchartData();
-  const mixes: Mix[] = entireMixes.map((em) => {
+  const mixes: IndexPageMix[] = entireMixes.map((em) => {
     return {
       mixName: em.mixName,
       mixDir: em.mixDir,
@@ -25,10 +22,10 @@ export async function getStaticProps(): Promise<
     };
   });
 
-  const grouped = Object.keys(groupedOrder).reduce<Record<string, Mix[]>>(
+  const grouped = Object.keys(groupedOrder).reduce<IndexPageProps["mixes"]>(
     (building, groupTitle) => {
       building[groupTitle] = (groupedOrder[groupTitle] as string[]).reduce<
-        Mix[]
+        IndexPageMix[]
       >((buildingGroup, mixDir) => {
         const mix = mixes.find((m) => m.mixDir === mixDir);
 
@@ -49,6 +46,6 @@ export async function getStaticProps(): Promise<
   };
 }
 
-export default function NextIndexPage(props: NextIndexProps) {
+export default function NextIndexPage(props: IndexPageProps) {
   return <IndexPage {...props} />;
 }
