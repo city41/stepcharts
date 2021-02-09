@@ -146,7 +146,7 @@ function CompactTitleCard({
         <div>
           <a
             href={buildTitleUrl(mix, title)}
-            className="inline-block font-bold text-white px-1 transform hover:scale-110"
+            className="inline-block font-bold text-white px-1"
           >
             {title.translitTitleName || title.titleName}
           </a>

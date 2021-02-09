@@ -95,10 +95,10 @@ function ReportAnIssue({ className }: ReportAnIssueProps) {
         style={{ backgroundColor: "rgba(0, 0, 0, 0.75)", zIndex: 99999 }}
       >
         <div
-          className="max-w-full mx-auto w-64 sm:w-96 mt-16 bg-focal p-4 border-2 border-white"
+          className="max-w-full mx-auto w-64 sm:w-96 mt-16 bg-focal-200 p-4"
           role="modal"
         >
-          <h1 className="text-2xl font-bold text-white mb-4 w-full text-center">
+          <h1 className="text-2xl font-bold text-focal mb-4 w-full text-center">
             Found something wrong?
           </h1>
           <form
@@ -115,7 +115,7 @@ function ReportAnIssue({ className }: ReportAnIssueProps) {
           </form>
           <a
             id="report_issue_cancel"
-            className="block text-focal-200 text-center w-full cursor-pointer"
+            className="block text-focal text-center w-full cursor-pointer"
           >
             cancel
           </a>
