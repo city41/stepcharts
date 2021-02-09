@@ -24,23 +24,6 @@ export async function getStaticPaths(
   };
 }
 
-function getMinMaxFeet(stepchart: Stepchart): [number, number] {
-  let min = Number.MAX_SAFE_INTEGER;
-  let max = Number.MIN_SAFE_INTEGER;
-
-  stepchart.availableTypes.forEach((type) => {
-    if (type.feet < min) {
-      min = type.feet;
-    }
-
-    if (type.feet > max) {
-      max = type.feet;
-    }
-  });
-
-  return [min, max];
-}
-
 export async function getStaticProps(
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<MixPageProps>> {
@@ -53,11 +36,14 @@ export async function getStaticProps(
       mix,
       titles: mix.stepcharts.map((sc) => {
         return {
-          titleDir: sc.title.titleDir,
-          titleName: sc.title.titleName,
-          translitTitleName: sc.title.translitTitleName,
-          banner: sc.title.banner,
-          feet: getMinMaxFeet(sc),
+          title: {
+            titleDir: sc.title.titleDir,
+            titleName: sc.title.titleName,
+            translitTitleName: sc.title.translitTitleName,
+            banner: sc.title.banner,
+          },
+          types: sc.availableTypes,
+          bpm: sc.bpm,
         };
       }),
     },

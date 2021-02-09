@@ -1,0 +1,7 @@
+.root input[type="radio"] {
+    display: none;
+}
+
+.root input[type="radio"]:checked + label {
+    @apply inline-block text-red-400 bg-yellow-200;
+}

@@ -30,6 +30,38 @@ const dateReleased: Record<string, string> = {
   "X3-vs-2nd-Mix": "2011-11-16",
 };
 
+const shortMixNames: Record<keyof typeof dateReleased, string> = {
+  "1stMix": "1st",
+  "2013": "2013",
+  "2014": "2014",
+  "2nd-Append-Club-v1": "2ndC1",
+  "2nd-Append-Club-v2": "2ndC2",
+  "2ndMix": "2nd",
+  "3rd-Korean-v1": "3rdK1",
+  "3rd-Korean-v2": "3rdK2",
+  "3rd-Plus": "3rd+",
+  "3rdMix": "3rd",
+  "4thMix": "4th",
+  "4th-Plus": "4th+",
+  "5thMix": "5th",
+  A: "A",
+  "Disney-Rave": "Disney",
+  "Dreams-Come-True": "DCT",
+  EuroMIX: "Euro",
+  EuroMIX2: "Euro2",
+  Extreme: "Extreme",
+  Fusion: "Fusion",
+  Max: "Max",
+  Max2: "Max2",
+  "Solo-2000": "Solo2K",
+  "Solo-Bass": "SoloB",
+  SuperNOVA: "NOVA",
+  SuperNOVA2: "NOVA2",
+  X: "X",
+  X2: "X2",
+  "X3-vs-2nd-Mix": "X3",
+};
+
 type GroupedOrder = Record<string, Array<keyof typeof dateReleased>>;
 
 const groupedOrder: GroupedOrder = {
@@ -61,5 +93,5 @@ const groupedOrder: GroupedOrder = {
   "Spin-offs": ["Solo-Bass", "Solo-2000", "Disney-Rave", "Dreams-Come-True"],
 };
 
-export { dateReleased, groupedOrder };
+export { dateReleased, shortMixNames, groupedOrder };
 export type { GroupedOrder };

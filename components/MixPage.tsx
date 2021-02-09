@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import { BiDetail, BiImage } from "react-icons/bi";
 import { Root } from "./layout/Root";
 import { ImageFrame } from "./ImageFrame";
 import { Banner } from "./Banner";
 import { PageItem } from "./PageItem";
 import { Foot } from "./Foot";
 import { Breadcrumbs } from "./Breadcrumbs";
+import { ToggleBar } from "./ToggleBar";
+import { CompactCard } from "./CompactCard";
 
 type MixPageTitle = {
-  titleDir: string;
-  titleName: string;
-  translitTitleName: string | null;
-  banner: string | null;
-  feet: [number, number];
+  title: {
+    titleName: string;
+    translitTitleName: string | null;
+    titleDir: string;
+    banner: string | null;
+  };
+  types: StepchartType[];
+  bpm: number[];
 };
 
 type MixPageProps = {
@@ -24,7 +30,18 @@ function buildTitleUrl(mix: Mix, title: string) {
 }
 
 function getFeetRange(title: MixPageTitle): string {
-  const [min, max] = title.feet;
+  let min = Number.MAX_SAFE_INTEGER;
+  let max = Number.MIN_SAFE_INTEGER;
+
+  title.types.forEach((type) => {
+    if (type.feet < min) {
+      min = type.feet;
+    }
+
+    if (type.feet > max) {
+      max = type.feet;
+    }
+  });
 
   if (min === max) {
     return min.toString();
@@ -34,12 +51,17 @@ function getFeetRange(title: MixPageTitle): string {
 }
 
 function sortByTitleCaseInsensitive(a: MixPageTitle, b: MixPageTitle) {
-  return (a.translitTitleName || a.titleName)
+  return (a.title.translitTitleName || a.title.titleName)
     .toLowerCase()
-    .localeCompare((b.translitTitleName || b.titleName).toLowerCase());
+    .localeCompare(
+      (b.title.translitTitleName || b.title.titleName).toLowerCase()
+    );
 }
 
+const VIEW_TYPES = ["banner", "compact"];
+
 function MixPage({ mix, titles }: MixPageProps) {
+  const [viewTypeIndex, setViewTypeIndex] = useState(0);
   return (
     <Root
       title={mix.mixName}
@@ -60,32 +82,67 @@ function MixPage({ mix, titles }: MixPageProps) {
             alt={`${mix.mixName} banner`}
           />
         </ImageFrame>
-        <ul className="flex-1 flex flex-col sm:flex-row sm:flex-wrap items-start">
-          {titles.sort(sortByTitleCaseInsensitive).map((title) => {
-            const supp = (
-              <>
-                <span>{getFeetRange(title)}</span>
-                <Foot difficulty="icon" />
-              </>
-            );
+        <div className="flex-1">
+          <ToggleBar
+            namespace="mix-detail-image"
+            entries={[
+              <BiImage className="text-2xl" />,
+              <BiDetail className="text-2xl" />,
+            ]}
+            onToggle={(i) => setViewTypeIndex(i)}
+            checkedIndex={viewTypeIndex}
+          />
+          <div
+            className="grid mt-8 items-start"
+            style={{
+              gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+              columnGap: "2rem",
+              rowGap: "2rem",
+            }}
+          >
+            {titles.sort(sortByTitleCaseInsensitive).map((title) => {
+              if (viewTypeIndex === 0) {
+                const supp = (
+                  <>
+                    <span>{getFeetRange(title)}</span>
+                    <Foot difficulty="icon" />
+                  </>
+                );
 
-            return (
-              <li className="m-2" key={title.titleName}>
-                <a href={buildTitleUrl(mix, title.titleDir)}>
-                  <PageItem
-                    title={title.translitTitleName || title.titleName}
-                    supplementary={supp}
+                return (
+                  <a
+                    key={title.title.titleDir}
+                    href={buildTitleUrl(mix, title.title.titleDir)}
                   >
-                    <Banner
-                      banner={title.banner}
-                      title={title.translitTitleName || title.titleName}
-                    />
-                  </PageItem>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+                    <PageItem
+                      title={
+                        title.title.translitTitleName || title.title.titleName
+                      }
+                      supplementary={supp}
+                    >
+                      <Banner
+                        banner={title.title.banner}
+                        title={
+                          title.title.translitTitleName || title.title.titleName
+                        }
+                      />
+                    </PageItem>
+                  </a>
+                );
+              } else {
+                return (
+                  <CompactCard
+                    title={title.title}
+                    mix={mix}
+                    bpm={title.bpm}
+                    types={title.types}
+                    hideMix
+                  />
+                );
+              }
+            })}
+          </div>
+        </div>
       </div>
     </Root>
   );

@@ -14,6 +14,11 @@ const modeSvgs = {
   double: doubleSvg,
 };
 
+const modeSvgWidths = {
+  single: 24,
+  double: 48,
+};
+
 type TitlePageMix = {
   mixName: string;
   mixDir: string;
@@ -117,7 +122,7 @@ function TitlePage({
                     <span>{mode}</span>
                     <img
                       src={modeSvgs[mode as Mode]}
-                      width={50}
+                      width={modeSvgWidths[mode as Mode]}
                       alt={`Icon for ${mode} mode`}
                     />
                   </h2>

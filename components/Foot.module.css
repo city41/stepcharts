@@ -1,21 +1,21 @@
 .beginner path {
-    fill: #00B0C6;
+    fill: var(--beginner-color);
 }
 
 .basic path {
-    fill: #D68B00;
+    fill: var(--easy-color);
 }
 
 .difficult path {
-    fill: #CE1A87;
+    fill: var(--medium-color);
 }
 
 .expert path {
-    fill: #6BDE13;
+    fill: var(--hard-color);
 }
 
 .challenge path {
-    fill: #7D72FE;
+    fill: var(--challenge-color);
 }
 
 .icon {
