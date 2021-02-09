@@ -2,6 +2,18 @@
     display: none;
 }
 
+.root label:first-of-type {
+    @apply rounded-l-lg;
+}
+
+.root label:last-of-type {
+    @apply rounded-r-lg;
+}
+
+.root input[type="radio"] + label {
+    @apply p-1 bg-focal text-heading cursor-pointer transition-all duration-200;
+}
+
 .root input[type="radio"]:checked + label {
-    @apply inline-block text-red-400 bg-yellow-200;
+    @apply bg-heading text-focal cursor-default transform scale-125;
 }

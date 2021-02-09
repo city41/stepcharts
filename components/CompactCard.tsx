@@ -11,6 +11,7 @@ type CompactCardProps = {
     titleName: string;
     translitTitleName: string | null;
     titleDir: string;
+    banner: string | null;
   };
   mix: {
     mixName: string;
@@ -93,16 +94,27 @@ function CompactCard({
   types,
   hideMix,
 }: CompactCardProps) {
+  const bannerUrl = title.banner
+    ? require(`./bannerImages/${title.banner}`)
+    : null;
+
   return (
     <ImageFrame
       className={clsx(
         className,
-        "flex flex-col bg-gray-200 rounded-tl-2xl rounded-br-2xl overflow-hidden"
+        clsx(
+          "flex flex-col bg-gray-900 xrounded-tl-xl xrounded-br-xl overflow-hidden",
+          {
+            "rounded-tr-xl rounded-bl-xl": !!hideMix,
+          }
+        )
       )}
       customColor
     >
       <div
-        className="grid bg-focal-400 items-start xpy-1 pl-3 xpr-1"
+        className={clsx("grid bg-focal-400 items-start xpy-1 pl-3 xpr-1", {
+          "pr-3": !!hideMix,
+        })}
         style={{ gridTemplateColumns: "1fr max-content" }}
       >
         <div className="font-bold text-white py-2">
@@ -117,7 +129,17 @@ function CompactCard({
         )}
       </div>
 
-      <div className="flex flex-row justify-items-stretch xmx-2 xmy-2 xspace-x-0.5">
+      <div className="p-2 pt-4">
+        <div
+          className="bg-center border border-white"
+          style={{
+            height: "var(--banner-height)",
+            backgroundImage: `url(${bannerUrl})`,
+          }}
+        />
+      </div>
+
+      <div className="flex flex-row justify-items-stretch xmx-2 xmy-2 py-2">
         <Types
           mix={mix}
           title={title}

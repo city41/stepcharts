@@ -14,6 +14,10 @@ module.exports = {
           700: "var(--color-focal-700)",
           DEFAULT: "var(--color-focal-500)",
         },
+        contrast: {
+          300: "var(--color-contrast-300)",
+          500: "var(--color-contrast-500)",
+        },
         heading: {
           DEFAULT: "var(--color-heading)",
         },

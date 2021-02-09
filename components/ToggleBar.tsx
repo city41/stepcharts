@@ -23,9 +23,8 @@ function ToggleBar({
       {entries.map((entry, i) => {
         const id = `toggle-${namespace}-${i}`;
         return (
-          <>
+          <React.Fragment key={id}>
             <input
-              key={i}
               type="radio"
               name={namespace}
               id={id}
@@ -33,7 +32,7 @@ function ToggleBar({
               onChange={() => onToggle(i)}
             />
             <label htmlFor={id}>{entry}</label>
-          </>
+          </React.Fragment>
         );
       })}
     </div>
