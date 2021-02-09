@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Root } from "./layout/Root";
 import { ImageFrame } from "./ImageFrame";
-import { Banner } from "./Banner";
-import { PageItem } from "./PageItem";
-import { Foot } from "./Foot";
 import { Breadcrumbs } from "./Breadcrumbs";
-import { CompactCard } from "./CompactCard";
+import { CompactTitleCard } from "./CompactTitleCard";
 
 type MixPageTitle = {
   title: {
@@ -81,14 +78,14 @@ function MixPage({ mix, titles }: MixPageProps) {
           <div
             className="grid mt-8 items-start"
             style={{
-              gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, minmax(275px, 1fr))",
               columnGap: "2rem",
               rowGap: "2rem",
             }}
           >
             {titles.sort(sortByTitleCaseInsensitive).map((title) => {
               return (
-                <CompactCard
+                <CompactTitleCard
                   key={title.title.titleDir}
                   title={title.title}
                   mix={mix}

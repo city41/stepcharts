@@ -5,9 +5,9 @@ import { shortMixNames } from "../lib/meta";
 import singleSvg from "./single.svg";
 import doubleSvg from "./double.svg";
 
-import styles from "./CompactCard.module.css";
+import styles from "./CompactTitleCard.module.css";
 
-type CompactCardProps = {
+type CompactTitleCardProps = {
   className?: string;
   title: {
     titleName: string;
@@ -31,19 +31,19 @@ const modeSvgs = {
 
 const modeSvgWidths = {
   single: 18,
-  double: 36,
+  double: 39,
 };
 
 function buildTitleUrl(
-  mix: CompactCardProps["mix"],
-  title: CompactCardProps["title"]
+  mix: CompactTitleCardProps["mix"],
+  title: CompactTitleCardProps["title"]
 ): string {
   return `/${mix.mixDir}/${title.titleDir}`;
 }
 
 function buildStepchartUrl(
-  mix: CompactCardProps["mix"],
-  title: CompactCardProps["title"],
+  mix: CompactTitleCardProps["mix"],
+  title: CompactTitleCardProps["title"],
   type: StepchartType
 ): string {
   return `/${mix.mixDir}/${title.titleDir}/${type.mode}-${type.difficulty}`;
@@ -66,57 +66,63 @@ const difficulties = {
 };
 
 function Types({
-  className,
   mix,
   title,
   types,
 }: {
-  className?: string;
-  mix: CompactCardProps["mix"];
-  title: CompactCardProps["title"];
+  mix: CompactTitleCardProps["mix"];
+  title: CompactTitleCardProps["title"];
   types: StepchartType[];
 }) {
   if (types.length === 0) {
     return null;
   }
 
+  const { mode } = types[0];
+
   return (
     <div
       className={clsx(
-        "w-full grid text-white xtext-sm font-bold items-center justify-items-center"
+        "w-full flex flex-row justify-around text-white font-bold items-center"
       )}
-      style={{ gridTemplateColumns: "repeat(6, 1fr)" }}
     >
-      <img src={singleSvg} width={18} />
-      {types[0].mode === "double" && <img src={singleSvg} width={18} />}
-      {difficulties[types[0].mode].map((d) => {
+      <img src={modeSvgs[mode]} width={modeSvgWidths[mode]} />
+      {difficulties[mode].map((d) => {
         const t = types.find((t) => t.difficulty === d);
 
         if (!t) {
-          return <span className="text-gray-500">-</span>;
+          return (
+            <div key={`${mode}-${d}`} className="text-gray-500">
+              -
+            </div>
+          );
         }
 
         return (
-          <div
-            key={`${t.mode}-${t.difficulty}`}
-            className={clsx(styles[t.difficulty])}
+          <a
+            href={buildStepchartUrl(mix, title, t)}
+            key={`${mode}-${d}`}
+            className={clsx(
+              styles[t.difficulty],
+              "block hover:bg-gray-600 transform hover:scale-150 w-6 h-6 text-center"
+            )}
           >
-            <a href={buildStepchartUrl(mix, title, t)}>{t.feet}</a>
-          </div>
+            {t.feet}
+          </a>
         );
       })}
     </div>
   );
 }
 
-function CompactCard({
+function CompactTitleCard({
   className,
   title,
   mix,
   bpm,
   types,
   hideMix,
-}: CompactCardProps) {
+}: CompactTitleCardProps) {
   const bannerUrl = title.banner
     ? require(`./bannerImages/${title.banner}`)
     : null;
@@ -137,8 +143,11 @@ function CompactCard({
         })}
         style={{ gridTemplateColumns: "1fr max-content" }}
       >
-        <div className="font-bold text-white">
-          <a href={buildTitleUrl(mix, title)}>
+        <div>
+          <a
+            href={buildTitleUrl(mix, title)}
+            className="inline-block font-bold text-white px-1 transform hover:scale-110"
+          >
             {title.translitTitleName || title.titleName}
           </a>
         </div>
@@ -202,4 +211,4 @@ function CompactCard({
   );
 }
 
-export { CompactCard };
+export { CompactTitleCard };

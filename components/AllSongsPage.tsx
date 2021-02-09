@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Root } from "./layout/Root";
 import { ImSortAlphaAsc, ImSortAlphaDesc } from "react-icons/im";
-import { CompactCard } from "./CompactCard";
+import { CompactTitleCard } from "./CompactTitleCard";
 
 type AllSongsPageTitle = {
   title: {
@@ -88,7 +88,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       >
         {titles.map((t) => {
           return (
-            <CompactCard
+            <CompactTitleCard
               className="w-full h-auto"
               key={`${t.mix.mixDir}-${t.title.titleDir}`}
               title={t.title}
