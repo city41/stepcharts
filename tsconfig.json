@@ -20,7 +20,7 @@
   },
   "include": [
     "next-env.d.ts",
-    "stepchards.d.ts",
+    "stepcharts.d.ts",
     "images.d.ts",
     "**/*.ts",
     "**/*.tsx"
