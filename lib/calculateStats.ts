@@ -50,7 +50,11 @@ function isFreeze(d: Arrow["direction"]): boolean {
   return d.indexOf("2") > -1;
 }
 
-function isGallop(d: Arrow, p: Arrow | undefined): boolean {
+function isGallop(
+  d: Arrow,
+  p: Arrow | undefined,
+  g: Arrow | undefined
+): boolean {
   if (!p) {
     return false;
   }
@@ -59,8 +63,22 @@ function isGallop(d: Arrow, p: Arrow | undefined): boolean {
     return false;
   }
 
+  // jumps are never gallops
+  if (isJump(d.direction)) {
+    return false;
+  }
+
+  // the gallop must move to a new direction,
+  // otherwise it's at the least a mini drill
+  if (d.direction === p.direction) {
+    return false;
+  }
+
   if (p.beat === 12 || p.beat === 16) {
-    return d.offset - p.offset < 1 / 8;
+    // only consider it a gallop if it's isolated
+    if (!g || p.offset - g.offset >= 1 / 8) {
+      return d.offset - p.offset < 1 / 8;
+    }
   }
 
   return false;
@@ -83,7 +101,6 @@ function isDrill(d: Arrow, p: Arrow | undefined): boolean {
 }
 
 function calculateStats(
-  path: string,
   types: StepchartType[],
   charts: Record<string, Chart>
 ): Stats {
@@ -92,7 +109,7 @@ function calculateStats(
   const jumps = chart.arrows.filter((a) => isJump(a.direction));
   const freezes = chart.arrows.filter((a) => isFreeze(a.direction));
   const gallops = chart.arrows.filter((a, i, array) =>
-    isGallop(a, array[i - 1])
+    isGallop(a, array[i - 1], array[i - 2])
   );
   const drills = chart.arrows.filter((a, i, array) => isDrill(a, array[i - 1]));
 

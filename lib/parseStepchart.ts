@@ -76,11 +76,7 @@ function parseStepchart(
       titleDir,
       banner: rawStepchart.banner,
     },
-    stats: calculateStats(
-      stepchartSongDirPath,
-      rawStepchart.availableTypes,
-      rawStepchart.charts
-    ),
+    stats: calculateStats(rawStepchart.availableTypes, rawStepchart.charts),
   };
 }
 
