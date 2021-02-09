@@ -121,7 +121,7 @@ function ReportAnIssue({ className }: ReportAnIssueProps) {
           </a>
           <p
             id="report_issue_thanks"
-            className="hidden text-white text-2xl font-bold p-4 text-center"
+            className="hidden text-focal text-2xl font-bold p-4 text-center"
           >
             Thanks!
           </p>
