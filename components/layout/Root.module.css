@@ -16,3 +16,9 @@
 .main {
     max-width: min(calc(100vw - 4rem), 80rem);
 }
+
+@media (max-width: 768px) {
+    .main {
+        max-width: calc(100vw - 2rem);
+    }
+}
