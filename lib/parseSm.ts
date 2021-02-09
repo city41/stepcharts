@@ -1,6 +1,6 @@
 import Fraction from "fraction.js";
 import { RawStepchart } from "./parseStepchart";
-import { determineBeat } from "./util";
+import { determineBeat, normalizedDifficultyMap } from "./util";
 
 const metaTagsToConsume = ["title", "titletranslit", "artist", "banner"];
 
@@ -166,7 +166,8 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
     i++;
     const mode = lines[i++].replace("dance-", "").replace(":", "");
     i++; // skip author for now
-    const difficulty = lines[i++].replace(":", "").toLowerCase();
+    const difficulty =
+      normalizedDifficultyMap[lines[i++].replace(":", "").toLowerCase()];
     const feet = Number(lines[i++].replace(":", ""));
     i++; // skip groove meter data for now
 

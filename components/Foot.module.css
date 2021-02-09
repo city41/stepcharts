@@ -2,19 +2,19 @@
     fill: #00B0C6;
 }
 
-.easy path, .basic path {
+.basic path {
     fill: #D68B00;
 }
 
-.medium path, .another path, .trick path {
+.difficult path {
     fill: #CE1A87;
 }
 
-.hard path, .maniac path {
+.expert path {
     fill: #6BDE13;
 }
 
-.challenge path, .smaniac path {
+.challenge path {
     fill: #7D72FE;
 }
 
