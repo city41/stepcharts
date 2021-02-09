@@ -39,7 +39,7 @@ function MixPage({ mix, titles }: MixPageProps) {
       }
       metaDescription={`Step charts for DDR ${mix.mixName}`}
     >
-      <ImageFrame className="my-8 sticky top-0 z-10 w-full p-4 bg-focal-400 rounded-tl-xl rounded-br-xl flex content-start">
+      <ImageFrame className="mt-0 w-screen sm:w-auto border-l-0 sm:border-l-2 border-r-0 sm:border-r-2 border-t-0 sm:border-t-2 -mx-4 sm:mx-auto sm:mt-8 mb-8 sticky top-0 z-10 w-full p-4 bg-focal-400 sm:rounded-tl-xl sm:rounded-br-xl flex justify-center sm:justify-start">
         <img
           className="border-2 border-white"
           src={require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`)}

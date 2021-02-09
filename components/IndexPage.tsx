@@ -13,10 +13,6 @@ type IndexPageProps = {
   mixes: Record<string, IndexPageMix[]>;
 };
 
-function buildMixUrl(mix: Mix): string {
-  return `/${mix.mixDir}`;
-}
-
 function IndexPage({ mixes }: IndexPageProps) {
   const mixEls = Object.keys(mixes).map((groupName) => {
     const mixesInGroup = mixes[groupName].map((mix) => {
