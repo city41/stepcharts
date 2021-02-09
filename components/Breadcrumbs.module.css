@@ -1,5 +1,5 @@
 .breadcrumbEntry {
-    @apply text-focal;
+    @apply text-focal-700;
 }
 
 .breadcrumbEntry::after {
@@ -7,7 +7,7 @@
     display: inline-block;
     font-weight: bold;
     margin: 0 0.5rem;
-    color: var(--color-heading);
+    color: var(--color-focal-400);
 }
 
 .breadcrumbEntry:last-child::after {

@@ -11,7 +11,7 @@ import { BrandNewModal } from "../BrandNewModal";
 
 type RootProps = {
   title: string;
-  subtitle?: React.ReactNode;
+  subheading?: React.ReactNode;
   metaDescription: string;
   socialMediaImg?: string;
   children: React.ReactNode;
@@ -19,7 +19,7 @@ type RootProps = {
 
 function Root({
   title,
-  subtitle,
+  subheading,
   metaDescription,
   socialMediaImg,
   children,
@@ -35,30 +35,30 @@ function Root({
           metaDescription={metaDescription}
           metaImg={socialMediaImg}
         />
-        <header>
-          <div className="bg-heading h-16 border-b-4 border-heading-border flex flex-row items-center justify-between lg:px-4">
-            <div className="flex flex-row items-center">
-              <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
-                <img
-                  className="w-full h-full"
-                  src={logoSvg}
-                  alt="Stepcharts logo"
-                  width={52}
-                  height={52}
-                />
-              </a>
-              <div className="text-2xl font-bold text-focal text-center pl-4">
-                <a href="/">Stepcharts</a>
+        <header className="shadow">
+          <div className="bg-heading h-16 flex flex-row items-center justify-between lg:px-4">
+            <div className="flex flex-row items-center justify-between max-w-7xl mx-auto w-full">
+              <div className="flex flex-row items-center">
+                <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
+                  <img
+                    className="w-full h-full"
+                    src={logoSvg}
+                    alt="Stepcharts logo"
+                    width={52}
+                    height={52}
+                  />
+                </a>
+                <div className="text-2xl text-focal font-light text-center pl-4">
+                  <a href="/">Stepcharts</a>
+                </div>
               </div>
+              <ReportAnIssue className="text-challenge hover:underline mr-4 lg:mr-0" />
             </div>
-            <ReportAnIssue className="text-focal mr-4 lg:mr-0" />
           </div>
-          {subtitle && (
-            <div className="hidden sm:block py-1 bg-subheading border-b-2 border-heading-border">
+          {subheading && (
+            <div className="hidden sm:block py-1 px-2 bg-subheading">
               <div className="w-full max-w-6xl mx-auto flex flex-row items-center">
-                <h1 className="font-bold text-white text-center sm:text-left">
-                  {subtitle}
-                </h1>
+                {subheading}
               </div>
             </div>
           )}

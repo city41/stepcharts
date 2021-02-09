@@ -1,3 +1,23 @@
 .root {
     width: var(--banner-width);
 }
+
+.beginner {
+    background-color: var(--color-beginner);
+}
+
+.basic {
+    background-color: var(--color-basic);
+}
+
+.difficult {
+    background-color: var(--color-difficult);
+}
+
+.expert {
+    background-color: var(--color-expert);
+}
+
+.challenge {
+    background-color: var(--color-challenge);
+}

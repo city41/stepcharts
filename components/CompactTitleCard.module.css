@@ -1,20 +1,20 @@
 
 .beginner {
-    color: var(--beginner-color);
+    color: var(--color-beginner);
 }
 
 .basic {
-    color: var(--basic-color);
+    color: var(--color-basic);
 }
 
 .difficult {
-    color: var(--difficult-color);
+    color: var(--color-difficult);
 }
 
 .expert {
-    color: var(--expert-color);
+    color: var(--color-expert);
 }
 
 .challenge {
-    color: var(--challenge-color);
+    color: var(--color-challenge);
 }

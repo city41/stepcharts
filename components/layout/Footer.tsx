@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
-import Link from "next/link";
+
+import styles from "./Footer.module.css";
 
 type FooterProps = {
   className?: string;
@@ -10,22 +11,26 @@ function Footer({ className }: FooterProps) {
   return (
     <footer
       className={clsx(
+        // styles.footer,
         className,
-        "bg-bg text-focal-400 py-2 px-2 sm:p-4 text-center text-xs border-t border-focal-400"
+        "bg-gradient-to-b from-gray-200 to-white bg-focal-100 text-focal-700 py-2 px-2 sm:p-4 text-center text-xs xborder-t border-focal-400"
       )}
     >
       <div className="w-full max-w-6xl mx-auto flex flex-col space-y-2">
-        <div className="text-focal-700">
+        <div className="text-focal-400">
           All songs, artwork and step charts are property of Konami
         </div>
         <div>
           Made by{" "}
-          <a className="text-focal-300" href="https://twitter.com/mattegreer">
+          <a
+            className="text-challenge hover:underline"
+            href="https://twitter.com/mattegreer"
+          >
             Matt Greer
           </a>
           <span className="mx-2">&#124;</span>
           <a
-            className="text-focal-300"
+            className="text-challenge hover:underline"
             href="https://github.com/city41/stepcharts"
           >
             GitHub repo

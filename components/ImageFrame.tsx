@@ -9,11 +9,7 @@ type ImageFrameProps = {
 
 function ImageFrame({ className, customColor, children }: ImageFrameProps) {
   return (
-    <div
-      className={clsx(className, "border-2 border-focal-700 shadow-md", {
-        "bg-focal-400": !customColor,
-      })}
-    >
+    <div className={clsx(className, "border-2 border-focal-700 shadow-lg")}>
       {children}
     </div>
   );

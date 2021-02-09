@@ -8,7 +8,7 @@
 
 html,
 body {
-  @apply bg-gray-50 text-black;
+  @apply text-black bg-gradient-to-r from-white to-gray-100;
 }
 
 /* Start purging... */
@@ -21,10 +21,5 @@ body {
   --banner-width: 256px;
   --banner-height: 80px;
 
-  --beginner-color: #00B0C6;
-  --basic-color: #D68B00;
-  --difficult-color: #CE1A87;
-  --expert-color: #68DE13;
-  --challenge-color: #7D72FE;
 }
 

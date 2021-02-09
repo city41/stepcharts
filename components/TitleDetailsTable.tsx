@@ -9,7 +9,7 @@ type TitleDetailsTableProps = {
 function TitleDetailsRow({ name, value }: { name: string; value: string }) {
   return (
     <tr>
-      <td className="text-right text-focal-400 pr-1">{name}</td>
+      <td className="text-right text-white pr-1">{name}</td>
       <td className="pl-1">{value}</td>
     </tr>
   );

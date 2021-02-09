@@ -109,7 +109,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       title={`${
         stepchart.title.translitTitleName || stepchart.title.titleName
       } ${currentType.replace(/-/g, ", ")}`}
-      subtitle={
+      subheading={
         <Breadcrumbs
           crumbs={[
             {
@@ -132,60 +132,55 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         stepchart.title.translitTitleName || stepchart.title.titleName
       }`}
     >
-      <div className="sm:mt-10 flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4">
-        <ImageFrame className="z-10 mb-8 sticky top-0 w-full sm:w-auto p-4 bg-focal grid place-items-center">
-          <Banner
-            banner={stepchart.title.banner}
-            title={
-              stepchart.title.translitTitleName || stepchart.title.titleName
-            }
-          />
-          <TitleDetailsTable className="mt-4">
-            {stepchart.title.translitTitleName && (
-              <TitleDetailsRow
-                name="Native title"
-                value={stepchart.title.titleName}
-              />
-            )}
-            <TitleDetailsRow name="BPM" value={stepchart.bpm.join(", ")} />
-            <TitleDetailsRow name="Artist" value={stepchart.artist} />
-            <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
+      <ImageFrame className="my-8 sticky top-0 z-10 w-full sm:w-auto p-4 bg-focal-300 rounded-tl-xl rounded-br-xl flex justify-start items-center space-x-2">
+        <Banner
+          banner={stepchart.title.banner}
+          title={stepchart.title.translitTitleName || stepchart.title.titleName}
+        />
+        <TitleDetailsTable className="mt-4">
+          {stepchart.title.translitTitleName && (
             <TitleDetailsRow
-              name="difficulty"
-              value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
+              name="Native title"
+              value={stepchart.title.titleName}
             />
-          </TitleDetailsTable>
-          <div className="hide-if-noscript hidden sm:block mt-6 bg-focal-400 text-focal-600 p-2 w-full">
-            <div className="font-bold text-white">speedmod</div>
-            <div className="flex flex-row justify-around space-x-6">
-              {[1, 1.5, 2, 3].map((sm) => {
-                const id = `speedmod-${sm}`;
-                return (
-                  <div
-                    key={sm}
-                    className="flex flex-row items-center space-x-1"
-                  >
-                    <input
-                      id={id}
-                      type="radio"
-                      value={sm}
-                      checked={sm === speedMod}
-                      onChange={() => setSpeedMod(sm)}
-                    />
-                    <label className="cursor-pointer" htmlFor={id}>
-                      {sm}
-                    </label>
-                  </div>
-                );
-              })}
-            </div>
+          )}
+          <TitleDetailsRow name="BPM" value={stepchart.bpm.join(", ")} />
+          <TitleDetailsRow name="Artist" value={stepchart.artist} />
+          <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
+          <TitleDetailsRow
+            name="difficulty"
+            value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
+          />
+        </TitleDetailsTable>
+        <div className="hide-if-noscript hidden xsm:block mt-6 bg-focal-400 text-focal-600 p-2 w-full">
+          <div className="font-bold text-white">speedmod</div>
+          <div className="flex flex-row justify-around space-x-6">
+            {[1, 1.5, 2, 3].map((sm) => {
+              const id = `speedmod-${sm}`;
+              return (
+                <div key={sm} className="flex flex-row items-center space-x-1">
+                  <input
+                    id={id}
+                    type="radio"
+                    value={sm}
+                    checked={sm === speedMod}
+                    onChange={() => setSpeedMod(sm)}
+                  />
+                  <label className="cursor-pointer" htmlFor={id}>
+                    {sm}
+                  </label>
+                </div>
+              );
+            })}
           </div>
-        </ImageFrame>
+        </div>
+      </ImageFrame>
+      <div className="grid place-items-center">
         <div
           className={clsx(
             styles.container,
             styles[`container-${singleDoubleClass}`],
-            "relative flex flex-col bg-indigo-100 overflow-hidden"
+            "relative bg-indigo-100 overflow-hidden"
           )}
           style={
             {

@@ -76,7 +76,6 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     <Root
       title="All Songs"
       metaDescription="All songs available at stepcharts.com"
-      noBackgroundImage
     >
       <div
         className="grid mt-8 items-start"
