@@ -25,9 +25,7 @@ function IndexPage({ mixes }: IndexPageProps) {
 
     return (
       <React.Fragment key={groupName}>
-        <h2 className="xfont-bold text-gray-500 text-sm mt-12 mb-4 ml-4 text-center sm:text-left">
-          {groupName}
-        </h2>
+        <h2 className="text-gray-500 text-sm mt-12 mb-4 ml-4">{groupName}</h2>
         <ul
           className="grid items-start"
           style={{
