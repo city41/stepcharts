@@ -2,8 +2,6 @@ import React from "react";
 import clsx from "clsx";
 import { ImageFrame } from "./ImageFrame";
 
-import styles from "./CompactMixCard.module.css";
-
 type CompactMixCardProps = {
   className?: string;
   mix: {
@@ -13,6 +11,13 @@ type CompactMixCardProps = {
     yearReleased: number;
   };
 };
+
+function pluralize(str: string, count: number): string {
+  if (count === 1) {
+    return str;
+  }
+  return str + "s";
+}
 
 function buildMixUrl(mix: CompactMixCardProps["mix"]): string {
   return `/${mix.mixDir}`;
@@ -60,7 +65,8 @@ function CompactMixCard({ className, mix }: CompactMixCardProps) {
       <div className="text-gray-100 bg-gray-400 text-sm px-3 py-1 text-center flex flex-row justify-between">
         <div>{mix.yearReleased}</div>
         <div>
-          <span className="font-bold">{mix.songCount}</span> songs
+          <span className="font-bold">{mix.songCount}</span>{" "}
+          {pluralize("song", mix.songCount)}
         </div>
       </div>
     </ImageFrame>

@@ -30,11 +30,7 @@ function Root({
     <>
       <BrandNewModal />
       <div
-        className={clsx(
-          // styles.background,
-          "flex flex-col items-start items-stretch",
-          {}
-        )}
+        className={clsx(styles.background, "flex flex-col items-stretch", {})}
       >
         <Head
           title={title}
