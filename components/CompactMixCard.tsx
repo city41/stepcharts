@@ -53,14 +53,18 @@ function CompactMixCard({ className, mix }: CompactMixCardProps) {
       <div>
         <a href={buildMixUrl(mix)}>
           <div
-            className="bg-cover border-b border-t border-white"
+            className="relative bg-cover border-b border-t border-white"
             style={{
               paddingTop: "calc(80 / 256 * 100%)",
-              backgroundImage: `url(${bannerUrl})`,
             }}
-            role="image"
-            aria-label={`${mix.mixName} banner`}
-          />
+          >
+            <img
+              className="absolute top-0 left-0 w-full h-full"
+              src={bannerUrl}
+              alt={`${mix.mixName} banner`}
+              loading="lazy"
+            />
+          </div>
         </a>
       </div>
 

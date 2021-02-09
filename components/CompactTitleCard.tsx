@@ -166,14 +166,18 @@ function CompactTitleCard({
       <div className="pb-2 xpx-3">
         <a href={buildTitleUrl(mix, title)}>
           <div
-            className="bg-cover border-b border-t border-white"
+            className="relative bg-cover border-b border-t border-white"
             style={{
               paddingTop: "calc(80 / 256 * 100%)",
-              backgroundImage: `url(${bannerUrl})`,
             }}
-            role="image"
-            aria-label={`${title.titleName} banner`}
-          />
+          >
+            <img
+              className="absolute top-0 left-0 w-full h-full"
+              src={bannerUrl}
+              alt={`${title.titleName} banner`}
+              loading="lazy"
+            />
+          </div>
         </a>
       </div>
 
