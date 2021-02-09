@@ -78,7 +78,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       noBackgroundImage
     >
       <div
-        className="grid mt-8"
+        className="grid mt-8 items-start"
         style={{
           gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
           columnGap: "2rem",

@@ -86,61 +86,62 @@ function Types({
 
 function CompactCard({ className, title, mix, bpm, types }: CompactCardProps) {
   return (
-    <div>
-      <ImageFrame
-        className={clsx(className, "flex flex-col bg-gray-200")}
-        customColor
+    <ImageFrame
+      className={clsx(
+        className,
+        "flex flex-col bg-gray-200 rounded-tl-2xl rounded-br-2xl overflow-hidden"
+      )}
+      customColor
+    >
+      <div
+        className="grid bg-focal-400 items-start xpy-1 pl-3 xpr-1"
+        style={{ gridTemplateColumns: "1fr max-content" }}
       >
-        <div
-          className="grid bg-focal-400 items-start xpy-1 pl-3 pr-1"
-          style={{ gridTemplateColumns: "1fr max-content" }}
-        >
-          <div className="font-bold text-white py-2">
-            <a href={buildTitleUrl(mix, title)}>
-              {title.translitTitleName || title.titleName}
-            </a>
-          </div>
-          <div className="ml-2 px-2 py-0.5 bg-focal-700 text-xs text-white grid place-items-center rounded-b-lg">
-            <a href={`/${mix.mixDir}`}>{shortMixNames[mix.mixDir]}</a>
-          </div>
+        <div className="font-bold text-white py-2">
+          <a href={buildTitleUrl(mix, title)}>
+            {title.translitTitleName || title.titleName}
+          </a>
         </div>
+        <div className="ml-2 px-2 py-0.5 bg-focal-700 text-xs text-white grid place-items-center rounded-l-xl mt-2">
+          <a href={`/${mix.mixDir}`}>{shortMixNames[mix.mixDir]}</a>
+        </div>
+      </div>
 
-        <div className="flex flex-row justify-items-stretch xmx-2 xmy-2 xspace-x-0.5">
-          <Types
-            mix={mix}
-            title={title}
-            types={types.filter((t) => t.mode === "single")}
-          />
-          <Types
-            mix={mix}
-            title={title}
-            types={types.filter((t) => t.mode === "double")}
-          />
-        </div>
-        <div className="text-gray-100 bg-gray-400 text-sm px-2 py-1 text-center flex flex-row justify-between">
-          <div className="px-2 -ml-2 -my-1  bg-gray-700 text-gray-200 grid place-items-center">
-            <div>
-              <span className="font-bold">{getBpmRange(bpm)}</span>
-            </div>
-          </div>
+      <div className="flex flex-row justify-items-stretch xmx-2 xmy-2 xspace-x-0.5">
+        <Types
+          mix={mix}
+          title={title}
+          types={types.filter((t) => t.mode === "single")}
+        />
+        <Types
+          mix={mix}
+          title={title}
+          types={types.filter((t) => t.mode === "double")}
+        />
+      </div>
+      <div className="text-gray-100 bg-gray-400 text-sm px-2 py-1 text-center flex flex-row justify-between">
+        <div className="px-2 -ml-2 -my-1  bg-gray-700 text-gray-200 grid place-items-center">
           <div>
-            J <span className="font-bold">21</span>
-          </div>
-          <div>
-            C <span className="font-bold">40</span>
-          </div>
-          <div>
-            D <span className="font-bold">60</span>
-          </div>
-          <div>
-            F <span className="font-bold">30</span>
-          </div>
-          <div>
-            G <span className="font-bold">48</span>
+            <span className="font-bold">{getBpmRange(bpm)}</span>
           </div>
         </div>
-      </ImageFrame>
-    </div>
+        <div>
+          J <span className="font-bold">21</span>
+        </div>
+        <div>
+          C <span className="font-bold">40</span>
+        </div>
+        <div>
+          D <span className="font-bold">60</span>
+        </div>
+        <div>
+          F <span className="font-bold">30</span>
+        </div>
+        <div>
+          G <span className="font-bold">48</span>
+        </div>
+      </div>
+    </ImageFrame>
   );
 }
 
