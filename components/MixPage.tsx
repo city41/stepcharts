@@ -20,31 +20,6 @@ type MixPageProps = {
   titles: MixPageTitle[];
 };
 
-function buildTitleUrl(mix: Mix, title: string) {
-  return `/${mix.mixDir}/${title}`;
-}
-
-function getFeetRange(title: MixPageTitle): string {
-  let min = Number.MAX_SAFE_INTEGER;
-  let max = Number.MIN_SAFE_INTEGER;
-
-  title.types.forEach((type) => {
-    if (type.feet < min) {
-      min = type.feet;
-    }
-
-    if (type.feet > max) {
-      max = type.feet;
-    }
-  });
-
-  if (min === max) {
-    return min.toString();
-  }
-
-  return `${min} - ${max}`;
-}
-
 function sortByTitleCaseInsensitive(a: MixPageTitle, b: MixPageTitle) {
   return (a.title.translitTitleName || a.title.titleName)
     .toLowerCase()

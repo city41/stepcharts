@@ -1,9 +1,16 @@
 import React from "react";
 import { Root } from "./layout/Root";
-import { PageItem } from "./PageItem";
+import { CompactMixCard } from "./CompactMixCard";
+
+type IndexPageMix = {
+  mixName: string;
+  mixDir: string;
+  songCount: number;
+  yearReleased: number;
+};
 
 type IndexPageProps = {
-  mixes: Record<string, Mix[]>;
+  mixes: Record<string, IndexPageMix[]>;
 };
 
 function buildMixUrl(mix: Mix): string {
@@ -20,26 +27,7 @@ function pluralize(str: string, count: number): string {
 function IndexPage({ mixes }: IndexPageProps) {
   const mixEls = Object.keys(mixes).map((groupName) => {
     const mixesInGroup = mixes[groupName].map((mix) => {
-      const mixBannerUrl = require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`);
-      return (
-        <a key={mix.mixDir} className="inline-block" href={buildMixUrl(mix)}>
-          <PageItem
-            title={mix.mixName}
-            supplementary={`${mix.songCount} ${pluralize(
-              "song",
-              mix.songCount
-            )}`}
-          >
-            <img
-              className="border-2 border-white"
-              src={mixBannerUrl}
-              width={256}
-              height={80}
-              alt={`${mix.mixName} banner`}
-            />
-          </PageItem>
-        </a>
-      );
+      return <CompactMixCard key={mix.mixDir} mix={mix} />;
     });
 
     return (
@@ -48,10 +36,11 @@ function IndexPage({ mixes }: IndexPageProps) {
           {groupName}
         </h2>
         <ul
-          className="grid justify-items-center"
+          className="grid items-start"
           style={{
             gridTemplateColumns: "repeat(auto-fill, minmax(276px, 1fr))",
-            rowGap: "1rem",
+            columnGap: "2rem",
+            rowGap: "2rem",
           }}
         >
           {mixesInGroup}

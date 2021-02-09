@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticPropsResult } from "next";
 import { getAllStepchartData } from "../lib/getAllStepchartData";
-import { groupedOrder } from "../lib/meta";
+import { dateReleased, groupedOrder } from "../lib/meta";
 import { IndexPage } from "../components/IndexPage";
 
 export const config = {
@@ -21,6 +21,7 @@ export async function getStaticProps(): Promise<
       mixName: em.mixName,
       mixDir: em.mixDir,
       songCount: em.songCount,
+      yearReleased: new Date(dateReleased[em.mixDir]).getFullYear(),
     };
   });
 
