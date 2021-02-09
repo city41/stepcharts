@@ -3,18 +3,18 @@
     color: var(--beginner-color);
 }
 
-.easy, .basic {
-    color: var(--easy-color);
+.basic {
+    color: var(--basic-color);
 }
 
-.medium, .another, .trick {
-    color: var(--medium-color);
+.difficult {
+    color: var(--difficult-color);
 }
 
-.hard, .maniac {
-    color: var(--hard-color);
+.expert {
+    color: var(--expert-color);
 }
 
-.challenge, .smaniac {
+.challenge {
     color: var(--challenge-color);
 }

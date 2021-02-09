@@ -3,15 +3,15 @@
 }
 
 .basic path {
-    fill: var(--easy-color);
+    fill: var(--basic-color);
 }
 
 .difficult path {
-    fill: var(--medium-color);
+    fill: var(--difficult-color);
 }
 
 .expert path {
-    fill: var(--hard-color);
+    fill: var(--expert-color);
 }
 
 .challenge path {
