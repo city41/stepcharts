@@ -8,6 +8,7 @@ type AllSongsPageTitle = {
     titleName: string;
     translitTitleName: string | null;
     titleDir: string;
+    banner: string | null;
   };
   mix: {
     mixName: string;

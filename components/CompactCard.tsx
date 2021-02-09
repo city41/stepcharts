@@ -2,6 +2,8 @@ import React from "react";
 import clsx from "clsx";
 import { ImageFrame } from "./ImageFrame";
 import { shortMixNames } from "../lib/meta";
+import singleSvg from "./single.svg";
+import doubleSvg from "./double.svg";
 
 import styles from "./CompactCard.module.css";
 
@@ -19,7 +21,17 @@ type CompactCardProps = {
   };
   bpm: number[];
   types: StepchartType[];
-  hideMix?: string;
+  hideMix?: boolean;
+};
+
+const modeSvgs = {
+  single: singleSvg,
+  double: doubleSvg,
+};
+
+const modeSvgWidths = {
+  single: 24,
+  double: 48,
 };
 
 function buildTitleUrl(
@@ -67,11 +79,11 @@ function Types({
     <div
       className={clsx(
         className,
-        "w-full bg-gray-900 grid text-white font-bold items-center justify-items-center"
+        "w-full bg-gray-900 grid text-white xtext-sm font-bold items-center justify-items-center"
       )}
       style={{ gridAutoFlow: "column" }}
     >
-      <div>{types[0].mode[0].toUpperCase()}</div>
+      <img src={modeSvgs[types[0].mode]} width={modeSvgWidths[types[0].mode]} />
       {types.map((t) => {
         return (
           <div
@@ -129,7 +141,7 @@ function CompactCard({
         )}
       </div>
 
-      <div className="p-2 pt-4">
+      <div className="py-2 px-3">
         <div
           className="bg-center border border-white"
           style={{
@@ -139,7 +151,7 @@ function CompactCard({
         />
       </div>
 
-      <div className="flex flex-row justify-items-stretch xmx-2 xmy-2 py-2">
+      <div className="flex flex-row justify-items-stretch xmx-2 xmy-2 p-2 pt-0">
         <Types
           mix={mix}
           title={title}

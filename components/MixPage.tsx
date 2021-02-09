@@ -89,6 +89,7 @@ function MixPage({ mix, titles }: MixPageProps) {
             {titles.sort(sortByTitleCaseInsensitive).map((title) => {
               return (
                 <CompactCard
+                  key={title.title.titleDir}
                   title={title.title}
                   mix={mix}
                   bpm={title.bpm}

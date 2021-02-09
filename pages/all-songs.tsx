@@ -21,6 +21,7 @@ export async function getStaticProps(
             titleName: sc.title.titleName,
             translitTitleName: sc.title.translitTitleName,
             titleDir: sc.title.titleDir,
+            banner: sc.title.banner ?? null,
           },
           mix: {
             mixName: sc.mix.mixName,
