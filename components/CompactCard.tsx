@@ -20,11 +20,19 @@ type CompactCardProps = {
   types: StepchartType[];
 };
 
-function buildUrl(
+function buildTitleUrl(
   mix: CompactCardProps["mix"],
   title: CompactCardProps["title"]
 ): string {
   return `/${mix.mixDir}/${title.titleDir}`;
+}
+
+function buildStepchartUrl(
+  mix: CompactCardProps["mix"],
+  title: CompactCardProps["title"],
+  type: StepchartType
+): string {
+  return `/${mix.mixDir}/${title.titleDir}/${type.mode}-${type.difficulty}`;
 }
 
 function getBpmRange(bpm: number[]) {
@@ -40,9 +48,13 @@ function getBpmRange(bpm: number[]) {
 
 function Types({
   className,
+  mix,
+  title,
   types,
 }: {
   className?: string;
+  mix: CompactCardProps["mix"];
+  title: CompactCardProps["title"];
   types: StepchartType[];
 }) {
   if (types.length === 0) {
@@ -53,51 +65,57 @@ function Types({
     <div
       className={clsx(
         className,
-        "w-1/2 flex flex-col items-center place-content-stretch space-y-1"
+        "w-full bg-gray-900 grid text-white font-bold items-center justify-items-center"
       )}
+      style={{ gridAutoFlow: "column" }}
     >
-      <div className="text-black">{types[0].mode}</div>
-      <div className="w-full flex flex-row items-stretch">
-        {types.map((t) => {
-          return (
-            <div
-              key={`${t.mode}-${t.difficulty}`}
-              className={clsx(
-                styles[t.difficulty],
-                "w-full py-1 text-center bg-gray-900 font-bold"
-              )}
-            >
-              {t.feet}
-            </div>
-          );
-        })}
-      </div>
+      <div>{types[0].mode[0].toUpperCase()}</div>
+      {types.map((t) => {
+        return (
+          <div
+            key={`${t.mode}-${t.difficulty}`}
+            className={clsx(styles[t.difficulty])}
+          >
+            <a href={buildStepchartUrl(mix, title, t)}>{t.feet}</a>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 function CompactCard({ className, title, mix, bpm, types }: CompactCardProps) {
   return (
-    <a href={buildUrl(mix, title)}>
+    <div>
       <ImageFrame
         className={clsx(className, "flex flex-col bg-gray-200")}
         customColor
       >
         <div
-          className="grid bg-focal-400 items-center py-1 px-2"
+          className="grid bg-focal-400 items-start xpy-1 pl-3 pr-1"
           style={{ gridTemplateColumns: "1fr max-content" }}
         >
-          <div className="font-bold text-white">
-            {title.translitTitleName || title.titleName}
+          <div className="font-bold text-white py-2">
+            <a href={buildTitleUrl(mix, title)}>
+              {title.translitTitleName || title.titleName}
+            </a>
           </div>
-          <div className="ml-2 px-2 py-0.5 bg-focal-700 text-xs text-white grid place-items-center xrounded-full">
-            {shortMixNames[mix.mixDir]}
+          <div className="ml-2 px-2 py-0.5 bg-focal-700 text-xs text-white grid place-items-center rounded-b-lg">
+            <a href={`/${mix.mixDir}`}>{shortMixNames[mix.mixDir]}</a>
           </div>
         </div>
 
-        <div className="flex flex-row justify-items-stretch pt-1 mx-2 mb-2 space-x-2">
-          <Types types={types.filter((t) => t.mode === "single")} />
-          <Types types={types.filter((t) => t.mode === "double")} />
+        <div className="flex flex-row justify-items-stretch xmx-2 xmy-2 xspace-x-0.5">
+          <Types
+            mix={mix}
+            title={title}
+            types={types.filter((t) => t.mode === "single")}
+          />
+          <Types
+            mix={mix}
+            title={title}
+            types={types.filter((t) => t.mode === "double")}
+          />
         </div>
         <div className="text-gray-100 bg-gray-400 text-sm px-2 py-1 text-center flex flex-row justify-between">
           <div className="px-2 -ml-2 -my-1  bg-gray-700 text-gray-200 grid place-items-center">
@@ -122,7 +140,7 @@ function CompactCard({ className, title, mix, bpm, types }: CompactCardProps) {
           </div>
         </div>
       </ImageFrame>
-    </a>
+    </div>
   );
 }
 
