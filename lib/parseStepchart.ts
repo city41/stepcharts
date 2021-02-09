@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { parseDwi } from "./parseDwi";
 import { parseSm } from "./parseSm";
+import { calculateStats } from "./calculateStats";
 
 type RawStepchart = Omit<Stepchart, "mix" | "title"> & {
   title: string;
@@ -75,6 +76,11 @@ function parseStepchart(
       titleDir,
       banner: rawStepchart.banner,
     },
+    stats: calculateStats(
+      stepchartSongDirPath,
+      rawStepchart.availableTypes,
+      rawStepchart.charts
+    ),
   };
 }
 

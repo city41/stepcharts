@@ -74,7 +74,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
   let i = 0;
 
   const sc: Partial<RawStepchart> = {
-    arrows: {},
+    charts: {},
     availableTypes: [],
     banner: null,
   };
@@ -218,7 +218,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
 
     const freezes = parseFreezes(lines, firstMeasureIndex, mode, difficulty);
 
-    sc.arrows![`${mode}-${difficulty}`] = { arrows, freezes };
+    sc.charts![`${mode}-${difficulty}`] = { arrows, freezes };
     sc.availableTypes!.push({
       slug: `${mode}-${difficulty}`,
       mode,

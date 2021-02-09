@@ -22,6 +22,7 @@ type CompactTitleCardProps = {
   bpm: number[];
   types: StepchartType[];
   hideMix?: boolean;
+  stats: Stats;
 };
 
 const modeSvgs = {
@@ -121,6 +122,7 @@ function CompactTitleCard({
   mix,
   bpm,
   types,
+  stats,
   hideMix,
 }: CompactTitleCardProps) {
   const bannerUrl = title.banner
@@ -187,26 +189,26 @@ function CompactTitleCard({
           types={types.filter((t) => t.mode === "double")}
         />
       </div>
-      <div className="text-gray-100 bg-gray-400 text-sm px-2 py-1 text-center flex flex-row justify-between">
+      <div className="text-gray-100 bg-gray-400 text-sm px-2 pr-4 py-1 text-center flex flex-row justify-between">
         <div className="px-2 -ml-2 -my-1  bg-gray-700 text-gray-200 grid place-items-center">
           <div>
             <span className="font-bold">{getBpmRange(bpm)}</span>
           </div>
         </div>
         <div>
-          J <span className="font-bold">21</span>
+          J <span className="font-bold">{stats.jumps}</span>
+        </div>
+        {/*<div>*/}
+        {/*  C <span className="font-bold">{stats.crossovers}</span>*/}
+        {/*</div>*/}
+        <div>
+          D <span className="font-bold">{stats.drills}</span>
         </div>
         <div>
-          C <span className="font-bold">40</span>
+          F <span className="font-bold">{stats.freezes}</span>
         </div>
         <div>
-          D <span className="font-bold">60</span>
-        </div>
-        <div>
-          F <span className="font-bold">30</span>
-        </div>
-        <div>
-          G <span className="font-bold">48</span>
+          G <span className="font-bold">{stats.gallops}</span>
         </div>
       </div>
     </ImageFrame>

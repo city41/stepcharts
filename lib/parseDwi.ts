@@ -259,7 +259,7 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
   let i = 0;
 
   const sc: Partial<RawStepchart> = {
-    arrows: {},
+    charts: {},
     availableTypes: [],
     banner: titlePath ? findBanner(titlePath) : null,
   };
@@ -294,7 +294,7 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
       feet,
     });
 
-    sc.arrows![`${mode}-${difficulty}`] = {
+    sc.charts![`${mode}-${difficulty}`] = {
       arrows: arrowResult.arrows,
       freezes: arrowResult.freezes,
     };

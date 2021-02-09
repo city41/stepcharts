@@ -12,7 +12,7 @@ describe("parseDwi", () => {
   describe("freezes", () => {
     it("should allow multiple open freezes at once (Max2, Maxx Unlimited, single, maniac)", () => {
       const result = parse("8!84!4860B");
-      const { arrows, freezes } = result.arrows["single-beginner"];
+      const { arrows, freezes } = result.charts["single-beginner"];
 
       expect(arrows).toEqual([
         { beat: 4, direction: "0020", offset: 0 },
@@ -29,7 +29,7 @@ describe("parseDwi", () => {
 
     it("should parse secret rendez-vous freezes correctly (Max2, secret rendez-vous, single, maniac)", () => {
       const result = parse("B!B00606B0B!B00404B");
-      const { arrows, freezes } = result.arrows["single-beginner"];
+      const { arrows, freezes } = result.charts["single-beginner"];
 
       expect(arrows).toEqual([
         { direction: "2002", beat: 4, offset: 0 },

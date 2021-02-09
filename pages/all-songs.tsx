@@ -29,6 +29,7 @@ export async function getStaticProps(
           },
           types: sc.availableTypes,
           bpm: sc.bpm,
+          stats: sc.stats,
         };
       }),
     },

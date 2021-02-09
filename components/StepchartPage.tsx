@@ -28,7 +28,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     (at) => at.slug === currentType
   )!;
 
-  const { arrows, freezes } = stepchart.arrows[currentType];
+  const { arrows, freezes } = stepchart.charts[currentType];
 
   const arrowImgs = [];
 

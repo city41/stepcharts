@@ -33,13 +33,27 @@ type StepchartType = {
   feet: number;
 };
 
+type Stats = {
+  jumps: number;
+  crossovers: number;
+  drills: number;
+  freezes: number;
+  gallops: number;
+};
+
+type Chart = {
+  arrows: Arrow[];
+  freezes: FreezeBody[];
+};
+
 type Stepchart = {
   title: Title;
   artist: string;
   mix: Mix;
   availableTypes: StepchartType[];
-  arrows: Record<string, { arrows: Arrow[]; freezes: FreezeBody[] }>;
+  charts: Record<string, Chart>;
   bpm: number[];
+  stats: Stats;
 };
 
 type Mix = {

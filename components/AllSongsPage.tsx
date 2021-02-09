@@ -16,6 +16,7 @@ type AllSongsPageTitle = {
   };
   types: StepchartType[];
   bpm: number[];
+  stats: Stats;
 };
 
 type AllSongsPageProps = {
@@ -94,6 +95,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
               mix={t.mix}
               bpm={t.bpm}
               types={t.types}
+              stats={t.stats}
             />
           );
         })}
