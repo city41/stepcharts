@@ -30,8 +30,8 @@ const modeSvgs = {
 };
 
 const modeSvgWidths = {
-  single: 24,
-  double: 48,
+  single: 18,
+  double: 36,
 };
 
 function buildTitleUrl(
@@ -60,6 +60,11 @@ function getBpmRange(bpm: number[]) {
   return `${min}-${max}`;
 }
 
+const difficulties = {
+  single: ["beginner", "basic", "difficult", "expert", "challenge"],
+  double: ["basic", "difficult", "expert", "challenge"],
+};
+
 function Types({
   className,
   mix,
@@ -78,13 +83,19 @@ function Types({
   return (
     <div
       className={clsx(
-        className,
-        "w-full bg-gray-900 grid text-white xtext-sm font-bold items-center justify-items-center"
+        "w-full grid text-white xtext-sm font-bold items-center justify-items-center"
       )}
-      style={{ gridAutoFlow: "column" }}
+      style={{ gridTemplateColumns: "repeat(6, 1fr)" }}
     >
-      <img src={modeSvgs[types[0].mode]} width={modeSvgWidths[types[0].mode]} />
-      {types.map((t) => {
+      <img src={singleSvg} width={18} />
+      {types[0].mode === "double" && <img src={singleSvg} width={18} />}
+      {difficulties[types[0].mode].map((d) => {
+        const t = types.find((t) => t.difficulty === d);
+
+        if (!t) {
+          return <span className="text-gray-500">-</span>;
+        }
+
         return (
           <div
             key={`${t.mode}-${t.difficulty}`}
@@ -115,40 +126,42 @@ function CompactCard({
       className={clsx(
         className,
         clsx(
-          "flex flex-col bg-gray-900 xrounded-tl-xl xrounded-br-xl overflow-hidden",
-          {
-            "rounded-tr-xl rounded-bl-xl": !!hideMix,
-          }
+          "flex flex-col bg-gray-900 overflow-hidden rounded-tl-2xl rounded-br-2xl"
         )
       )}
       customColor
     >
       <div
-        className={clsx("grid bg-focal-400 items-start xpy-1 pl-3 xpr-1", {
+        className={clsx("grid bg-gray-600 items-center xpy-1 pl-3 xpr-1", {
           "pr-3": !!hideMix,
         })}
         style={{ gridTemplateColumns: "1fr max-content" }}
       >
-        <div className="font-bold text-white py-2">
+        <div className="font-bold text-white">
           <a href={buildTitleUrl(mix, title)}>
             {title.translitTitleName || title.titleName}
           </a>
         </div>
         {!hideMix && (
-          <div className="ml-2 px-2 py-0.5 bg-focal-700 text-xs text-white grid place-items-center rounded-l-xl mt-2">
+          <div
+            className="ml-2 px-2 py-0.5 bg-gray-400 text-xs text-gray-800 grid place-items-center rounded-bl-lg mb-2"
+            style={{ alignSelf: "start" }}
+          >
             <a href={`/${mix.mixDir}`}>{shortMixNames[mix.mixDir]}</a>
           </div>
         )}
       </div>
 
-      <div className="py-2 px-3">
-        <div
-          className="bg-center border border-white"
-          style={{
-            height: "var(--banner-height)",
-            backgroundImage: `url(${bannerUrl})`,
-          }}
-        />
+      <div className="pb-2 xpx-3">
+        <a href={buildTitleUrl(mix, title)}>
+          <div
+            className="bg-cover border-b border-t border-white"
+            style={{
+              paddingTop: "calc(80 / 256 * 100%)",
+              backgroundImage: `url(${bannerUrl})`,
+            }}
+          />
+        </a>
       </div>
 
       <div className="flex flex-row justify-items-stretch xmx-2 xmy-2 p-2 pt-0">

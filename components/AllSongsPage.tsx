@@ -81,7 +81,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       <div
         className="grid mt-8 items-start"
         style={{
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(275px, 1fr))",
           columnGap: "2rem",
           rowGap: "2rem",
         }}

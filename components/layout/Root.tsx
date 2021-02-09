@@ -31,7 +31,7 @@ function Root({
       <BrandNewModal />
       <div
         className={clsx(
-          styles.background,
+          // styles.background,
           "flex flex-col items-start items-stretch",
           {}
         )}
