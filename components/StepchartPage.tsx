@@ -104,6 +104,8 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     );
   });
 
+  const bannerUrl = require(`./bannerImages/${stepchart.title.banner}`);
+
   return (
     <Root
       title={`${
@@ -132,12 +134,21 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         stepchart.title.translitTitleName || stepchart.title.titleName
       }`}
     >
-      <ImageFrame className="my-8 sticky top-0 z-10 w-full sm:w-auto p-4 bg-focal-300 rounded-tl-xl rounded-br-xl flex justify-start items-center space-x-2">
-        <Banner
-          banner={stepchart.title.banner}
-          title={stepchart.title.translitTitleName || stepchart.title.titleName}
-        />
-        <TitleDetailsTable className="mt-4">
+      <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sticky top-0 z-10 p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center justify-center sm:justify-start sm:space-x-4">
+        <div className="w-full sm:w-64">
+          <div
+            className="border-2 border-white w-full bg-no-repeat bg-cover"
+            style={{
+              paddingTop: "calc(80 / 256 * 100%)",
+              backgroundImage: `url(${bannerUrl})`,
+            }}
+            role="image"
+            aria-label={`${
+              stepchart.title.translitTitleName || stepchart.title.titleName
+            } banner`}
+          />
+        </div>
+        <TitleDetailsTable className="mt-4 sm:mt-0">
           {stepchart.title.translitTitleName && (
             <TitleDetailsRow
               name="Native title"
@@ -145,35 +156,16 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             />
           )}
           <TitleDetailsRow name="BPM" value={stepchart.bpm.join(", ")} />
-          <TitleDetailsRow name="Artist" value={stepchart.artist} />
+          <TitleDetailsRow
+            name="Artist"
+            value={stepchart.artist ?? "unknown"}
+          />
           <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
           <TitleDetailsRow
             name="difficulty"
             value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
           />
         </TitleDetailsTable>
-        <div className="hide-if-noscript hidden xsm:block mt-6 bg-focal-400 text-focal-600 p-2 w-full">
-          <div className="font-bold text-white">speedmod</div>
-          <div className="flex flex-row justify-around space-x-6">
-            {[1, 1.5, 2, 3].map((sm) => {
-              const id = `speedmod-${sm}`;
-              return (
-                <div key={sm} className="flex flex-row items-center space-x-1">
-                  <input
-                    id={id}
-                    type="radio"
-                    value={sm}
-                    checked={sm === speedMod}
-                    onChange={() => setSpeedMod(sm)}
-                  />
-                  <label className="cursor-pointer" htmlFor={id}>
-                    {sm}
-                  </label>
-                </div>
-              );
-            })}
-          </div>
-        </div>
       </ImageFrame>
       <div className="grid place-items-center">
         <div

@@ -169,6 +169,8 @@ function CompactTitleCard({
               paddingTop: "calc(80 / 256 * 100%)",
               backgroundImage: `url(${bannerUrl})`,
             }}
+            role="image"
+            aria-label={`${title.titleName} banner`}
           />
         </a>
       </div>

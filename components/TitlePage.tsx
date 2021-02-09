@@ -79,22 +79,34 @@ function TitlePage({
     />
   );
 
+  const bannerUrl = require(`./bannerImages/${banner}`);
+
   return (
     <Root
       title={translitName || name}
       subheading={breadcrumbs}
       metaDescription={`Step charts for ${translitName || name}`}
     >
-      <ImageFrame className="my-8 sticky top-0 z-10 w-full sm:w-auto p-4 bg-focal-300 rounded-tl-xl rounded-br-xl flex justify-start items-center space-x-2">
-        <Banner banner={banner} title={translitName || name} />
-        <TitleDetailsTable className="mt-4">
+      <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sticky top-0 z-10 p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center justify-center sm:justify-start sm:space-x-4">
+        <div className="w-full sm:w-64">
+          <div
+            className="border-2 border-white w-full bg-no-repeat bg-cover"
+            style={{
+              paddingTop: "calc(80 / 256 * 100%)",
+              backgroundImage: `url(${bannerUrl})`,
+            }}
+            role="image"
+            aria-label={`${translitName || name} banner`}
+          />
+        </div>
+        <TitleDetailsTable className="mt-4 sm:mt-0">
           {translitName && <TitleDetailsRow name="Native title" value={name} />}
           <TitleDetailsRow name="BPM" value={bpm.join(", ")} />
           <TitleDetailsRow name="Artist" value={artist ?? "unknown"} />
           <TitleDetailsRow name="Mix" value={mix.mixName} />
         </TitleDetailsTable>
       </ImageFrame>
-      <ul className="flex flex-row flex-wrap sm:justify-around items-start">
+      <ul className="flex flex-row flex-wrap justify-center sm:justify-around items-start">
         {Object.keys(grouped).map((mode) => {
           const types = grouped[mode as Mode];
 
@@ -116,7 +128,7 @@ function TitlePage({
           });
 
           return (
-            <li key={mode}>
+            <li key={mode} className="mb-8 sm:mb-0">
               <h2 className="flex flex-row items-center justify-between text-focal-600 font-light mb-2 text-xl items-center">
                 <span>{mode}</span>
                 <img

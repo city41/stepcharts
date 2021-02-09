@@ -58,6 +58,8 @@ function CompactMixCard({ className, mix }: CompactMixCardProps) {
               paddingTop: "calc(80 / 256 * 100%)",
               backgroundImage: `url(${bannerUrl})`,
             }}
+            role="image"
+            aria-label={`${mix.mixName} banner`}
           />
         </a>
       </div>
