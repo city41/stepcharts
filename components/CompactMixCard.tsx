@@ -43,7 +43,7 @@ function CompactMixCard({ className, mix }: CompactMixCardProps) {
         <div>
           <a
             href={buildMixUrl(mix)}
-            className="inline-block xfont-bold text-white px-1 transform hover:scale-110"
+            className="inline-block xfont-bold text-white px-1"
           >
             {mix.mixName}
           </a>
