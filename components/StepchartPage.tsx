@@ -5,7 +5,6 @@ import { ArrowImg } from "./ArrowImg";
 import type { ArrowImgProps } from "./ArrowImg";
 import { FreezeBody } from "./FreezeBody";
 import { Root } from "./layout/Root";
-import { Banner } from "./Banner";
 import { ImageFrame } from "./ImageFrame";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { TitleDetailsTable, TitleDetailsRow } from "./TitleDetailsTable";
@@ -99,7 +98,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             (ARROW_HEIGHT / 2) * speedMod,
         }}
       >
-        <FreezeBody />
+        <FreezeBody direction={f.direction} />
       </div>
     );
   });
