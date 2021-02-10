@@ -11,9 +11,9 @@
 }
 
 .root input[type="radio"] + label {
-    @apply p-1 bg-focal text-heading cursor-pointer transition-all duration-200;
+    @apply py-1 px-2 bg-focal text-heading cursor-pointer;
 }
 
 .root input[type="radio"]:checked + label {
-    @apply bg-heading text-focal cursor-default transform scale-125;
+    @apply bg-heading text-focal cursor-default;
 }
