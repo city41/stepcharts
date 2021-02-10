@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Root } from "./layout/Root";
-import { ImSortAlphaAsc, ImSortAlphaDesc } from "react-icons/im";
 import { CompactTitleCard } from "./CompactTitleCard";
+import { ToggleBar } from "./ToggleBar";
+import { ImageFrame } from "./ImageFrame";
 
 type AllSongsPageTitle = {
   title: {
@@ -23,61 +24,68 @@ type AllSongsPageProps = {
   titles: AllSongsPageTitle[];
 };
 
-type Sorter = [string, "asc" | "desc"];
+const sorts = ["title", "jumps", "drills", "freezes", "gallops"];
 
-function buildTitleUrl(title: AllSongsPageProps["titles"][number]): string {
-  return `/${title.mix.mixDir}/${title.title.titleDir}`;
-}
-
-function buildMixUrl(mix: AllSongsPageProps["titles"][number]["mix"]): string {
-  return `/${mix.mixDir}`;
-}
-
-function getSorter([key, dir]: [string, "asc" | "desc"]) {
+function getSortFunction(key: typeof sorts[number]) {
   switch (key) {
-    case "mix":
-      return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
-        if (dir === "asc") {
-          return a.mix.mixName.localeCompare(b.mix.mixName);
-        } else {
-          return b.mix.mixName.localeCompare(a.mix.mixName);
-        }
-      };
     case "title":
       return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
-        if (dir === "asc") {
-          return (a.title.translitTitleName || a.title.titleName).localeCompare(
-            b.title.translitTitleName || b.title.titleName
+        return (a.title.translitTitleName || a.title.titleName)
+          .toLowerCase()
+          .localeCompare(
+            (b.title.translitTitleName || b.title.titleName).toLowerCase()
           );
-        } else {
-          return (b.title.translitTitleName || b.title.titleName).localeCompare(
-            a.title.translitTitleName || a.title.titleName
-          );
-        }
+      };
+    default:
+      return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
+        return b.stats[key as keyof Stats] - a.stats[key as keyof Stats];
       };
   }
 }
 
 function AllSongsPage({ titles }: AllSongsPageProps) {
-  const [sortBy, _setSortBy] = useState<Sorter>(["title", "asc"]);
+  const [sortBy, _setSortBy] = useState(0);
 
-  titles.sort(getSorter(sortBy));
-
-  function setSortBy(key: string) {
-    if (sortBy[0] === key) {
-      _setSortBy([sortBy[0], sortBy[1] === "asc" ? "desc" : "asc"]);
-    } else {
-      _setSortBy([key, "asc"]);
-    }
+  function setSortBy(newSortBy: number) {
+    window.history.replaceState(null, "", `?sort=${sorts[newSortBy]}`);
+    _setSortBy(newSortBy);
   }
 
-  const SortIcon = sortBy[1] === "asc" ? ImSortAlphaAsc : ImSortAlphaDesc;
+  useEffect(() => {
+    if (window.location.search) {
+      const sort = window.location.search.split("=")[1];
+
+      if (sort) {
+        const newSortBy = sorts.indexOf(sort.toLowerCase());
+        _setSortBy(newSortBy);
+      }
+    }
+  });
+
+  titles.sort(getSortFunction(sorts[sortBy]));
 
   return (
     <Root
       title="All Songs"
       metaDescription="All songs available at stepcharts.com"
     >
+      <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sticky top-0 z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center justify-center sm:justify-start sm:space-x-4">
+        <div className="hide-if-noscript flex flex-row sm:flex-col mt-2 sm:mt-0">
+          <div className="hidden sm:block text-sm ml-2 mb-1">sort by</div>
+          <ToggleBar
+            namespace="mixSort"
+            entries={[
+              <div className="text-sm sm:text-xl">title</div>,
+              <div className="text-sm sm:text-xl">jumps</div>,
+              <div className="text-sm sm:text-xl">drills</div>,
+              <div className="text-sm sm:text-xl">freezes</div>,
+              <div className="text-sm sm:text-xl">gallops</div>,
+            ]}
+            onToggle={(i) => setSortBy(i)}
+            checkedIndex={sortBy}
+          />
+        </div>
+      </ImageFrame>
       <div
         className="grid mt-8 items-start"
         style={{
