@@ -48,12 +48,12 @@ function Root({
               </div>
             </div>
             <a
-              className="hidden sm:block className text-challenge cursor-pointer"
+              className="hidden sm:block className text-link cursor-pointer"
               href="/all-songs"
             >
               all songs
             </a>
-            <ReportAnIssue className="text-challenge hover:underline mr-4 lg:mr-0" />
+            <ReportAnIssue className="text-link hover:underline mr-4 lg:mr-0" />
           </div>
         </div>
         {subheading && (

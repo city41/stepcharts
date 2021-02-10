@@ -21,6 +21,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        link: "var(--color-link)",
         beginner: "var(--color-beginner)",
         basic: "var(--color-basic)",
         difficult: "var(--color-difficult)",
@@ -36,10 +37,6 @@ module.exports = {
           600: "var(--color-focal-600)",
           700: "var(--color-focal-700)",
           DEFAULT: "var(--color-focal-500)",
-        },
-        contrast: {
-          300: "var(--color-contrast-300)",
-          500: "var(--color-contrast-500)",
         },
         heading: {
           DEFAULT: "var(--color-heading)",

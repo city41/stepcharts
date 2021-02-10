@@ -6,20 +6,41 @@
 @tailwind components;
 /* Stop purging. */
 
-html,
-body {
-  @apply text-black bg-gradient-to-r from-white to-gray-100;
-}
 
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */
 
 :root {
-  @include theme;
+  @include common-theme;
+  @include light-theme;
 
   --banner-width: 256px;
   --banner-height: 80px;
-
 }
+
+html, body {
+  @apply text-black bg-gradient-to-r from-white to-gray-100;
+}
+
+@media (prefers-color-scheme: light) {
+  html, body {
+    @apply text-black bg-gradient-to-r from-white to-gray-100;
+  }
+
+  :root {
+    @include light-theme;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html, body {
+    @apply text-white bg-gradient-to-r from-gray-800 to-gray-700;
+  }
+
+  :root {
+    @include dark-theme;
+  }
+}
+
 

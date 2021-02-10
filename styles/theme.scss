@@ -1,10 +1,15 @@
-@mixin theme {
-  --lighten: 8%;
-  --darken: -6%;
-
+@mixin common-theme {
   --color-white-agnostic: white;
   --color-black-agnostic: hsl(0, 0%, 5%);
 
+  --color-beginner: #00B0C6;
+  --color-basic: #D68B00;
+  --color-difficult: #CE1A87;
+  --color-expert: #68DE13;
+  --color-challenge: #7D72FE;
+}
+
+@mixin light-theme {
   // these are copied from tw-gray
   --color-focal-700: #374151;
   --color-focal-600: #4b5563;
@@ -16,22 +21,33 @@
   --color-focal-50: #f9fafb;
   --color-focal: var(--color-focal-500);
 
-  --color-contrast-500: #f4a261;
-  --color-contrast-300: #f7bc8d;
+  --color-bg: var(--color-focal-600);
+  --color-fg: var(--color-focal-300);
 
+  --color-heading: var(--color-white-agnostic);
+  --color-subheading: var(--color-focal-200);
+
+  --color-link: var(--color-challenge);
+}
+
+@mixin dark-theme {
+  // these are copied from tw-gray
+  --color-focal-50: #374151;
+  --color-focal-100: #4b5563;
+  --color-focal-200: #6B7280;
+  --color-focal-300: #9ca3af;
+  --color-focal-400: #d1d5db;
+  --color-focal-500: #e5e7eb;
+  --color-focal-600: #f3f4f6;
+  --color-focal-700: #f7f8f9;
+  --color-focal: var(--color-focal-500);
 
   --color-bg: var(--color-focal-600);
   --color-fg: var(--color-focal-300);
 
-  --link-border-color: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l), 0.125);
-
-  --color-beginner: #00B0C6;
-  --color-basic: #D68B00;
-  --color-difficult: #CE1A87;
-  --color-expert: #68DE13;
-  --color-challenge: #7D72FE;
-
-  --color-heading: var(--color-white-agnostic);
+  --color-heading: var(--color-focal-50);
   --color-subheading: var(--color-focal-200);
+
+  --color-link: var(--color-expert);
 }
 

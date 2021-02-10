@@ -11,9 +11,8 @@ function Footer({ className }: FooterProps) {
   return (
     <footer
       className={clsx(
-        // styles.footer,
         className,
-        "bg-gradient-to-b from-gray-200 to-white bg-focal-100 text-focal-700 py-2 px-2 sm:p-4 text-center text-xs xborder-t border-focal-400"
+        "bg-focal-100 text-focal-700 py-2 px-2 sm:p-4 text-center text-xs xborder-t border-focal-400"
       )}
     >
       <div className="w-full max-w-6xl mx-auto flex flex-col space-y-2">
@@ -23,14 +22,14 @@ function Footer({ className }: FooterProps) {
         <div>
           Made by{" "}
           <a
-            className="text-challenge hover:underline"
+            className="text-link hover:underline"
             href="https://twitter.com/mattegreer"
           >
             Matt Greer
           </a>
           <span className="mx-2">&#124;</span>
           <a
-            className="text-challenge hover:underline"
+            className="text-link hover:underline"
             href="https://github.com/city41/stepcharts"
           >
             GitHub repo
