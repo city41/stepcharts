@@ -129,7 +129,9 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           )}
           style={{
             backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
-            top: b.startOffset * MEASURE_HEIGHT * speedmod,
+            top:
+              b.startOffset * MEASURE_HEIGHT * speedmod -
+              (barHeight - ARROW_HEIGHT) / 2,
             height:
               ((b.endOffset ?? totalSongHeight) - b.startOffset) *
               MEASURE_HEIGHT *
