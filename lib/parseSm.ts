@@ -79,12 +79,32 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
 
   let i = 0;
   let bpmString: string | null = null;
+  let stopsString: string | null = null;
 
   const sc: Partial<RawStepchart> = {
     charts: {},
     availableTypes: [],
     banner: null,
   };
+
+  function parseStops(
+    stopsString: string | null,
+    emptyOffsetInMeasures: number
+  ) {
+    if (!stopsString) {
+      return [];
+    }
+
+    const entries = stopsString.split(",");
+
+    return entries.map((s) => {
+      const [stopS, durationS] = s.split("=");
+      return {
+        offset: Number(stopS) * 0.25 - emptyOffsetInMeasures,
+        duration: Number(durationS),
+      };
+    });
+  }
 
   function parseBpms(bpmString: string, emptyOffsetInMeasures: number) {
     // 0=79.3,4=80,33=79.8,36=100,68=120,100=137,103=143,106=139,108=140,130=141.5,132=160,164=182,166=181,168=180;
@@ -250,6 +270,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
       arrows,
       freezes,
       bpm: parseBpms(bpmString, numMeasuresSkipped),
+      stops: parseStops(stopsString, numMeasuresSkipped),
     };
 
     sc.availableTypes!.push({
@@ -277,6 +298,8 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
         sc[tag] = value;
       } else if (tag === "bpms") {
         bpmString = value;
+      } else if (tag === "stops") {
+        stopsString = value;
       } else if (tag === "notes") {
         if (!bpmString) {
           throw new Error("parseSm: about to parse notes but never got bpm");

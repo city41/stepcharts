@@ -41,16 +41,22 @@ type Stats = {
   gallops: number;
 };
 
-type Stepchart = {
-  arrows: Arrow[];
-  freezes: FreezeBody[];
-  bpm: Bpm[];
-};
-
 type Bpm = {
   startOffset: number;
   endOffset: number | null;
   bpm: number;
+};
+
+type Stop = {
+  offset: number;
+  duration: number;
+};
+
+type Stepchart = {
+  arrows: Arrow[];
+  freezes: FreezeBody[];
+  bpm: Bpm[];
+  stops: Stop[];
 };
 
 type Simfile = {

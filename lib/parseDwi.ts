@@ -237,6 +237,7 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
   let bpm: string | null = null;
   let changebpm: string | null = null;
   let displaybpm: string | null = null;
+  let stops: string | null = null;
 
   const lines = dwi.split("\n").map((l) => l.trim());
 
@@ -282,7 +283,23 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
       arrows: arrowResult.arrows,
       freezes: arrowResult.freezes,
       bpm: determineBpm(firstNonEmptyMeasureIndex),
+      stops: determineStops(firstNonEmptyMeasureIndex),
     };
+  }
+
+  function determineStops(emptyOffset: number) {
+    if (!stops) {
+      return [];
+    }
+
+    return stops.split(",").map((s) => {
+      const [eigthNoteS, stopDurationS] = s.split("=");
+
+      return {
+        offset: Number(eigthNoteS) * (1 / 16) - emptyOffset * (1 / 8),
+        duration: Number(stopDurationS),
+      };
+    });
   }
 
   function determineBpm(emptyOffset: number) {
@@ -371,6 +388,8 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
         bpm = value;
       } else if (tag === "changebpm") {
         changebpm = value;
+      } else if (tag === "freeze") {
+        stops = value;
       } else if (tag === "single" || tag === "double") {
         parseNotes(tag, value);
       }

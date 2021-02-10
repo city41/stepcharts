@@ -1,5 +1,6 @@
 import React, { CSSProperties, useState } from "react";
 import clsx from "clsx";
+import { GiStopSign } from "react-icons/gi";
 
 import { ArrowImg } from "./ArrowImg";
 import type { ArrowImgProps } from "./ArrowImg";
@@ -30,7 +31,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     (at) => at.slug === currentType
   )!;
 
-  const { arrows, freezes, bpm } = stepchart.charts[currentType];
+  const { arrows, freezes, bpm, stops } = stepchart.charts[currentType];
 
   const arrowImgs = [];
 
@@ -156,6 +157,16 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     }
   }
 
+  const stopLabels = stops.map((s) => {
+    return (
+      <GiStopSign
+        key={s.offset}
+        className="text-red-600 text-2xl absolute -right-7"
+        style={{ top: s.offset * MEASURE_HEIGHT * speedMod }}
+      />
+    );
+  });
+
   const bannerUrl = require(`./bannerImages/${stepchart.title.banner}`);
 
   return (
@@ -247,6 +258,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             {arrowImgs}
           </div>
           {bpmLabelDivs}
+          {stopLabels}
         </div>
       </div>
     </Root>
