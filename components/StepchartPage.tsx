@@ -47,7 +47,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         arrowImgs.push(
           <ArrowImg
             key={`Arrow-${ai}-${i}`}
-            className={clsx(styles.arrow, "absolute text-xs")}
+            className={clsx(styles.arrow, "absolute text-xs ease-in-out")}
             style={{
               top: a.offset * MEASURE_HEIGHT * speedmod,
               transition: "top 500ms",
@@ -120,10 +120,13 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       bpmRangeDivs.push(
         <div
           key={b.startOffset}
-          className={clsx("absolute left-0 w-full", {
-            "border-t border-blue-500": even,
-            "border-t border-difficult": !even,
-          })}
+          className={clsx(
+            "absolute left-0 w-full transition-all ease-in-out duration-500",
+            {
+              "border-t border-blue-500": even,
+              "border-t border-difficult": !even,
+            }
+          )}
           style={{
             backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
             top: b.startOffset * MEASURE_HEIGHT * speedmod,
@@ -138,7 +141,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       bpmLabelDivs.push(
         <div
           key={b.startOffset}
-          className="absolute flex flex-row justify-end"
+          className="absolute flex flex-row justify-end transition-all ease-in-out duration-500"
           style={{
             top: Math.max(0, b.startOffset * MEASURE_HEIGHT * speedmod - 1),
             left: -100,
