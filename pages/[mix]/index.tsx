@@ -9,10 +9,6 @@ import { getAllStepchartData } from "../../lib/getAllStepchartData";
 import { MixPage } from "../../components/MixPage";
 import type { MixPageProps } from "../../components/MixPage";
 
-export const config = {
-  unstable_runtimeJS: false,
-};
-
 export async function getStaticPaths(
   _context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
