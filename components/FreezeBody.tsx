@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 
 import styles from "./FreezeBody.module.css";
 
@@ -30,7 +31,7 @@ const tailStyles = {
 
 function FreezeBody({ direction }: FreezeBodyProps) {
   return (
-    <div className="w-full h-full">
+    <div className={clsx(styles.root, "w-full h-full")}>
       <div className={repeatStyles[direction]} />
       <div className={tailStyles[direction]} />
     </div>
