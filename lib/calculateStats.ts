@@ -11,13 +11,6 @@ function getMostDifficultChart(
   types: StepchartType[],
   charts: Record<string, Chart>
 ) {
-  let candidates = types.filter((t) => t.mode === "single");
-
-  // no singles? fall back to whatever there is
-  if (candidates.length === 0) {
-    candidates = types;
-  }
-
   const maxFeet = Math.max(...types.map((t) => t.feet));
 
   const maxFeetTypes = types.filter((t) => t.feet === maxFeet);
