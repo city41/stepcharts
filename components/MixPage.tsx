@@ -13,7 +13,7 @@ type MixPageTitle = {
     banner: string | null;
   };
   types: StepchartType[];
-  bpm: number[];
+  displayBpm: string;
   stats: Stats;
 };
 
@@ -113,7 +113,7 @@ function MixPage({ mix, titles }: MixPageProps) {
               key={title.title.titleDir}
               title={title.title}
               mix={mix}
-              bpm={title.bpm}
+              displayBpm={title.displayBpm}
               types={title.types}
               stats={title.stats}
               hideMix

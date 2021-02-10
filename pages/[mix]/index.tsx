@@ -39,7 +39,7 @@ export async function getStaticProps(
             banner: sc.title.banner,
           },
           types: sc.availableTypes,
-          bpm: sc.bpm,
+          displayBpm: sc.displayBpm,
           stats: sc.stats,
         };
       }),

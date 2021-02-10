@@ -20,6 +20,8 @@ type StepchartPageProps = {
 const ARROW_HEIGHT = 40;
 const MEASURE_HEIGHT = ARROW_HEIGHT * 4;
 
+const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
+
 function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const [speedMod, setSpeedMod] = useState(1);
   const isSingle = currentType.includes("single");
@@ -104,6 +106,56 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     );
   });
 
+  const bpmRangeDivs = [];
+  const bpmLabelDivs = [];
+
+  if (stepchart.bpm.length > 1) {
+    for (let i = 0; i < stepchart.bpm.length; ++i) {
+      const even = (i & 1) === 0;
+      const b = stepchart.bpm[i];
+
+      bpmRangeDivs.push(
+        <div
+          key={b.startOffset}
+          className={clsx("absolute left-0 w-full", {
+            "border-t border-blue-500": even,
+            "border-t border-difficult": !even,
+          })}
+          style={{
+            backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
+            top: b.startOffset * MEASURE_HEIGHT * speedMod,
+            height:
+              ((b.endOffset ?? totalSongHeight) - b.startOffset) *
+              MEASURE_HEIGHT *
+              speedMod,
+          }}
+        />
+      );
+
+      bpmLabelDivs.push(
+        <div
+          key={b.startOffset}
+          className="absolute flex flex-row justify-end"
+          style={{
+            top: Math.max(0, b.startOffset * MEASURE_HEIGHT * speedMod - 1),
+            left: -100,
+            width: 100,
+          }}
+        >
+          <div
+            className={clsx("text-white p-0.5 rounded-l-lg", {
+              "bg-blue-500": even,
+              "bg-difficult": !even,
+            })}
+            style={{ fontSize: "0.675rem" }}
+          >
+            {b.bpm}
+          </div>
+        </div>
+      );
+    }
+  }
+
   const bannerUrl = require(`./bannerImages/${stepchart.title.banner}`);
 
   return (
@@ -155,7 +207,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
               value={stepchart.title.titleName}
             />
           )}
-          <TitleDetailsRow name="BPM" value={stepchart.bpm.join(", ")} />
+          <TitleDetailsRow name="BPM" value={stepchart.displayBpm} />
           <TitleDetailsRow
             name="Artist"
             value={stepchart.artist ?? "unknown"}
@@ -168,29 +220,33 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         </TitleDetailsTable>
       </ImageFrame>
       <div className="grid place-items-center">
-        <div
-          className={clsx(
-            styles.container,
-            styles[`container-${singleDoubleClass}`],
-            "relative bg-indigo-100 overflow-hidden"
-          )}
-          style={
-            {
-              height: totalSongHeight,
-              "--arrow-size": `${ARROW_HEIGHT}px`,
-            } as CSSProperties
-          }
-          role="img"
-          aria-label={`${currentType} step chart for ${
-            stepchart.title.translitTitleName || stepchart.title.titleName
-          }`}
-        >
-          {barDivs}
-          {freezeDivs}
-          {!isSingle && (
-            <div className={clsx(styles.doubleDivider, "h-full")} />
-          )}
-          {arrowImgs}
+        <div className="relative">
+          <div
+            className={clsx(
+              styles.container,
+              styles[`container-${singleDoubleClass}`],
+              "relative bg-indigo-100 overflow-y-hidden"
+            )}
+            style={
+              {
+                height: totalSongHeight,
+                "--arrow-size": `${ARROW_HEIGHT}px`,
+              } as CSSProperties
+            }
+            role="img"
+            aria-label={`${currentType} step chart for ${
+              stepchart.title.translitTitleName || stepchart.title.titleName
+            }`}
+          >
+            {barDivs}
+            {bpmRangeDivs}
+            {freezeDivs}
+            {!isSingle && (
+              <div className={clsx(styles.doubleDivider, "h-full")} />
+            )}
+            {arrowImgs}
+          </div>
+          {bpmLabelDivs}
         </div>
       </div>
     </Root>

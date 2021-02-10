@@ -28,7 +28,7 @@ export async function getStaticProps(
             mixDir: sc.mix.mixDir,
           },
           types: sc.availableTypes,
-          bpm: sc.bpm,
+          displayBpm: sc.displayBpm,
           stats: sc.stats,
         };
       }),

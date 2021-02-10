@@ -8,6 +8,7 @@ type RawStepchart = Omit<Stepchart, "mix" | "title"> & {
   title: string;
   titletranslit: string | null;
   banner: string | null;
+  displayBpm: string | undefined;
 };
 type Parser = (chart: string, titleDir: string) => RawStepchart;
 
@@ -76,6 +77,7 @@ function parseStepchart(
       titleDir,
       banner: rawStepchart.banner,
     },
+    displayBpm: rawStepchart.displayBpm ?? "???",
     stats: calculateStats(rawStepchart.availableTypes, rawStepchart.charts),
   };
 }

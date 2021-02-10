@@ -29,7 +29,7 @@ type TitlePageProps = {
   translitName: string | null;
   dir: string;
   banner: string | null;
-  bpm: number[];
+  displayBpm: string;
   artist: string | null;
   mix: TitlePageMix;
   types: StepchartType[];
@@ -57,7 +57,7 @@ function TitlePage({
   translitName,
   dir,
   banner,
-  bpm,
+  displayBpm,
   artist,
   mix,
   types,
@@ -101,7 +101,7 @@ function TitlePage({
         </div>
         <TitleDetailsTable className="mt-4 sm:mt-0">
           {translitName && <TitleDetailsRow name="Native title" value={name} />}
-          <TitleDetailsRow name="BPM" value={bpm.join(", ")} />
+          <TitleDetailsRow name="BPM" value={displayBpm} />
           <TitleDetailsRow name="Artist" value={artist ?? "unknown"} />
           <TitleDetailsRow name="Mix" value={mix.mixName} />
         </TitleDetailsTable>

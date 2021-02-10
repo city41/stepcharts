@@ -19,7 +19,7 @@ type CompactTitleCardProps = {
     mixName: string;
     mixDir: string;
   };
-  bpm: number[];
+  displayBpm: string;
   types: StepchartType[];
   hideMix?: boolean;
   stats: Stats;
@@ -48,17 +48,6 @@ function buildStepchartUrl(
   type: StepchartType
 ): string {
   return `/${mix.mixDir}/${title.titleDir}/${type.mode}-${type.difficulty}`;
-}
-
-function getBpmRange(bpm: number[]) {
-  const min = Math.min(...bpm);
-  const max = Math.max(...bpm);
-
-  if (min === max) {
-    return min;
-  }
-
-  return `${min}-${max}`;
 }
 
 const difficulties = {
@@ -120,7 +109,7 @@ function CompactTitleCard({
   className,
   title,
   mix,
-  bpm,
+  displayBpm,
   types,
   stats,
   hideMix,
@@ -196,7 +185,7 @@ function CompactTitleCard({
       <div className="text-gray-100 bg-gray-400 text-sm px-2 pr-4 py-1 text-center flex flex-row justify-between">
         <div className="px-2 -ml-2 -my-1  bg-gray-700 text-gray-200 grid place-items-center">
           <div>
-            <span className="font-bold">{getBpmRange(bpm)}</span>
+            <span className="font-bold">{displayBpm}</span>
           </div>
         </div>
         <div>

@@ -80,18 +80,30 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
   };
 
   function parseBpms(bpmString: string) {
+    // 0=79.3,4=80,33=79.8,36=100,68=120,100=137,103=143,106=139,108=140,130=141.5,132=160,164=182,166=181,168=180;
     const entries = bpmString.split(",");
 
-    const bpms = entries.map((e) => {
-      return Math.floor(Number(e.split("=")[1]));
+    const bpms = entries.map((e, i, a) => {
+      const [beatS, bpmS] = e.split("=");
+      const nextBeatS = a[i + 1]?.split("=")[0] ?? null;
+
+      return {
+        startOffset: Number(beatS) * 0.25,
+        endOffset: nextBeatS === null ? null : Number(nextBeatS) * 0.25,
+        bpm: Number(bpmS),
+      };
     });
 
-    // remove the simfile hacks like 190, 189
-    const filteredBpms = bpms.filter((b, _index, others) => {
-      return !others.some((o) => o - b === 1);
-    });
+    sc.bpm = bpms;
 
-    sc.bpm = Array.from(new Set(filteredBpms)).sort((a, b) => a - b);
+    const minBpm = Math.min(...bpms.map((b) => b.bpm));
+    const maxBpm = Math.max(...bpms.map((b) => b.bpm));
+
+    if (Math.abs(minBpm - maxBpm) < 2) {
+      sc.displayBpm = Math.round(minBpm).toString();
+    } else {
+      sc.displayBpm = `${Math.round(minBpm)}-${Math.round(maxBpm)}`;
+    }
   }
 
   function parseFreezes(

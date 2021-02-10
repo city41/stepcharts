@@ -16,7 +16,7 @@ type AllSongsPageTitle = {
     mixDir: string;
   };
   types: StepchartType[];
-  bpm: number[];
+  displayBpm: string;
   stats: Stats;
 };
 
@@ -105,7 +105,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
               key={`${t.mix.mixDir}-${t.title.titleDir}`}
               title={t.title}
               mix={t.mix}
-              bpm={t.bpm}
+              displayBpm={t.displayBpm}
               types={t.types}
               stats={t.stats}
             />

@@ -46,13 +46,20 @@ type Chart = {
   freezes: FreezeBody[];
 };
 
+type Bpm = {
+  startOffset: number;
+  endOffset: number | null;
+  bpm: number;
+};
+
 type Stepchart = {
   title: Title;
   artist: string;
   mix: Mix;
   availableTypes: StepchartType[];
   charts: Record<string, Chart>;
-  bpm: number[];
+  bpm: Bpm[];
+  displayBpm: string;
   stats: Stats;
 };
 

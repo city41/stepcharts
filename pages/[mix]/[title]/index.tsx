@@ -47,7 +47,7 @@ export async function getStaticProps(
       dir: stepchart.title.titleDir,
       artist: stepchart.artist ?? null,
       banner: stepchart.title.banner,
-      bpm: stepchart.bpm,
+      displayBpm: stepchart.displayBpm,
       mix: {
         mixName: stepchart.mix.mixName,
         mixDir: stepchart.mix.mixDir,
