@@ -22,7 +22,26 @@ type MixPageProps = {
   titles: MixPageTitle[];
 };
 
-const sorts = ["title", "jumps", "drills", "freezes", "gallops", "stops"];
+const sorts = [
+  "title",
+  "bpm",
+  "jumps",
+  "drills",
+  "freezes",
+  "gallops",
+  "stops",
+];
+
+// TODO: this sorting is totally copied into all-songs
+function getMaxBpm(displayBpm: string): number {
+  if (!isNaN(Number(displayBpm))) {
+    return Number(displayBpm);
+  }
+
+  const range = displayBpm.split("-").map(Number);
+
+  return Math.max(...range);
+}
 
 function getSortFunction(key: typeof sorts[number]) {
   switch (key) {
@@ -34,6 +53,11 @@ function getSortFunction(key: typeof sorts[number]) {
             (b.title.translitTitleName || b.title.titleName).toLowerCase()
           );
       };
+    case "bpm":
+      return (a: MixPageTitle, b: MixPageTitle) => {
+        return getMaxBpm(b.displayBpm) - getMaxBpm(a.displayBpm);
+      };
+
     default:
       return (a: MixPageTitle, b: MixPageTitle) => {
         return b.stats[key as keyof Stats] - a.stats[key as keyof Stats];
@@ -123,5 +147,5 @@ function MixPage({ mix, titles }: MixPageProps) {
   );
 }
 
-export { MixPage };
+export { MixPage, getMaxBpm };
 export type { MixPageProps };

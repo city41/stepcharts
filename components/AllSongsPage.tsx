@@ -3,6 +3,7 @@ import { Root } from "./layout/Root";
 import { CompactTitleCard } from "./CompactTitleCard";
 import { ToggleBar } from "./ToggleBar";
 import { ImageFrame } from "./ImageFrame";
+import { getMaxBpm } from "./MixPage";
 
 type AllSongsPageTitle = {
   title: {
@@ -24,7 +25,15 @@ type AllSongsPageProps = {
   titles: AllSongsPageTitle[];
 };
 
-const sorts = ["title", "jumps", "drills", "freezes", "gallops", "stops"];
+const sorts = [
+  "title",
+  "bpm",
+  "jumps",
+  "drills",
+  "freezes",
+  "gallops",
+  "stops",
+];
 
 function getSortFunction(key: typeof sorts[number]) {
   switch (key) {
@@ -35,6 +44,10 @@ function getSortFunction(key: typeof sorts[number]) {
           .localeCompare(
             (b.title.translitTitleName || b.title.titleName).toLowerCase()
           );
+      };
+    case "bpm":
+      return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
+        return getMaxBpm(b.displayBpm) - getMaxBpm(a.displayBpm);
       };
     default:
       return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
