@@ -1,6 +1,26 @@
 .root {
+    --left-right-h: var(--arrow-size);
     --down-h: calc(var(--arrow-size) * .6338283);
+    --up-h: calc(var(--arrow-size) * 1.0640632);
     --bg-pos: bottom;
+}
+
+.repeatUp {
+    width: 100%;
+    height: calc(100% - var(--up-h));
+    background-image: url(./upFreezeRepeatBody.svg);
+    background-size: 100%;
+    background-repeat: repeat-y;
+    background-position: var(--bg-pos);
+}
+
+.tailUp {
+    width: 100%;
+    height: min(var(--up-h), 100%);
+    background-image: url(./upFreezeTail.svg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: var(--bg-pos);
 }
 
 .repeatDown {
@@ -21,40 +41,25 @@
     background-position: var(--bg-pos);
 }
 
-.repeatRight {
+.repeatRight, .repeatLeft {
     width: 100%;
-    height: calc(100% - var(--arrow-size));
+    height: calc(100% - var(--left-right-h));
     background-image: url(./rightFreezeRepeatBody.svg);
     background-size: 100%;
     background-repeat: repeat-y;
     background-position: var(--bg-pos);
 }
 
-.tailRight {
+.tailRight, .tailLeft{
     width: 100%;
-    height: min(var(--arrow-size), 100%);
+    height: min(var(--left-right-h), 100%);
     background-image: url(./rightFreezeTail.svg);
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: var(--bg-pos);
 }
 
-.repeatLeft {
+.repeatLeft, .tailLeft {
     transform: scaleX(-1);
-    width: 100%;
-    height: calc(100% - var(--arrow-size));
-    background-image: url(./rightFreezeRepeatBody.svg);
-    background-size: 100%;
-    background-repeat: repeat-y;
-    background-position: var(--bg-pos);
 }
 
-.tailLeft {
-    transform: scaleX(-1);
-    width: 100%;
-    height: min(var(--arrow-size), 100%);
-    background-image: url(./rightFreezeTail.svg);
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: var(--bg-pos);
-}
