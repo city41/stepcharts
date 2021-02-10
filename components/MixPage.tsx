@@ -83,7 +83,7 @@ function MixPage({ mix, titles }: MixPageProps) {
             aria-label={`${mix.mixName} banner`}
           />
         </div>
-        <div className="flex flex-row sm:flex-col mt-2 sm:mt-0">
+        <div className="hide-if-noscript flex flex-row sm:flex-col mt-2 sm:mt-0">
           <div className="hidden sm:block text-sm ml-2 mb-1">sort by</div>
           <ToggleBar
             namespace="mixSort"
