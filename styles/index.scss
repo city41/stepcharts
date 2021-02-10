@@ -19,6 +19,12 @@
   --banner-height: 80px;
 }
 
+@media (prefers-reduced-motion) {
+  * {
+    transition-duration: 0s !important;
+  }
+}
+
 html, body {
   @apply text-black bg-gradient-to-r from-white to-gray-100;
 }
