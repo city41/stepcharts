@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Root } from "./layout/Root";
 import { ImageFrame } from "./ImageFrame";
 import { Breadcrumbs } from "./Breadcrumbs";
@@ -42,7 +42,23 @@ function getSortFunction(key: typeof sorts[number]) {
 }
 
 function MixPage({ mix, titles }: MixPageProps) {
-  const [sortBy, setSortBy] = useState(0);
+  const [sortBy, _setSortBy] = useState(0);
+
+  function setSortBy(newSortBy: number) {
+    window.history.replaceState(null, "", `?sort=${sorts[newSortBy]}`);
+    _setSortBy(newSortBy);
+  }
+
+  useEffect(() => {
+    if (window.location.search) {
+      const sort = window.location.search.split("=")[1];
+
+      if (sort) {
+        const newSortBy = sorts.indexOf(sort.toLowerCase());
+        _setSortBy(newSortBy);
+      }
+    }
+  });
 
   const mixBannerUrl = require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`);
   return (
