@@ -145,7 +145,12 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           key={b.startOffset}
           className="absolute flex flex-row justify-end transition-all ease-in-out duration-500"
           style={{
-            top: Math.max(0, b.startOffset * MEASURE_HEIGHT * speedmod - 1),
+            top: Math.max(
+              0,
+              b.startOffset * MEASURE_HEIGHT * speedmod -
+                1 -
+                (barHeight - ARROW_HEIGHT) / 2
+            ),
             left: -100,
             width: 100,
           }}
