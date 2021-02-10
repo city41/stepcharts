@@ -1,7 +1,11 @@
 import fs from "fs";
 import Fraction from "fraction.js";
 import { RawStepchart } from "./parseStepchart";
-import { determineBeat, normalizedDifficultyMap } from "./util";
+import {
+  determineBeat,
+  mergeSimilarBpmRanges,
+  normalizedDifficultyMap,
+} from "./util";
 
 const metaTagsToConsume = ["title", "artist"];
 
@@ -317,6 +321,8 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
     if (!sc.bpm) {
       throw new Error("parseDwi, determineBpm: failed to get bpm");
     }
+
+    sc.bpm = mergeSimilarBpmRanges(sc.bpm);
 
     if (displaybpm) {
       if (!isNaN(Number(displaybpm))) {

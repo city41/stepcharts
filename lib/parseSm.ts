@@ -1,6 +1,10 @@
 import Fraction from "fraction.js";
 import { RawStepchart } from "./parseStepchart";
-import { determineBeat, normalizedDifficultyMap } from "./util";
+import {
+  determineBeat,
+  mergeSimilarBpmRanges,
+  normalizedDifficultyMap,
+} from "./util";
 
 const metaTagsToConsume = ["title", "titletranslit", "artist", "banner"];
 
@@ -94,7 +98,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
       };
     });
 
-    sc.bpm = bpms;
+    sc.bpm = mergeSimilarBpmRanges(bpms);
 
     const minBpm = Math.min(...bpms.map((b) => b.bpm));
     const maxBpm = Math.max(...bpms.map((b) => b.bpm));

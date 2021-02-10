@@ -149,7 +149,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             })}
             style={{ fontSize: "0.675rem" }}
           >
-            {b.bpm}
+            {Math.round(b.bpm)}
           </div>
         </div>
       );

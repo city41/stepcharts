@@ -38,4 +38,29 @@ const normalizedDifficultyMap: Record<string, Difficulty> = {
   edit: "edit",
 };
 
-export { determineBeat, normalizedDifficultyMap };
+function similarBpm(a: Bpm, b: Bpm): boolean {
+  return Math.abs(a.bpm - b.bpm) < 1;
+}
+
+function mergeSimilarBpmRanges(bpm: Bpm[]): Bpm[] {
+  return bpm.reduce<Bpm[]>((building, b, i, a) => {
+    const prev = a[i - 1];
+    const next = a[i + 1];
+
+    if (prev && similarBpm(prev, b)) {
+      // this bpm was merged on the last iteration, so skip it
+      return building;
+    }
+
+    if (next && similarBpm(next, b)) {
+      return building.concat({
+        ...b,
+        endOffset: next.endOffset,
+      });
+    }
+
+    return building.concat(b);
+  }, []);
+}
+
+export { determineBeat, normalizedDifficultyMap, mergeSimilarBpmRanges };
