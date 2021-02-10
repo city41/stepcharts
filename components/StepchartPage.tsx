@@ -6,10 +6,10 @@ import { ArrowImg } from "./ArrowImg";
 import type { ArrowImgProps } from "./ArrowImg";
 import { FreezeBody } from "./FreezeBody";
 import { Root } from "./layout/Root";
-import { Banner } from "./Banner";
 import { ImageFrame } from "./ImageFrame";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { TitleDetailsTable, TitleDetailsRow } from "./TitleDetailsTable";
+import { ToggleBar } from "./ToggleBar";
 
 import styles from "./StepchartPage.module.css";
 
@@ -23,8 +23,10 @@ const MEASURE_HEIGHT = ARROW_HEIGHT * 4;
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
+const speedmods = [1, 1.5, 2, 3];
+
 function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
-  const [speedMod, setSpeedMod] = useState(1);
+  const [speedmod, setSpeedmod] = useState(speedmods[0]);
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
   const currentTypeMeta = stepchart.availableTypes.find(
@@ -47,7 +49,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             key={`Arrow-${ai}-${i}`}
             className={clsx(styles.arrow, "absolute text-xs")}
             style={{
-              top: a.offset * MEASURE_HEIGHT * speedMod,
+              top: a.offset * MEASURE_HEIGHT * speedmod,
               transition: "top 500ms",
             }}
             size={ARROW_HEIGHT}
@@ -61,11 +63,11 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
 
   const barDivs = [];
 
-  const barHeight = ARROW_HEIGHT * speedMod;
+  const barHeight = ARROW_HEIGHT * speedmod;
   const lastArrowOffset = (arrows[arrows.length - 1]?.offset ?? 0) + 0.25;
   const lastFreezeOffset = freezes[freezes.length - 1]?.endOffset ?? 0;
   const totalSongHeight =
-    Math.max(lastArrowOffset, lastFreezeOffset) * MEASURE_HEIGHT * speedMod;
+    Math.max(lastArrowOffset, lastFreezeOffset) * MEASURE_HEIGHT * speedmod;
 
   for (let i = 0; i < totalSongHeight / barHeight; ++i) {
     barDivs.push(
@@ -81,7 +83,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         )}
         style={{
           left: 0,
-          top: i * ARROW_HEIGHT * speedMod - (barHeight - ARROW_HEIGHT) / 2,
+          top: i * ARROW_HEIGHT * speedmod - (barHeight - ARROW_HEIGHT) / 2,
           height: barHeight,
         }}
       />
@@ -94,12 +96,12 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         key={`${f.startOffset}-${f.direction}`}
         className={clsx("absolute transition-all ease-in-out duration-500")}
         style={{
-          top: f.startOffset * MEASURE_HEIGHT * speedMod + ARROW_HEIGHT / 2,
+          top: f.startOffset * MEASURE_HEIGHT * speedmod + ARROW_HEIGHT / 2,
           left: f.direction * ARROW_HEIGHT,
           width: ARROW_HEIGHT,
           height:
-            (f.endOffset - f.startOffset) * MEASURE_HEIGHT * speedMod -
-            (ARROW_HEIGHT / 2) * speedMod,
+            (f.endOffset - f.startOffset) * MEASURE_HEIGHT * speedmod -
+            (ARROW_HEIGHT / 2) * speedmod,
         }}
       >
         <FreezeBody />
@@ -124,11 +126,11 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           })}
           style={{
             backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
-            top: b.startOffset * MEASURE_HEIGHT * speedMod,
+            top: b.startOffset * MEASURE_HEIGHT * speedmod,
             height:
               ((b.endOffset ?? totalSongHeight) - b.startOffset) *
               MEASURE_HEIGHT *
-              speedMod,
+              speedmod,
           }}
         />
       );
@@ -138,7 +140,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           key={b.startOffset}
           className="absolute flex flex-row justify-end"
           style={{
-            top: Math.max(0, b.startOffset * MEASURE_HEIGHT * speedMod - 1),
+            top: Math.max(0, b.startOffset * MEASURE_HEIGHT * speedmod - 1),
             left: -100,
             width: 100,
           }}
@@ -162,7 +164,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       <GiStopSign
         key={s.offset}
         className="text-red-600 text-2xl absolute -right-7"
-        style={{ top: s.offset * MEASURE_HEIGHT * speedMod }}
+        style={{ top: s.offset * MEASURE_HEIGHT * speedmod }}
       />
     );
   });
@@ -211,24 +213,39 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             } banner`}
           />
         </div>
-        <TitleDetailsTable className="mt-4 sm:mt-0">
-          {stepchart.title.translitTitleName && (
+        <div className="flex-1 flex flex-col sm:grid sm:grid-cols-2 space-y-2 sm:space-y-0">
+          <TitleDetailsTable className="mt-4 sm:mt-0">
+            {stepchart.title.translitTitleName && (
+              <TitleDetailsRow
+                name="Native title"
+                value={stepchart.title.titleName}
+              />
+            )}
+            <TitleDetailsRow name="BPM" value={stepchart.displayBpm} />
             <TitleDetailsRow
-              name="Native title"
-              value={stepchart.title.titleName}
+              name="Artist"
+              value={stepchart.artist ?? "unknown"}
             />
-          )}
-          <TitleDetailsRow name="BPM" value={stepchart.displayBpm} />
-          <TitleDetailsRow
-            name="Artist"
-            value={stepchart.artist ?? "unknown"}
-          />
-          <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
-          <TitleDetailsRow
-            name="difficulty"
-            value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
-          />
-        </TitleDetailsTable>
+            <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
+            <TitleDetailsRow
+              name="difficulty"
+              value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
+            />
+          </TitleDetailsTable>
+          <div className="hidden sm:block">
+            <div className="sm:block text-sm ml-2 mb-1">speedmod</div>
+            <ToggleBar
+              namespace="speedmod"
+              entries={speedmods.map((sm) => (
+                <div key={sm} className="px-2">
+                  {sm}
+                </div>
+              ))}
+              onToggle={(i) => setSpeedmod(speedmods[i])}
+              checkedIndex={speedmods.indexOf(speedmod)}
+            />
+          </div>
+        </div>
       </ImageFrame>
       <div className="grid place-items-center">
         <div className="relative">
