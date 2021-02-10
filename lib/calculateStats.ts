@@ -112,6 +112,7 @@ function calculateStats(
     drills: drills.length,
     freezes: freezes.length,
     gallops: gallops.length,
+    stops: chart.stops.length,
   };
 }
 

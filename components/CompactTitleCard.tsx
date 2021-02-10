@@ -1,5 +1,7 @@
 import React from "react";
 import clsx from "clsx";
+import { GiStopSign } from "react-icons/gi";
+
 import { ImageFrame } from "./ImageFrame";
 import { shortMixNames } from "../lib/meta";
 import singleSvg from "./single.svg";
@@ -202,6 +204,10 @@ function CompactTitleCard({
         </div>
         <div>
           G <span className="font-bold">{stats.gallops}</span>
+        </div>
+        <div>
+          <GiStopSign className="inline-block" />{" "}
+          <span className="font-bold">{stats.stops}</span>
         </div>
       </div>
     </ImageFrame>

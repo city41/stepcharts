@@ -39,6 +39,7 @@ type Stats = {
   drills: number;
   freezes: number;
   gallops: number;
+  stops: number;
 };
 
 type Bpm = {

@@ -24,7 +24,7 @@ type AllSongsPageProps = {
   titles: AllSongsPageTitle[];
 };
 
-const sorts = ["title", "jumps", "drills", "freezes", "gallops"];
+const sorts = ["title", "jumps", "drills", "freezes", "gallops", "stops"];
 
 function getSortFunction(key: typeof sorts[number]) {
   switch (key) {
@@ -78,13 +78,11 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
           <div className="hidden sm:block text-sm ml-2 mb-1">sort by</div>
           <ToggleBar
             namespace="mixSort"
-            entries={[
-              <div className="text-sm sm:text-xl">title</div>,
-              <div className="text-sm sm:text-xl">jumps</div>,
-              <div className="text-sm sm:text-xl">drills</div>,
-              <div className="text-sm sm:text-xl">freezes</div>,
-              <div className="text-sm sm:text-xl">gallops</div>,
-            ]}
+            entries={sorts.map((s) => (
+              <div key={s} className="text-sm sm:text-xl">
+                {s}
+              </div>
+            ))}
             onToggle={(i) => setSortBy(i)}
             checkedIndex={sortBy}
           />
