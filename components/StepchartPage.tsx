@@ -13,7 +13,7 @@ import { TitleDetailsTable, TitleDetailsRow } from "./TitleDetailsTable";
 import styles from "./StepchartPage.module.css";
 
 type StepchartPageProps = {
-  stepchart: Stepchart;
+  stepchart: Simfile;
   currentType: string;
 };
 
@@ -30,7 +30,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     (at) => at.slug === currentType
   )!;
 
-  const { arrows, freezes } = stepchart.charts[currentType];
+  const { arrows, freezes, bpm } = stepchart.charts[currentType];
 
   const arrowImgs = [];
 
@@ -109,10 +109,10 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
   const bpmRangeDivs = [];
   const bpmLabelDivs = [];
 
-  if (stepchart.bpm.length > 1) {
-    for (let i = 0; i < stepchart.bpm.length; ++i) {
+  if (bpm.length > 1) {
+    for (let i = 0; i < bpm.length; ++i) {
       const even = (i & 1) === 0;
-      const b = stepchart.bpm[i];
+      const b = bpm[i];
 
       bpmRangeDivs.push(
         <div

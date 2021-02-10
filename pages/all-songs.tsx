@@ -9,7 +9,7 @@ export async function getStaticProps(
 ): Promise<GetStaticPropsResult<AllSongsPageProps>> {
   const allData = getAllStepchartData();
 
-  const allStepcharts = allData.reduce<Stepchart[]>((building, mix) => {
+  const allStepcharts = allData.reduce<Simfile[]>((building, mix) => {
     return building.concat(mix.stepcharts);
   }, []);
 

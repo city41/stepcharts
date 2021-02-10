@@ -17,7 +17,7 @@ export async function getStaticPaths(
   _context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
   const allData = getAllStepchartData();
-  const allStepcharts = allData.reduce<Stepchart[]>((building, mix) => {
+  const allStepcharts = allData.reduce<Simfile[]>((building, mix) => {
     return building.concat(mix.stepcharts);
   }, []);
 

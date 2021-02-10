@@ -6,7 +6,7 @@ const ROOT =
   process.env.NODE_ENV === "production" ? "prodStepcharts" : "devStepcharts";
 
 type EntireMix = Mix & {
-  stepcharts: Stepchart[];
+  stepcharts: Simfile[];
 };
 
 function getFiles(...dirPath: string[]): string[] {

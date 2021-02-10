@@ -48,7 +48,8 @@ function findFirstNonEmptyMeasure(
   mode: "single" | "double",
   lines: string[],
   i: number
-): number {
+): { firstNonEmptyMeasureIndex: number; numMeasuresSkipped: number } {
+  let numMeasuresSkipped = 0;
   let measureIndex = i;
 
   for (; i < lines.length && !concludesANoteTag(lines[i]); ++i) {
@@ -59,11 +60,12 @@ function findFirstNonEmptyMeasure(
 
     if (line.startsWith(",")) {
       measureIndex = i + 1;
+      numMeasuresSkipped += 1;
       continue;
     }
 
     if (!isRest(trimNoteLine(line, mode))) {
-      return measureIndex;
+      return { firstNonEmptyMeasureIndex: measureIndex, numMeasuresSkipped };
     }
   }
 
@@ -76,6 +78,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
   const lines = sm.split("\n").map((l) => l.trim());
 
   let i = 0;
+  let bpmString: string | null = null;
 
   const sc: Partial<RawStepchart> = {
     charts: {},
@@ -83,7 +86,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
     banner: null,
   };
 
-  function parseBpms(bpmString: string) {
+  function parseBpms(bpmString: string, emptyOffsetInMeasures: number) {
     // 0=79.3,4=80,33=79.8,36=100,68=120,100=137,103=143,106=139,108=140,130=141.5,132=160,164=182,166=181,168=180;
     const entries = bpmString.split(",");
 
@@ -92,22 +95,27 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
       const nextBeatS = a[i + 1]?.split("=")[0] ?? null;
 
       return {
-        startOffset: Number(beatS) * 0.25,
-        endOffset: nextBeatS === null ? null : Number(nextBeatS) * 0.25,
+        startOffset: Number(beatS) * 0.25 - emptyOffsetInMeasures,
+        endOffset:
+          nextBeatS === null
+            ? null
+            : Number(nextBeatS) * 0.25 - emptyOffsetInMeasures,
         bpm: Number(bpmS),
       };
     });
 
-    sc.bpm = mergeSimilarBpmRanges(bpms);
+    const mergedBpms = mergeSimilarBpmRanges(bpms);
 
-    const minBpm = Math.min(...bpms.map((b) => b.bpm));
-    const maxBpm = Math.max(...bpms.map((b) => b.bpm));
+    const minBpm = Math.min(...mergedBpms.map((b) => b.bpm));
+    const maxBpm = Math.max(...mergedBpms.map((b) => b.bpm));
 
     if (Math.abs(minBpm - maxBpm) < 2) {
       sc.displayBpm = Math.round(minBpm).toString();
     } else {
       sc.displayBpm = `${Math.round(minBpm)}-${Math.round(maxBpm)}`;
     }
+
+    return mergedBpms;
   }
 
   function parseFreezes(
@@ -177,7 +185,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
     return freezes;
   }
 
-  function parseNotes(lines: string[], i: number): number {
+  function parseNotes(lines: string[], i: number, bpmString: string): number {
     // move past #NOTES into the note metadata
     i++;
     const mode = lines[i++].replace("dance-", "").replace(":", "");
@@ -195,7 +203,11 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
     // now i is pointing at the first measure
     let arrows: Arrow[] = [];
 
-    i = findFirstNonEmptyMeasure(mode, lines, i);
+    const {
+      firstNonEmptyMeasureIndex,
+      numMeasuresSkipped,
+    } = findFirstNonEmptyMeasure(mode, lines, i);
+    i = firstNonEmptyMeasureIndex;
 
     const firstMeasureIndex = i;
     let curOffset = new Fraction(0);
@@ -234,7 +246,12 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
 
     const freezes = parseFreezes(lines, firstMeasureIndex, mode, difficulty);
 
-    sc.charts![`${mode}-${difficulty}`] = { arrows, freezes };
+    sc.charts![`${mode}-${difficulty}`] = {
+      arrows,
+      freezes,
+      bpm: parseBpms(bpmString, numMeasuresSkipped),
+    };
+
     sc.availableTypes!.push({
       slug: `${mode}-${difficulty}`,
       mode,
@@ -259,9 +276,12 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
         // @ts-ignore
         sc[tag] = value;
       } else if (tag === "bpms") {
-        parseBpms(value);
+        bpmString = value;
       } else if (tag === "notes") {
-        return parseNotes(lines, index);
+        if (!bpmString) {
+          throw new Error("parseSm: about to parse notes but never got bpm");
+        }
+        return parseNotes(lines, index, bpmString);
       }
     }
 

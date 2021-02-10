@@ -4,7 +4,7 @@ import { parseDwi } from "./parseDwi";
 import { parseSm } from "./parseSm";
 import { calculateStats } from "./calculateStats";
 
-type RawStepchart = Omit<Stepchart, "mix" | "title"> & {
+type RawStepchart = Omit<Simfile, "mix" | "title"> & {
   title: string;
   titletranslit: string | null;
   banner: string | null;
@@ -45,7 +45,7 @@ function parseStepchart(
   rootDir: string,
   mixDir: string,
   titleDir: string
-): Omit<Stepchart, "mix"> {
+): Omit<Simfile, "mix"> {
   const stepchartSongDirPath = path.join(rootDir, mixDir, titleDir);
   const songFile = getSongFile(stepchartSongDirPath);
   const stepchartPath = path.join(stepchartSongDirPath, songFile);

@@ -10,7 +10,7 @@ import { getAllStepchartData } from "../../../lib/getAllStepchartData";
 import { StepchartPage } from "../../../components/StepchartPage";
 
 type NextSongDifficultyTypePageProps = {
-  stepchart: Stepchart;
+  stepchart: Simfile;
   currentType: string;
 };
 
@@ -19,7 +19,7 @@ export async function getStaticPaths(
 ): Promise<GetStaticPathsResult> {
   const allData = getAllStepchartData();
 
-  const allStepcharts = allData.reduce<Stepchart[]>((building, mix) => {
+  const allStepcharts = allData.reduce<Simfile[]>((building, mix) => {
     return building.concat(mix.stepcharts);
   }, []);
 

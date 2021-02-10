@@ -41,9 +41,10 @@ type Stats = {
   gallops: number;
 };
 
-type Chart = {
+type Stepchart = {
   arrows: Arrow[];
   freezes: FreezeBody[];
+  bpm: Bpm[];
 };
 
 type Bpm = {
@@ -52,13 +53,12 @@ type Bpm = {
   bpm: number;
 };
 
-type Stepchart = {
+type Simfile = {
   title: Title;
   artist: string;
   mix: Mix;
   availableTypes: StepchartType[];
-  charts: Record<string, Chart>;
-  bpm: Bpm[];
+  charts: Record<string, Stepchart>;
   displayBpm: string;
   stats: Stats;
 };

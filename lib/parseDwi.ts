@@ -237,7 +237,6 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
   let bpm: string | null = null;
   let changebpm: string | null = null;
   let displaybpm: string | null = null;
-  let firstNonEmptyMeasureIndex = 0;
 
   const lines = dwi.split("\n").map((l) => l.trim());
 
@@ -256,7 +255,10 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
     const notes = values[2];
     const playerTwoNotes = values[3];
 
-    firstNonEmptyMeasureIndex = findFirstNonEmptyMeasure(notes, playerTwoNotes);
+    const firstNonEmptyMeasureIndex = findFirstNonEmptyMeasure(
+      notes,
+      playerTwoNotes
+    );
 
     let arrowResult = parseArrowStream(notes, firstNonEmptyMeasureIndex);
 
@@ -279,16 +281,19 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
     sc.charts![`${mode}-${difficulty}`] = {
       arrows: arrowResult.arrows,
       freezes: arrowResult.freezes,
+      bpm: determineBpm(firstNonEmptyMeasureIndex),
     };
   }
 
-  function determineBpm() {
+  function determineBpm(emptyOffset: number) {
+    let finalBpms: Bpm[] = [];
+
     if (bpm && !isNaN(Number(bpm))) {
-      sc.bpm = [{ startOffset: 0, endOffset: null, bpm: Number(bpm) }];
+      finalBpms = [{ startOffset: 0, endOffset: null, bpm: Number(bpm) }];
     }
 
     if (changebpm) {
-      if (!sc.bpm) {
+      if (!finalBpms) {
         throw new Error("parseDwi: a simfile has changebpm but not bpm");
       }
 
@@ -298,13 +303,11 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
         const nextEigthNoteS = a[i + 1]?.split("=")[0] ?? null;
 
         const startOffset =
-          Number(eigthNoteS) * (1 / 16) - firstNonEmptyMeasureIndex * (1 / 8);
+          Number(eigthNoteS) * (1 / 16) - emptyOffset * (1 / 8);
         let endOffset = null;
 
         if (nextEigthNoteS) {
-          endOffset =
-            Number(nextEigthNoteS) * (1 / 16) -
-            firstNonEmptyMeasureIndex * (1 / 8);
+          endOffset = Number(nextEigthNoteS) * (1 / 16) - emptyOffset * (1 / 8);
         }
 
         return {
@@ -314,15 +317,15 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
         };
       });
 
-      sc.bpm = sc.bpm.concat(additionalBpms);
-      sc.bpm[0].endOffset = sc.bpm[1].startOffset;
+      finalBpms = finalBpms.concat(additionalBpms);
+      finalBpms[0].endOffset = finalBpms[1].startOffset;
     }
 
-    if (!sc.bpm) {
+    if (!finalBpms) {
       throw new Error("parseDwi, determineBpm: failed to get bpm");
     }
 
-    sc.bpm = mergeSimilarBpmRanges(sc.bpm);
+    finalBpms = mergeSimilarBpmRanges(finalBpms);
 
     if (displaybpm) {
       if (!isNaN(Number(displaybpm))) {
@@ -336,8 +339,8 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
         sc.displayBpm = displaybpm;
       }
     } else {
-      const minBpm = Math.min(...sc.bpm.map((b) => b.bpm));
-      const maxBpm = Math.max(...sc.bpm.map((b) => b.bpm));
+      const minBpm = Math.min(...finalBpms.map((b) => b.bpm));
+      const maxBpm = Math.max(...finalBpms.map((b) => b.bpm));
 
       if (minBpm === maxBpm) {
         sc.displayBpm = Math.round(minBpm).toString();
@@ -345,6 +348,8 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
         sc.displayBpm = `${Math.round(minBpm)}-${Math.round(maxBpm)}`;
       }
     }
+
+    return finalBpms;
   }
 
   function parseTag(lines: string[], index: number): number {
@@ -393,8 +398,6 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
     if (!displaybpm && !bpm) {
       throw new Error(`No BPM found for ${titlePath}`);
     }
-
-    determineBpm();
 
     return sc as RawStepchart;
   } catch (e) {

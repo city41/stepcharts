@@ -9,7 +9,7 @@ const difficultyPriority = [
 
 function getMostDifficultChart(
   types: StepchartType[],
-  charts: Record<string, Chart>
+  charts: Record<string, Stepchart>
 ) {
   const maxFeet = Math.max(...types.map((t) => t.feet));
 
@@ -95,7 +95,7 @@ function isDrill(d: Arrow, p: Arrow | undefined): boolean {
 
 function calculateStats(
   types: StepchartType[],
-  charts: Record<string, Chart>
+  charts: Record<string, Stepchart>
 ): Stats {
   const chart = getMostDifficultChart(types, charts);
 
