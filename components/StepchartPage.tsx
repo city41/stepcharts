@@ -255,7 +255,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
               value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
             />
           </TitleDetailsTable>
-          <div className="hidden sm:block">
+          <div>
             <div className="sm:block text-sm ml-2 mb-1">speedmod</div>
             <ToggleBar
               namespace="speedmod"
