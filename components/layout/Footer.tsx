@@ -17,7 +17,8 @@ function Footer({ className }: FooterProps) {
     >
       <div className="w-full max-w-6xl mx-auto flex flex-col space-y-2">
         <div className="text-focal-400">
-          All songs, artwork and step charts are property of Konami
+          <p>All songs, artwork and step charts are property of Konami</p>
+          <p>Step charts were made by the DDR community, thank you!</p>
         </div>
         <div>
           Made by{" "}
