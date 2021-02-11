@@ -1,43 +1,51 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 
-import { ImageFrame } from "./ImageFrame";
-
 type BannerProps = {
   className?: string;
-  title: string;
-  banner: string | null;
+  title: Title;
 };
 
-import styles from "./Banner.module.css";
+function Banner({ className, title }: BannerProps) {
+  const name = title.translitTitleName || title.titleName;
+  const [currentBanner, setCurrentBanner] = useState(title.banner);
 
-function Banner({ className, title, banner }: BannerProps) {
-  const [currentBanner, setCurrentBanner] = useState(banner);
+  let bannerEl;
 
   if (currentBanner) {
-    return (
+    bannerEl = (
       <img
-        className={clsx(className, styles.bannerImage, "border-2 border-white")}
+        className={clsx(className, "absolute top-0 left-0")}
         src={require(`./bannerImages/${currentBanner}`)}
         onError={() => setCurrentBanner(null)}
         loading="lazy"
-        alt={`Banner for ${title}`}
-        width={256}
-        height={80}
+        alt={`${name} banner`}
       />
     );
   } else {
-    return (
+    bannerEl = (
       <div
         className={clsx(
-          styles.bannerImage,
-          "bg-focal text-focal-400 border-2 border-white text-2xl font-bold grid place-items-center"
+          className,
+          "absolute top-0 left-0 w-full h-full bg-focal text-focal-400 flex flex-col items-center justify-center"
         )}
       >
-        banner missing
+        <div className="text-focal-200 text-xl font-bold">{name}</div>
+        <div className="text-xs text-focal-50">(banner missing)</div>
       </div>
     );
   }
+
+  return (
+    <div
+      className="relative"
+      style={{
+        paddingTop: "calc(80 / 256 * 100%)",
+      }}
+    >
+      {bannerEl}
+    </div>
+  );
 }
 
 export { Banner };
