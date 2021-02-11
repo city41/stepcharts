@@ -237,7 +237,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           />
         </div>
         <div className="flex-1 flex flex-col sm:grid sm:grid-cols-2 space-y-2 sm:space-y-0">
-          <TitleDetailsTable className="sm:mt-4 sm:mt-0">
+          <TitleDetailsTable>
             {stepchart.title.translitTitleName && (
               <TitleDetailsRow
                 name="Native title"

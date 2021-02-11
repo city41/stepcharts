@@ -95,8 +95,19 @@ function MixPage({ mix, titles }: MixPageProps) {
       }
       metaDescription={`Step charts for DDR ${mix.mixName}`}
     >
-      <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sticky top-0 z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center justify-center sm:justify-start sm:space-x-4">
-        <div className="w-full sm:w-64">
+      <div className="w-screen -mx-4 bg-focal-300 sticky top-0 z-10 shadow-lg sm:hidden">
+        <div
+          className="border-b-4 border-white w-full bg-no-repeat bg-cover mx-auto"
+          style={{
+            paddingTop: "calc(80 / 256 * 100%)",
+            backgroundImage: `url(${mixBannerUrl})`,
+          }}
+          role="image"
+          aria-label={`${mix.mixName} banner`}
+        />
+      </div>
+      <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center justify-center sm:justify-start sm:space-x-4">
+        <div className="hidden sm:block w-full sm:w-64">
           <div
             className="border-2 border-white w-full bg-no-repeat bg-cover"
             style={{
