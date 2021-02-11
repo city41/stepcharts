@@ -11,11 +11,12 @@
     @apply border-r border-dashed border-blue-500 absolute;
 }
 
-.bar {
-    height: var(--arrow-size);
+.bar:nth-child(odd) {
+    @apply bg-indigo-50;
 }
 
-.arrow {
-    height: var(--arrow-size);
+.bar:last-of-type {
+    border-width: 0;
 }
+
 

@@ -76,9 +76,9 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         key={`barDiv-${i}`}
         className={clsx(
           styles.bar,
-          "even:bg-blue-200 odd:bg-blue-100 w-full absolute transition-all ease-in-out duration-500",
+          "w-full absolute transition-all ease-in-out duration-500",
           {
-            "border-b border-black": (i + 1) % 4 === 0,
+            "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
             "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
           }
         )}
