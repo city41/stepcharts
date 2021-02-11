@@ -42,11 +42,8 @@ export async function getStaticProps(
 
   const results: GetStaticPropsResult<TitlePageProps> = {
     props: {
-      name: stepchart.title.titleName,
-      translitName: stepchart.title.translitTitleName,
-      dir: stepchart.title.titleDir,
+      title: stepchart.title,
       artist: stepchart.artist ?? null,
-      banner: stepchart.title.banner,
       displayBpm: stepchart.displayBpm,
       mix: {
         mixName: stepchart.mix.mixName,

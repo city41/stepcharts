@@ -60,13 +60,18 @@ function parseStepchart(
   const fileContents = fs.readFileSync(stepchartPath);
   const rawStepchart = parser(fileContents.toString(), stepchartSongDirPath);
 
-  if (rawStepchart.banner) {
+  if (
+    rawStepchart.banner &&
+    fs.existsSync(path.join(stepchartSongDirPath, rawStepchart.banner))
+  ) {
     const publicName = toSafeName(`${mixDir}-${rawStepchart.banner}`);
     fs.copyFileSync(
       path.join(stepchartSongDirPath, rawStepchart.banner),
       path.join("components/bannerImages", publicName)
     );
     rawStepchart.banner = publicName;
+  } else {
+    rawStepchart.banner = null;
   }
 
   return {

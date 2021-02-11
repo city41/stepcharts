@@ -12,6 +12,7 @@ import { TitleDetailsTable, TitleDetailsRow } from "./TitleDetailsTable";
 import { ToggleBar } from "./ToggleBar";
 
 import styles from "./StepchartPage.module.css";
+import { Banner } from "./Banner";
 
 type StepchartPageProps = {
   stepchart: Simfile;
@@ -179,8 +180,6 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     );
   });
 
-  const bannerUrl = require(`./bannerImages/${stepchart.title.banner}`);
-
   return (
     <Root
       title={`${
@@ -210,31 +209,19 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       }`}
     >
       <div className="w-screen -mx-4 bg-focal-300 sticky top-0 z-10 shadow-lg sm:hidden">
-        <div
-          className="border-b-4 border-white w-full bg-no-repeat bg-cover mx-auto"
-          style={{
-            paddingTop: "calc(80 / 256 * 100%)",
-            backgroundImage: `url(${bannerUrl})`,
-          }}
-          role="image"
-          aria-label={`${
-            stepchart.title.translitTitleName || stepchart.title.titleName
-          } banner`}
+        <Banner
+          className="mx-auto border-b-4 border-white w-full absolute top-0 left-0"
+          title={stepchart.title}
         />
       </div>
       <ImageFrame className="relative mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center justify-center sm:justify-start sm:space-x-4">
         <div className="w-full sm:w-64">
-          <div
-            className="hidden sm:block border-2 border-white w-full bg-no-repeat bg-cover"
-            style={{
-              paddingTop: "calc(80 / 256 * 100%)",
-              backgroundImage: `url(${bannerUrl})`,
-            }}
-            role="image"
-            aria-label={`${
-              stepchart.title.translitTitleName || stepchart.title.titleName
-            } banner`}
-          />
+          <div className="hidden sm:block">
+            <Banner
+              className="mx-auto border-2 border-white w-full absolute top-0 left-0"
+              title={stepchart.title}
+            />
+          </div>
         </div>
         <div className="flex-1 flex flex-col sm:grid sm:grid-cols-2 space-y-2 sm:space-y-0">
           <TitleDetailsTable>

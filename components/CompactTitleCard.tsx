@@ -8,6 +8,7 @@ import singleSvg from "./single.svg";
 import doubleSvg from "./double.svg";
 
 import styles from "./CompactTitleCard.module.css";
+import { Banner } from "./Banner";
 
 type CompactTitleCardProps = {
   className?: string;
@@ -116,10 +117,6 @@ function CompactTitleCard({
   stats,
   hideMix,
 }: CompactTitleCardProps) {
-  const bannerUrl = title.banner
-    ? require(`./bannerImages/${title.banner}`)
-    : null;
-
   return (
     <ImageFrame
       className={clsx(
@@ -156,19 +153,10 @@ function CompactTitleCard({
 
       <div className="pb-2 xpx-3">
         <a href={buildTitleUrl(mix, title)}>
-          <div
-            className="relative bg-cover border-b border-t border-white"
-            style={{
-              paddingTop: "calc(80 / 256 * 100%)",
-            }}
-          >
-            <img
-              className="absolute top-0 left-0 w-full h-full"
-              src={bannerUrl}
-              alt={`${title.titleName} banner`}
-              loading="lazy"
-            />
-          </div>
+          <Banner
+            className="w-full h-full border-b border-t border-white"
+            title={title}
+          />
         </a>
       </div>
 
