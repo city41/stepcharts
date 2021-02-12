@@ -2,7 +2,6 @@ import * as fs from "fs";
 import * as path from "path";
 import { parseDwi } from "./parseDwi";
 import { parseSm } from "./parseSm";
-import { calculateStats } from "./calculateStats";
 
 type RawStepchart = Omit<Simfile, "mix" | "title"> & {
   title: string;
@@ -83,7 +82,7 @@ function parseStepchart(
       banner: rawStepchart.banner,
     },
     displayBpm: rawStepchart.displayBpm ?? "???",
-    stats: calculateStats(rawStepchart.availableTypes, rawStepchart.charts),
+    stopCount: Object.values(rawStepchart.charts)[0].stops.length,
   };
 }
 

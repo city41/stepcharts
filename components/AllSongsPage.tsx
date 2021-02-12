@@ -1,7 +1,10 @@
 import React from "react";
+import clsx from "clsx";
 import { useTable, useExpanded, usePagination, Row } from "react-table";
 
 import { Root } from "./layout/Root";
+
+import styles from "./AllSongsPage.module.css";
 
 type AllSongsPageTitle = {
   id: number;
@@ -15,9 +18,11 @@ type AllSongsPageTitle = {
     mixName: string;
     mixDir: string;
   };
-  types: StepchartType[];
+  types: Array<StepchartType & { stats: Stats }>;
+  artist: string;
   displayBpm: string;
-  stats: Stats;
+  stopCount: number;
+  tempoShiftCount: number;
 };
 
 type AllSongsPageProps = {
@@ -49,6 +54,22 @@ const columns = [
     Header: "Mix",
     accessor: (t: AllSongsPageTitle) => t.mix.mixName,
   },
+  {
+    Header: "Artist",
+    accessor: (t: AllSongsPageTitle) => t.artist,
+  },
+  {
+    Header: "bpm",
+    accessor: (t: AllSongsPageTitle) => t.displayBpm,
+  },
+  {
+    Header: "tempo shifts",
+    accessor: (t: AllSongsPageTitle) => t.tempoShiftCount || "-",
+  },
+  {
+    Header: "stops",
+    accessor: (t: AllSongsPageTitle) => t.stopCount || "-",
+  },
 ];
 
 function buildStepchartUrl(t: AllSongsPageTitle, type: StepchartType): string {
@@ -57,21 +78,36 @@ function buildStepchartUrl(t: AllSongsPageTitle, type: StepchartType): string {
 
 function TitleSubRows({ row }: { row: Row<AllSongsPageTitle> }) {
   return (
-    <table>
-      <tbody>
-        {row.original.types.map((t) => {
-          return (
-            <tr key={t.slug}>
-              <td>
-                <a href={buildStepchartUrl(row.original, t)}>
-                  {t.mode} {t.difficulty} - {t.feet}
-                </a>
-              </td>
+    <tr>
+      <td colSpan={6} className="p-4 bg-indigo-700 text-indigo-100">
+        <table className="w-full">
+          <thead>
+            <tr>
+              <td>Difficulty</td>
+              {Object.keys(row.original.types[0].stats).map((k) => (
+                <td key={k}>{k}</td>
+              ))}
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          </thead>
+          <tbody>
+            {row.original.types.map((t) => {
+              return (
+                <tr key={t.slug}>
+                  <td>
+                    <a href={buildStepchartUrl(row.original, t)}>
+                      {t.mode} {t.difficulty} - {t.feet}
+                    </a>
+                  </td>
+                  {Object.keys(t.stats).map((k) => (
+                    <td key={k}>{t.stats[k as keyof Stats]}</td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </td>
+    </tr>
   );
 }
 
@@ -95,7 +131,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     {
       columns,
       data: titles,
-      initialState: { pageSize: 50, expanded: { 3: true } },
+      initialState: { pageSize: 50, expanded: { 3000: true } },
       getRowId: (row) => row.id.toString(),
     },
     useExpanded,
@@ -107,12 +143,14 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       title="All Songs"
       metaDescription="All songs available at stepcharts.com"
     >
-      <table {...getTableProps()}>
+      <table {...getTableProps()} className={clsx(styles.table, "table-fixed")}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                <th {...column.getHeaderProps()} className={column.id}>
+                  {column.render("Header")}
+                </th>
               ))}
             </tr>
           ))}
@@ -125,9 +163,11 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
             return (
               <React.Fragment key={rowProps.key}>
                 <tr {...row.getRowProps()}>
-                  {row.cells.map((cell: any) => {
+                  {row.cells.map((cell) => {
                     return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <td {...cell.getCellProps()} className={cell.column.id}>
+                        {cell.render("Cell")}
+                      </td>
                     );
                   })}
                 </tr>

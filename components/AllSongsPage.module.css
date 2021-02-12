@@ -1,0 +1,28 @@
+.table {
+    @apply mt-8;
+}
+
+.table > thead > tr > th, .table > tbody > tr > td {
+    width: 15%;
+}
+
+
+.table thead tr {
+}
+
+.table th {
+    @apply bg-white border-black text-left sticky top-0 z-10;
+}
+
+.table > tbody > tr:nth-child(odd) {
+    @apply bg-indigo-50;
+}
+
+.table :global(.expander) {
+    @apply w-8 text-left;
+}
+
+.table :global(.Title) {
+    width: calc(40% - 2rem);
+}
+

@@ -3,6 +3,13 @@ import { GetStaticPropsContext, GetStaticPropsResult } from "next";
 import { getAllStepchartData } from "../lib/getAllStepchartData";
 import { AllSongsPage } from "../components/AllSongsPage";
 import type { AllSongsPageProps } from "../components/AllSongsPage";
+import { calculateStats } from "../lib/calculateStats";
+
+function getTempShiftCount(sf: Simfile): number {
+  const chart = Object.values(sf.charts)[0];
+
+  return chart.bpm.length - 1;
+}
 
 export async function getStaticProps(
   _context: GetStaticPropsContext
@@ -28,9 +35,16 @@ export async function getStaticProps(
             mixName: sc.mix.mixName,
             mixDir: sc.mix.mixDir,
           },
-          types: sc.availableTypes,
+          artist: sc.artist,
+          types: sc.availableTypes.map((t) => {
+            return {
+              ...t,
+              stats: calculateStats(sc.charts[t.slug]),
+            };
+          }),
           displayBpm: sc.displayBpm,
-          stats: sc.stats,
+          stopCount: sc.stopCount,
+          tempoShiftCount: getTempShiftCount(sc),
         };
       }),
     },
