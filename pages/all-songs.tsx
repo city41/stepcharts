@@ -15,8 +15,9 @@ export async function getStaticProps(
 
   const results = {
     props: {
-      titles: allStepcharts.map((sc) => {
+      titles: allStepcharts.map((sc, index) => {
         return {
+          id: index,
           title: {
             titleName: sc.title.titleName,
             translitTitleName: sc.title.translitTitleName,
