@@ -1,12 +1,3 @@
-.table {
-    @apply mt-8;
-}
-
-.table > thead > tr > th, .table > tbody > tr > td {
-    width: 15%;
-}
-
-
 .table thead tr {
 }
 
@@ -26,3 +17,19 @@
     width: calc(40% - 2rem);
 }
 
+.table :global(.Mix) {
+    width: 10%;
+}
+
+.table :global(.Artist) {
+    width: 25%;
+}
+
+.table :global(.bpm) {
+    width: 10%;
+}
+
+.table :global(.tempo),
+.table :global(.stops) {
+    width: 7.5%;
+}

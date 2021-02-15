@@ -1,10 +1,12 @@
 import React, { useMemo, useState } from "react";
 import clsx from "clsx";
 import { useTable, useExpanded, usePagination, Row } from "react-table";
+import { MdExpandMore, MdExpandLess } from "react-icons/md";
 
 import { Root } from "./layout/Root";
 
 import styles from "./AllSongsPage.module.css";
+import { shortMixNames } from "../lib/meta";
 
 type AllSongsPageTitle = {
   id: number;
@@ -39,7 +41,7 @@ const columns = [
       // We can use the getToggleRowExpandedProps prop-getter
       // to build the expander.
       <span {...row.getToggleRowExpandedProps()}>
-        {row.isExpanded ? "👇" : "👉"}
+        {row.isExpanded ? <MdExpandMore /> : <MdExpandLess />}
       </span>
     ),
     // We can override the cell renderer with a SubCell to be used with an expanded row
@@ -52,7 +54,7 @@ const columns = [
   },
   {
     Header: "Mix",
-    accessor: (t: AllSongsPageTitle) => t.mix.mixName,
+    accessor: (t: AllSongsPageTitle) => shortMixNames[t.mix.mixDir],
   },
   {
     Header: "Artist",
@@ -125,7 +127,8 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       return (
         t.title.translitTitleName?.toLowerCase().includes(compare) ||
         t.title.titleName.toLowerCase().includes(compare) ||
-        t.mix.mixName.toLowerCase().includes(compare)
+        t.mix.mixName.toLowerCase().includes(compare) ||
+        t.artist.toLowerCase().includes(compare)
       );
     });
   }, [filter]);
@@ -143,13 +146,12 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize,
     state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data: currentTitles,
-      initialState: { pageSize: 50, expanded: { 3000: true } },
+      initialState: { pageSize: 100, expanded: {} },
       getRowId: (row) => row.id.toString(),
     },
     useExpanded,
@@ -161,94 +163,76 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       title="All Songs"
       metaDescription="All songs available at stepcharts.com"
     >
-      <input
-        type="text"
-        onChange={(e) => setFilter(e.target.value)}
-        value={filter}
-      />
-      <table {...getTableProps()} className={clsx(styles.table, "table-fixed")}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} className={column.id}>
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            const rowProps = row.getRowProps();
-
-            return (
-              <React.Fragment key={rowProps.key}>
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()} className={cell.column.id}>
-                        {cell.render("Cell")}
-                      </td>
-                    );
-                  })}
-                </tr>
-                {row.isExpanded && <TitleSubRows row={row} />}
-              </React.Fragment>
-            );
-          })}
-        </tbody>
-      </table>
-      {pageCount > 1 && (
-        <div className="pagination">
-          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            {"<<"}
-          </button>{" "}
-          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            {"<"}
-          </button>{" "}
-          <button onClick={() => nextPage()} disabled={!canNextPage}>
-            {">"}
-          </button>{" "}
-          <button
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            {">>"}
-          </button>{" "}
-          <span>
-            Page{" "}
-            <strong>
-              {pageIndex + 1} of {pageOptions.length}
-            </strong>{" "}
-          </span>
-          <span>
-            | Go to page:{" "}
-            <input
-              type="number"
-              defaultValue={pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(page);
-              }}
-              style={{ width: "100px" }}
-            />
-          </span>{" "}
-          <select
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value));
-            }}
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
+      <div className="mt-8">
+        <input
+          type="text"
+          onChange={(e) => setFilter(e.target.value)}
+          value={filter}
+        />
+        <div>{currentTitles.length} matching songs</div>
+        <table
+          {...getTableProps()}
+          className={clsx(styles.table, "table-fixed")}
+        >
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()} className={column.id}>
+                    {column.render("Header")}
+                  </th>
+                ))}
+              </tr>
             ))}
-          </select>
-        </div>
-      )}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              const rowProps = row.getRowProps();
+
+              return (
+                <React.Fragment key={rowProps.key}>
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()} className={cell.column.id}>
+                          {cell.render("Cell")}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  {row.isExpanded && <TitleSubRows row={row} />}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+        {pageCount > 1 && (
+          <div className="pagination">
+            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+              {"<<"}
+            </button>{" "}
+            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+              {"<"}
+            </button>{" "}
+            <button onClick={() => nextPage()} disabled={!canNextPage}>
+              {">"}
+            </button>{" "}
+            <button
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
+              {">>"}
+            </button>{" "}
+            <span>
+              Page{" "}
+              <strong>
+                {pageIndex + 1} of {pageOptions.length}
+              </strong>{" "}
+            </span>
+          </div>
+        )}
+      </div>
     </Root>
   );
 }
