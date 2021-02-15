@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { useTable, useExpanded, usePagination, Row } from "react-table";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
@@ -10,6 +10,8 @@ import { shortMixNames } from "../lib/meta";
 import { FilterInput } from "./FilterInput";
 import { useSort } from "./SortHook";
 import { SortBar } from "./SortBar";
+
+type AllSongPageStepchartType = StepchartType & { stats: Stats };
 
 type AllSongsPageTitle = {
   id: number;
@@ -23,7 +25,7 @@ type AllSongsPageTitle = {
     mixName: string;
     mixDir: string;
   };
-  types: Array<StepchartType & { stats: Stats }>;
+  types: AllSongPageStepchartType[];
   artist: string;
   displayBpm: string;
   stopCount: number;
@@ -81,7 +83,38 @@ function buildStepchartUrl(t: AllSongsPageTitle, type: StepchartType): string {
   return `/${t.mix.mixDir}/${t.title.titleDir}/${type.slug}`;
 }
 
-function TitleSubRows({ row }: { row: Row<AllSongsPageTitle> }) {
+function getTypesToShow(
+  sortedBy: string,
+  types: AllSongPageStepchartType[]
+): AllSongPageStepchartType[] {
+  if (sortedBy in types[0].stats) {
+    const maxType = types.reduce<AllSongPageStepchartType>(
+      (champ, contender) => {
+        const champValue = champ.stats[sortedBy as keyof Stats];
+        const contenderValue = contender.stats[sortedBy as keyof Stats];
+
+        if (champValue >= contenderValue) {
+          return champ;
+        }
+        return contender;
+      },
+      types[0]
+    );
+    return [maxType];
+  }
+
+  return types;
+}
+
+function TitleSubRows({
+  row,
+  sortedBy,
+}: {
+  row: Row<AllSongsPageTitle>;
+  sortedBy: string;
+}) {
+  const typesToShow = getTypesToShow(sortedBy, row.original.types);
+
   return (
     <tr>
       <td colSpan={6} className="p-4 bg-indigo-700 text-indigo-100">
@@ -95,7 +128,7 @@ function TitleSubRows({ row }: { row: Row<AllSongsPageTitle> }) {
             </tr>
           </thead>
           <tbody>
-            {row.original.types.map((t) => {
+            {typesToShow.map((t) => {
               return (
                 <tr key={t.slug}>
                   <td>
@@ -151,6 +184,8 @@ function getSortFunction(key: string) {
   }
 }
 
+const dontExpandFor = ["title", "bpm", "stops"];
+
 function AllSongsPage({ titles }: AllSongsPageProps) {
   const [filter, setFilter] = useState("");
   const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(
@@ -188,6 +223,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     gotoPage,
     nextPage,
     previousPage,
+    toggleAllRowsExpanded,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -199,6 +235,14 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     useExpanded,
     usePagination
   );
+
+  useEffect(() => {
+    if (dontExpandFor.includes(sortedBy)) {
+      toggleAllRowsExpanded(false);
+    } else {
+      toggleAllRowsExpanded(true);
+    }
+  }, [sortedBy]);
 
   return (
     <Root
@@ -245,7 +289,9 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
                       );
                     })}
                   </tr>
-                  {row.isExpanded && <TitleSubRows row={row} />}
+                  {row.isExpanded && (
+                    <TitleSubRows row={row} sortedBy={sortedBy} />
+                  )}
                 </React.Fragment>
               );
             })}
