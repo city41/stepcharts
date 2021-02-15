@@ -35,7 +35,7 @@ export async function getStaticProps(
             mixName: sc.mix.mixName,
             mixDir: sc.mix.mixDir,
           },
-          artist: sc.artist,
+          artist: sc.artist || "",
           types: sc.availableTypes.map((t) => {
             return {
               ...t,
