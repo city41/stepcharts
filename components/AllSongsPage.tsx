@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { useTable, useExpanded, usePagination, Cell, Row } from "react-table";
 import Slider from "@material-ui/core/Slider";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
+import debounce from "lodash.debounce";
 
 import { Root } from "./layout/Root";
 
@@ -300,29 +301,44 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
   const maxBpm = getMaxBpmForAllTitles(titles);
   const [filter, setFilter] = useState("");
   const [curBpmRange, setCurBpmRange] = useState([0, maxBpm]);
-  console.log("curBpmRange", curBpmRange);
   const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(
     titles,
     getSortFunction
   );
 
-  console.log("curBpmRange", curBpmRange[0], curBpmRange[1]);
+  const debouncedSetCurBpmRange = useMemo(
+    () => debounce(setCurBpmRange, 1000),
+    [setCurBpmRange]
+  );
 
   const currentTitles = useMemo(() => {
-    const compare = (filter || "").toLowerCase();
+    let filteredTitles = sortedTitles;
 
-    return sortedTitles.filter((t) => {
-      return (
-        (t.displayBpm === "*" ||
-          (getMinBpm(t.displayBpm) >= curBpmRange[0] &&
-            getMaxBpm(t.displayBpm) <= curBpmRange[1])) &&
-        (t.title.translitTitleName?.toLowerCase().includes(compare) ||
+    if (filter.trim()) {
+      const compare = filter.trim().toLowerCase();
+
+      filteredTitles = sortedTitles.filter((t) => {
+        return (
+          t.title.translitTitleName?.toLowerCase().includes(compare) ||
           t.title.titleName.toLowerCase().includes(compare) ||
           t.mix.mixName.toLowerCase().includes(compare) ||
-          t.artist.toLowerCase().includes(compare))
-      );
-    });
-  }, [filter, sortedTitles, curBpmRange]);
+          t.artist.toLowerCase().includes(compare)
+        );
+      });
+    }
+
+    if (curBpmRange[0] > 0 || curBpmRange[1] < maxBpm) {
+      filteredTitles = filteredTitles.filter((t) => {
+        return (
+          t.displayBpm === "*" ||
+          (getMinBpm(t.displayBpm) >= curBpmRange[0] &&
+            getMaxBpm(t.displayBpm) <= curBpmRange[1])
+        );
+      });
+    }
+
+    return filteredTitles;
+  }, [filter, sortedTitles, curBpmRange, maxBpm]);
 
   const {
     getTableProps,
@@ -368,7 +384,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
             value={curBpmRange}
             max={maxBpm}
             min={0}
-            onChange={(_e, r) => setCurBpmRange(r as number[])}
+            onChange={(_e, r) => debouncedSetCurBpmRange(r as number[])}
             valueLabelDisplay="on"
             aria-labelledby="range-slider"
             getAriaValueText={(v) => `${v}bpm`}
@@ -401,6 +417,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
                     {row.cells.map((cell) => {
                       return (
                         <AllSongsPageCell
+                          key={cell.getCellProps().key}
                           row={row}
                           cell={cell}
                           sortedBy={sortedBy}
