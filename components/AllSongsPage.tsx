@@ -8,6 +8,8 @@ import { Root } from "./layout/Root";
 import styles from "./AllSongsPage.module.css";
 import { shortMixNames } from "../lib/meta";
 import { FilterInput } from "./FilterInput";
+import { useSort } from "./SortHook";
+import { SortBar } from "./SortBar";
 
 type AllSongsPageTitle = {
   id: number;
@@ -114,17 +116,56 @@ function TitleSubRows({ row }: { row: Row<AllSongsPageTitle> }) {
   );
 }
 
+function getMaxBpm(displayBpm: string): number {
+  if (!isNaN(Number(displayBpm))) {
+    return Number(displayBpm);
+  }
+
+  const range = displayBpm.split("-").map(Number);
+
+  return Math.max(...range);
+}
+
+function getSortFunction(key: string) {
+  switch (key) {
+    case "title":
+      return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
+        return (a.title.translitTitleName || a.title.titleName)
+          .toLowerCase()
+          .localeCompare(
+            (b.title.translitTitleName || b.title.titleName).toLowerCase()
+          );
+      };
+    case "bpm":
+      return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
+        return getMaxBpm(b.displayBpm) - getMaxBpm(a.displayBpm);
+      };
+
+    default:
+      return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
+        const aStats = a.types.map((t) => t.stats[key as keyof Stats]);
+        const bStats = b.types.map((t) => t.stats[key as keyof Stats]);
+
+        return Math.max(...bStats) - Math.max(...aStats);
+      };
+  }
+}
+
 function AllSongsPage({ titles }: AllSongsPageProps) {
   const [filter, setFilter] = useState("");
+  const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(
+    titles,
+    getSortFunction
+  );
 
   const currentTitles = useMemo(() => {
     if (!filter) {
-      return titles;
+      return sortedTitles;
     }
 
     const compare = filter.toLowerCase();
 
-    return titles.filter((t) => {
+    return sortedTitles.filter((t) => {
       return (
         t.title.translitTitleName?.toLowerCase().includes(compare) ||
         t.title.titleName.toLowerCase().includes(compare) ||
@@ -132,7 +173,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
         t.artist.toLowerCase().includes(compare)
       );
     });
-  }, [filter]);
+  }, [filter, sortedTitles]);
 
   const {
     getTableProps,
@@ -165,10 +206,13 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       metaDescription="All songs available at stepcharts.com"
     >
       <div className="mt-8">
-        <FilterInput
-          value={filter}
-          onChange={(newValue) => setFilter(newValue)}
-        />
+        <div className="flex flex-row justify-items-stretch">
+          <FilterInput
+            value={filter}
+            onChange={(newValue) => setFilter(newValue)}
+          />
+          <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
+        </div>
         <div>{currentTitles.length} matching songs</div>
         <table
           {...getTableProps()}

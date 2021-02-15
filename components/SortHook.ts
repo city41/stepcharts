@@ -1,17 +1,5 @@
 import { useState, useEffect } from "react";
 
-type SortHookTitle = {
-  title: {
-    titleName: string;
-    translitTitleName: string | null;
-    titleDir: string;
-    banner: string | null;
-  };
-  types: StepchartType[];
-  displayBpm: string;
-  stats: Stats;
-};
-
 const sorts = [
   "title",
   "bpm",
@@ -22,10 +10,10 @@ const sorts = [
   "stops",
 ];
 
-type SortFunction = (a: any, b: any) => number;
-type GetSortFunction = (key: typeof sorts[number]) => SortFunction;
+type SortFunction<T> = (a: T, b: T) => number;
+type GetSortFunction<T> = (key: typeof sorts[number]) => SortFunction<T>;
 
-function useSort(titles: SortHookTitle[], getSortFunction: GetSortFunction) {
+function useSort<T>(titles: T[], getSortFunction: GetSortFunction<T>) {
   const [sortedBy, _setSortBy] = useState(sorts[0]);
 
   function setSortBy(newSort: typeof sorts[number]) {
