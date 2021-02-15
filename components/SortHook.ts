@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const sorts = [
   "title",
@@ -29,9 +29,12 @@ function useSort<T>(titles: T[], getSortFunction: GetSortFunction<T>) {
         _setSortBy(sort);
       }
     }
-  });
+  }, []);
 
-  const sortedTitles = titles.sort(getSortFunction(sortedBy));
+  const sortedTitles = useMemo(() => {
+    // sort() sorts in place, so forcing a new array
+    return [...titles].sort(getSortFunction(sortedBy));
+  }, [sortedBy]);
 
   return { sortedBy, sorts, setSortBy, sortedTitles };
 }

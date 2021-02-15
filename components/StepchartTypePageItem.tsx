@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 
-import styles from "./StepchartTypePageItem.module.css";
+import styles from "./difficultyBackgroundColors.module.css";
 
 type StepchartTypePageItemProps = {
   className?: string;

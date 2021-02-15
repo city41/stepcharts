@@ -1,17 +1,19 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import clsx from "clsx";
-import { useTable, useExpanded, usePagination, Row } from "react-table";
+import { useTable, useExpanded, usePagination, Cell, Row } from "react-table";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 
 import { Root } from "./layout/Root";
 
-import styles from "./AllSongsPage.module.css";
 import { shortMixNames } from "../lib/meta";
 import { FilterInput } from "./FilterInput";
 import { useSort } from "./SortHook";
 import { SortBar } from "./SortBar";
 
-type AllSongPageStepchartType = StepchartType & { stats: Stats };
+import styles from "./AllSongsPage.module.css";
+import difficultyBgStyles from "./difficultyBackgroundColors.module.css";
+
+type AllSongsPageStepchartType = StepchartType & { stats: Stats };
 
 type AllSongsPageTitle = {
   id: number;
@@ -25,7 +27,7 @@ type AllSongsPageTitle = {
     mixName: string;
     mixDir: string;
   };
-  types: AllSongPageStepchartType[];
+  types: AllSongsPageStepchartType[];
   artist: string;
   displayBpm: string;
   stopCount: number;
@@ -83,27 +85,22 @@ function buildStepchartUrl(t: AllSongsPageTitle, type: StepchartType): string {
   return `/${t.mix.mixDir}/${t.title.titleDir}/${type.slug}`;
 }
 
-function getTypesToShow(
-  sortedBy: string,
-  types: AllSongPageStepchartType[]
-): AllSongPageStepchartType[] {
-  if (sortedBy in types[0].stats) {
-    const maxType = types.reduce<AllSongPageStepchartType>(
-      (champ, contender) => {
-        const champValue = champ.stats[sortedBy as keyof Stats];
-        const contenderValue = contender.stats[sortedBy as keyof Stats];
+function sortTypes(
+  types: AllSongsPageStepchartType[],
+  sortBy: string
+): AllSongsPageStepchartType[] {
+  if (sortBy in types[0].stats) {
+    return [...types].sort(
+      (a: AllSongsPageStepchartType, b: AllSongsPageStepchartType) => {
+        const aValue = a.stats[sortBy as keyof Stats];
+        const bValue = b.stats[sortBy as keyof Stats];
 
-        if (champValue >= contenderValue) {
-          return champ;
-        }
-        return contender;
-      },
-      types[0]
+        return bValue - aValue;
+      }
     );
-    return [maxType];
   }
 
-  return types;
+  return [...types];
 }
 
 function TitleSubRows({
@@ -113,7 +110,7 @@ function TitleSubRows({
   row: Row<AllSongsPageTitle>;
   sortedBy: string;
 }) {
-  const typesToShow = getTypesToShow(sortedBy, row.original.types);
+  const sortedTypes = sortTypes(row.original.types, sortedBy);
 
   return (
     <tr>
@@ -128,7 +125,7 @@ function TitleSubRows({
             </tr>
           </thead>
           <tbody>
-            {typesToShow.map((t) => {
+            {sortedTypes.map((t) => {
               return (
                 <tr key={t.slug}>
                   <td>
@@ -184,7 +181,79 @@ function getSortFunction(key: string) {
   }
 }
 
-const dontExpandFor = ["title", "bpm", "stops"];
+function isSortingOnStats(sortKey: string, title: AllSongsPageTitle): boolean {
+  return sortKey in title.types[0].stats;
+}
+
+function depluralize(s: string, count: number): string {
+  if (count === 1) {
+    return s.substring(0, s.length - 1);
+  }
+
+  return s;
+}
+
+function TopStatLink({
+  className,
+  title,
+  stat,
+}: {
+  className?: string;
+  title: AllSongsPageTitle;
+  stat: keyof Stats;
+}) {
+  const topType = title.types.reduce<AllSongsPageStepchartType>(
+    (champ, contender) => {
+      const champValue = champ.stats[stat];
+      const contenderValue = contender.stats[stat];
+
+      if (champValue >= contenderValue) {
+        return champ;
+      }
+
+      return contender;
+    },
+    title.types[0]
+  );
+
+  const topStatValue = topType.stats[stat];
+
+  return (
+    <a
+      className={clsx(className, difficultyBgStyles[topType.difficulty])}
+      href={buildStepchartUrl(title, topType)}
+    >
+      {topStatValue} {depluralize(stat, topStatValue)}
+    </a>
+  );
+}
+
+function AllSongsPageCell({
+  row,
+  cell,
+  sortedBy,
+}: {
+  row: Row<AllSongsPageTitle>;
+  cell: Cell<AllSongsPageTitle>;
+  sortedBy: string;
+}) {
+  if (cell.column.id === "Title" && isSortingOnStats(sortedBy, row.original)) {
+    return (
+      <td {...cell.getCellProps()}>
+        <div className="flex flex-row items-center justify-between pr-2">
+          <div>{cell.render("Cell")}</div>
+          <TopStatLink
+            className="whitespace-nowrap px-1 py-0.5 text-xs text-white"
+            title={row.original}
+            stat={sortedBy as keyof Stats}
+          />
+        </div>
+      </td>
+    );
+  }
+
+  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+}
 
 function AllSongsPage({ titles }: AllSongsPageProps) {
   const [filter, setFilter] = useState("");
@@ -223,7 +292,6 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     gotoPage,
     nextPage,
     previousPage,
-    toggleAllRowsExpanded,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -235,14 +303,6 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     useExpanded,
     usePagination
   );
-
-  useEffect(() => {
-    if (dontExpandFor.includes(sortedBy)) {
-      toggleAllRowsExpanded(false);
-    } else {
-      toggleAllRowsExpanded(true);
-    }
-  }, [sortedBy]);
 
   return (
     <Root
@@ -283,9 +343,11 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
                   <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => {
                       return (
-                        <td {...cell.getCellProps()} className={cell.column.id}>
-                          {cell.render("Cell")}
-                        </td>
+                        <AllSongsPageCell
+                          row={row}
+                          cell={cell}
+                          sortedBy={sortedBy}
+                        />
                       );
                     })}
                   </tr>
