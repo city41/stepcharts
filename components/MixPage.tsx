@@ -24,8 +24,43 @@ type MixPageProps = {
   titles: MixPageTitle[];
 };
 
+function getMaxBpm(displayBpm: string): number {
+  if (!isNaN(Number(displayBpm))) {
+    return Number(displayBpm);
+  }
+
+  const range = displayBpm.split("-").map(Number);
+
+  return Math.max(...range);
+}
+
+function getSortFunction(key: string) {
+  switch (key) {
+    case "title":
+      return (a: MixPageTitle, b: MixPageTitle) => {
+        return (a.title.translitTitleName || a.title.titleName)
+          .toLowerCase()
+          .localeCompare(
+            (b.title.translitTitleName || b.title.titleName).toLowerCase()
+          );
+      };
+    case "bpm":
+      return (a: MixPageTitle, b: MixPageTitle) => {
+        return getMaxBpm(b.displayBpm) - getMaxBpm(a.displayBpm);
+      };
+
+    default:
+      return (a: MixPageTitle, b: MixPageTitle) => {
+        return b.stats[key as keyof Stats] - a.stats[key as keyof Stats];
+      };
+  }
+}
+
 function MixPage({ mix, titles }: MixPageProps) {
-  const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(titles);
+  const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(
+    titles,
+    getSortFunction
+  );
 
   const mixBannerUrl = require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`);
   return (

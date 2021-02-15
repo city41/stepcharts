@@ -22,39 +22,10 @@ const sorts = [
   "stops",
 ];
 
-function getMaxBpm(displayBpm: string): number {
-  if (!isNaN(Number(displayBpm))) {
-    return Number(displayBpm);
-  }
+type SortFunction = (a: any, b: any) => number;
+type GetSortFunction = (key: typeof sorts[number]) => SortFunction;
 
-  const range = displayBpm.split("-").map(Number);
-
-  return Math.max(...range);
-}
-
-function getSortFunction(key: typeof sorts[number]) {
-  switch (key) {
-    case "title":
-      return (a: SortHookTitle, b: SortHookTitle) => {
-        return (a.title.translitTitleName || a.title.titleName)
-          .toLowerCase()
-          .localeCompare(
-            (b.title.translitTitleName || b.title.titleName).toLowerCase()
-          );
-      };
-    case "bpm":
-      return (a: SortHookTitle, b: SortHookTitle) => {
-        return getMaxBpm(b.displayBpm) - getMaxBpm(a.displayBpm);
-      };
-
-    default:
-      return (a: SortHookTitle, b: SortHookTitle) => {
-        return b.stats[key as keyof Stats] - a.stats[key as keyof Stats];
-      };
-  }
-}
-
-function useSort(titles: SortHookTitle[]) {
+function useSort(titles: SortHookTitle[], getSortFunction: GetSortFunction) {
   const [sortedBy, _setSortBy] = useState(sorts[0]);
 
   function setSortBy(newSort: typeof sorts[number]) {
