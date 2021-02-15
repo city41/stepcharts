@@ -358,7 +358,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     {
       columns,
       data: currentTitles,
-      initialState: { pageSize: 500, expanded: {} },
+      initialState: { pageSize: 100, expanded: {} },
       getRowId: (row) => row.id.toString(),
     },
     useExpanded,
