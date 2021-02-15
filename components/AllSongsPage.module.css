@@ -1,4 +1,7 @@
-.table thead tr {
+.controlsContainer {
+    display: grid;
+    grid-template-columns: max-content max-content 1fr;
+    grid-template-rows: max-content max-content;
 }
 
 .table th {

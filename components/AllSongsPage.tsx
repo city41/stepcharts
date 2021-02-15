@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import clsx from "clsx";
 import { useTable, useExpanded, usePagination, Cell, Row } from "react-table";
+import Slider from "@material-ui/core/Slider";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 
 import { Root } from "./layout/Root";
@@ -146,7 +147,25 @@ function TitleSubRows({
   );
 }
 
-function getMaxBpm(displayBpm: string): number {
+function getMinBpm(displayBpm: string): number | "*" {
+  if (displayBpm === "*") {
+    return "*";
+  }
+
+  if (!isNaN(Number(displayBpm))) {
+    return Number(displayBpm);
+  }
+
+  const range = displayBpm.split("-").map(Number);
+
+  return Math.min(...range);
+}
+
+function getMaxBpm(displayBpm: string): number | "*" {
+  if (displayBpm === "*") {
+    return "*";
+  }
+
   if (!isNaN(Number(displayBpm))) {
     return Number(displayBpm);
   }
@@ -154,6 +173,23 @@ function getMaxBpm(displayBpm: string): number {
   const range = displayBpm.split("-").map(Number);
 
   return Math.max(...range);
+}
+
+function getMaxBpmForAllTitles(titles: AllSongsPageTitle[]): number {
+  const bpms = titles.reduce<number[]>((building, t) => {
+    const maxBpmForTitle = getMaxBpm(t.displayBpm);
+
+    if (maxBpmForTitle === "*") {
+      return building;
+    }
+
+    if (isNaN(maxBpmForTitle)) {
+      return building;
+    }
+    return building.concat(maxBpmForTitle);
+  }, []);
+
+  return Math.max(...bpms);
 }
 
 function getSortFunction(key: string) {
@@ -168,7 +204,12 @@ function getSortFunction(key: string) {
       };
     case "bpm":
       return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
-        return getMaxBpm(b.displayBpm) - getMaxBpm(a.displayBpm);
+        const aMax =
+          a.displayBpm === "*" ? 999999 : (getMaxBpm(a.displayBpm) as number);
+        const bMax =
+          b.displayBpm === "*" ? 999999 : (getMaxBpm(b.displayBpm) as number);
+
+        return bMax - aMax;
       };
 
     default:
@@ -256,28 +297,32 @@ function AllSongsPageCell({
 }
 
 function AllSongsPage({ titles }: AllSongsPageProps) {
+  const maxBpm = getMaxBpmForAllTitles(titles);
   const [filter, setFilter] = useState("");
+  const [curBpmRange, setCurBpmRange] = useState([0, maxBpm]);
+  console.log("curBpmRange", curBpmRange);
   const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(
     titles,
     getSortFunction
   );
 
-  const currentTitles = useMemo(() => {
-    if (!filter) {
-      return sortedTitles;
-    }
+  console.log("curBpmRange", curBpmRange[0], curBpmRange[1]);
 
-    const compare = filter.toLowerCase();
+  const currentTitles = useMemo(() => {
+    const compare = (filter || "").toLowerCase();
 
     return sortedTitles.filter((t) => {
       return (
-        t.title.translitTitleName?.toLowerCase().includes(compare) ||
-        t.title.titleName.toLowerCase().includes(compare) ||
-        t.mix.mixName.toLowerCase().includes(compare) ||
-        t.artist.toLowerCase().includes(compare)
+        (t.displayBpm === "*" ||
+          (getMinBpm(t.displayBpm) >= curBpmRange[0] &&
+            getMaxBpm(t.displayBpm) <= curBpmRange[1])) &&
+        (t.title.translitTitleName?.toLowerCase().includes(compare) ||
+          t.title.titleName.toLowerCase().includes(compare) ||
+          t.mix.mixName.toLowerCase().includes(compare) ||
+          t.artist.toLowerCase().includes(compare))
       );
     });
-  }, [filter, sortedTitles]);
+  }, [filter, sortedTitles, curBpmRange]);
 
   const {
     getTableProps,
@@ -297,7 +342,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     {
       columns,
       data: currentTitles,
-      initialState: { pageSize: 100, expanded: {} },
+      initialState: { pageSize: 500, expanded: {} },
       getRowId: (row) => row.id.toString(),
     },
     useExpanded,
@@ -307,15 +352,27 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
   return (
     <Root
       title="All Songs"
-      metaDescription="All songs available at stepcharts.com"
+      metaDescription={`All ${titles.length} songs available at stepcharts.com`}
     >
       <div className="mt-8">
-        <div className="flex flex-row justify-items-stretch">
+        <div className={styles.controlsContainer}>
+          <div>Filter</div>
+          <div>Sort</div>
+          <div>BPM range</div>
           <FilterInput
             value={filter}
             onChange={(newValue) => setFilter(newValue)}
           />
           <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
+          <Slider
+            value={curBpmRange}
+            max={maxBpm}
+            min={0}
+            onChange={(_e, r) => setCurBpmRange(r as number[])}
+            valueLabelDisplay="on"
+            aria-labelledby="range-slider"
+            getAriaValueText={(v) => `${v}bpm`}
+          />
         </div>
         <div>{currentTitles.length} matching songs</div>
         <table
