@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Root } from "./layout/Root";
 import { ImageFrame } from "./ImageFrame";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { CompactTitleCard } from "./CompactTitleCard";
 import { ToggleBar } from "./ToggleBar";
+import { useSort } from "./SortHook";
+import { SortBar } from "./SortBar";
 
 type MixPageTitle = {
   title: {
@@ -22,67 +24,8 @@ type MixPageProps = {
   titles: MixPageTitle[];
 };
 
-const sorts = [
-  "title",
-  "bpm",
-  "jumps",
-  "drills",
-  "freezes",
-  "gallops",
-  "stops",
-];
-
-// TODO: this sorting is totally copied into all-songs
-function getMaxBpm(displayBpm: string): number {
-  if (!isNaN(Number(displayBpm))) {
-    return Number(displayBpm);
-  }
-
-  const range = displayBpm.split("-").map(Number);
-
-  return Math.max(...range);
-}
-
-function getSortFunction(key: typeof sorts[number]) {
-  switch (key) {
-    case "title":
-      return (a: MixPageTitle, b: MixPageTitle) => {
-        return (a.title.translitTitleName || a.title.titleName)
-          .toLowerCase()
-          .localeCompare(
-            (b.title.translitTitleName || b.title.titleName).toLowerCase()
-          );
-      };
-    case "bpm":
-      return (a: MixPageTitle, b: MixPageTitle) => {
-        return getMaxBpm(b.displayBpm) - getMaxBpm(a.displayBpm);
-      };
-
-    default:
-      return (a: MixPageTitle, b: MixPageTitle) => {
-        return b.stats[key as keyof Stats] - a.stats[key as keyof Stats];
-      };
-  }
-}
-
 function MixPage({ mix, titles }: MixPageProps) {
-  const [sortBy, _setSortBy] = useState(0);
-
-  function setSortBy(newSortBy: number) {
-    window.history.replaceState(null, "", `?sort=${sorts[newSortBy]}`);
-    _setSortBy(newSortBy);
-  }
-
-  useEffect(() => {
-    if (window.location.search) {
-      const sort = window.location.search.split("=")[1];
-
-      if (sort) {
-        const newSortBy = sorts.indexOf(sort.toLowerCase());
-        _setSortBy(newSortBy);
-      }
-    }
-  });
+  const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(titles);
 
   const mixBannerUrl = require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`);
   return (
@@ -120,16 +63,7 @@ function MixPage({ mix, titles }: MixPageProps) {
         </div>
         <div className="hide-if-noscript flex flex-row sm:flex-col mt-2 sm:mt-0">
           <div className="hidden sm:block text-sm ml-2 mb-1">sort by</div>
-          <ToggleBar
-            namespace="mixSort"
-            entries={sorts.map((s) => (
-              <div key={s} className="text-sm sm:text-xl">
-                {s}
-              </div>
-            ))}
-            onToggle={(i) => setSortBy(i)}
-            checkedIndex={sortBy}
-          />
+          <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
         </div>
       </ImageFrame>
       <div
@@ -140,7 +74,7 @@ function MixPage({ mix, titles }: MixPageProps) {
           rowGap: "2rem",
         }}
       >
-        {titles.sort(getSortFunction(sorts[sortBy])).map((title) => {
+        {sortedTitles.map((title) => {
           return (
             <CompactTitleCard
               key={title.title.titleDir}
@@ -158,5 +92,5 @@ function MixPage({ mix, titles }: MixPageProps) {
   );
 }
 
-export { MixPage, getMaxBpm };
+export { MixPage };
 export type { MixPageProps };

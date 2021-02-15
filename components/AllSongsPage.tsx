@@ -7,6 +7,7 @@ import { Root } from "./layout/Root";
 
 import styles from "./AllSongsPage.module.css";
 import { shortMixNames } from "../lib/meta";
+import { FilterInput } from "./FilterInput";
 
 type AllSongsPageTitle = {
   id: number;
@@ -164,10 +165,9 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       metaDescription="All songs available at stepcharts.com"
     >
       <div className="mt-8">
-        <input
-          type="text"
-          onChange={(e) => setFilter(e.target.value)}
+        <FilterInput
           value={filter}
+          onChange={(newValue) => setFilter(newValue)}
         />
         <div>{currentTitles.length} matching songs</div>
         <table
