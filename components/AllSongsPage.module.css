@@ -5,12 +5,20 @@
     column-gap: 1rem;
 }
 
+.sliderRail, .sliderTrack {
+    @apply bg-focal-700 !important;
+}
+
 .table th {
-    @apply bg-white border-black text-left sticky top-0 z-10;
+    @apply bg-focal-50 border-focal-500 text-left sticky top-0 z-10;
 }
 
 .table > tbody > tr:nth-child(odd) {
-    @apply bg-indigo-50;
+    @apply bg-focal-100;
+}
+
+.table > tbody > tr:nth-child(even) {
+    @apply bg-focal-50;
 }
 
 .table :global(.expander) {

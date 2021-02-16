@@ -11,6 +11,7 @@ import { shortMixNames } from "../lib/meta";
 import { FilterInput } from "./FilterInput";
 import { useSort } from "./SortHook";
 import { SortBar } from "./SortBar";
+import { PageBar } from "./PageBar";
 
 import styles from "./AllSongsPage.module.css";
 import difficultyBgStyles from "./difficultyBackgroundColors.module.css";
@@ -260,7 +261,7 @@ function ThumbComponent(props: any) {
   return (
     <div
       {...props}
-      className="absolute top-0 w-6 h-6 inline-block bg-focal-500 rounded-lg text-white text-xs grid place-items-center"
+      className="absolute top-0 w-8 h-6 inline-block bg-focal-50 rounded-lg text-focal-500 text-xs grid place-items-center"
     >
       {props["aria-valuenow"]}
     </div>
@@ -306,14 +307,9 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     headerGroups,
     prepareRow,
     page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
     pageCount,
     gotoPage,
-    nextPage,
-    previousPage,
-    state: { pageIndex, pageSize },
+    state: { pageIndex },
   } = useTable(
     {
       columns,
@@ -333,7 +329,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       <ImageFrame
         className={clsx(
           styles.controlsContainer,
-          "mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl"
+          "mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl"
         )}
       >
         <div className="text-xs ml-2">Filter</div>
@@ -344,19 +340,22 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
           onChange={(newValue) => setFilter(newValue)}
         />
         <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
-        <Slider
-          value={curBpmRange}
-          max={maxBpm}
-          min={0}
-          step={10}
-          onChange={(_e, r) => debouncedSetCurBpmRange(r as number[])}
-          valueLabelDisplay="off"
-          ThumbComponent={ThumbComponent}
-          aria-labelledby="range-slider"
-          getAriaValueText={(v) => `${v}bpm`}
-        />
+        <div className="pr-8 grid place-items-center">
+          <Slider
+            classes={{ rail: styles.sliderRail, track: styles.sliderTrack }}
+            value={curBpmRange}
+            max={maxBpm}
+            min={0}
+            step={10}
+            onChange={(_e, r) => debouncedSetCurBpmRange(r as number[])}
+            valueLabelDisplay="off"
+            ThumbComponent={ThumbComponent}
+            aria-labelledby="range-slider"
+            getAriaValueText={(v) => `${v}bpm`}
+          />
+        </div>
       </ImageFrame>
-      <div className="mt-6">{currentTitles.length} matching songs</div>
+      <div className="my-6 ml-8">{currentTitles.length} matching songs</div>
       <table {...getTableProps()} className={clsx(styles.table, "table-fixed")}>
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -397,28 +396,13 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
         </tbody>
       </table>
       {pageCount > 1 && (
-        <div className="pagination">
-          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            {"<<"}
-          </button>{" "}
-          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            {"<"}
-          </button>{" "}
-          <button onClick={() => nextPage()} disabled={!canNextPage}>
-            {">"}
-          </button>{" "}
-          <button
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            {">>"}
-          </button>{" "}
-          <span>
-            Page{" "}
-            <strong>
-              {pageIndex + 1} of {pageOptions.length}
-            </strong>{" "}
-          </span>
+        <div className="my-4 flex flex-row items-center justify-center space-x-2">
+          <div className="text-sm">pages</div>
+          <PageBar
+            pageCount={pageCount}
+            currentPageIndex={pageIndex}
+            onGotoPage={gotoPage}
+          />
         </div>
       )}
     </Root>

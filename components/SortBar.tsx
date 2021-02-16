@@ -12,7 +12,7 @@ function SortBar({ className, sorts, sortedBy, onSortChange }: SortBarProps) {
   return (
     <ToggleBar
       className={className}
-      namespace="mixSort"
+      namespace="sortBar"
       entries={sorts.map((s) => (
         <div key={s} className="text-sm sm:text-xl">
           {s}
