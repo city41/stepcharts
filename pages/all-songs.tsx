@@ -11,6 +11,15 @@ function getTempShiftCount(sf: Simfile): number {
   return chart.bpm.length - 1;
 }
 
+function getFilterString(sf: Simfile): string {
+  const { translitTitleName, titleName } = sf.title;
+  const { mixName } = sf.mix;
+
+  return `${translitTitleName ?? ""} ${titleName} ${mixName} ${
+    sf.artist
+  }`.toLowerCase();
+}
+
 export async function getStaticProps(
   _context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<AllSongsPageProps>> {
@@ -43,8 +52,11 @@ export async function getStaticProps(
             };
           }),
           displayBpm: sc.displayBpm,
+          minBpm: sc.minBpm,
+          maxBpm: sc.maxBpm,
           stopCount: sc.stopCount,
           tempoShiftCount: getTempShiftCount(sc),
+          filterString: getFilterString(sc),
         };
       }),
     },

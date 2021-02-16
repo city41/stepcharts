@@ -32,6 +32,9 @@ type AllSongsPageTitle = {
   types: AllSongsPageStepchartType[];
   artist: string;
   displayBpm: string;
+  minBpm: number;
+  maxBpm: number;
+  filterString: string;
   stopCount: number;
   tempoShiftCount: number;
 };
@@ -148,49 +151,9 @@ function TitleSubRows({
   );
 }
 
-function getMinBpm(displayBpm: string): number | "*" {
-  if (displayBpm === "*") {
-    return "*";
-  }
-
-  if (!isNaN(Number(displayBpm))) {
-    return Number(displayBpm);
-  }
-
-  const range = displayBpm.split("-").map(Number);
-
-  return Math.min(...range);
-}
-
-function getMaxBpm(displayBpm: string): number | "*" {
-  if (displayBpm === "*") {
-    return "*";
-  }
-
-  if (!isNaN(Number(displayBpm))) {
-    return Number(displayBpm);
-  }
-
-  const range = displayBpm.split("-").map(Number);
-
-  return Math.max(...range);
-}
-
 function getMaxBpmForAllTitles(titles: AllSongsPageTitle[]): number {
-  const bpms = titles.reduce<number[]>((building, t) => {
-    const maxBpmForTitle = getMaxBpm(t.displayBpm);
-
-    if (maxBpmForTitle === "*") {
-      return building;
-    }
-
-    if (isNaN(maxBpmForTitle)) {
-      return building;
-    }
-    return building.concat(maxBpmForTitle);
-  }, []);
-
-  return Math.max(...bpms);
+  const bpms = titles.map((t) => t.maxBpm);
+  return Math.round(Math.max(...bpms));
 }
 
 function getSortFunction(key: string) {
@@ -205,12 +168,7 @@ function getSortFunction(key: string) {
       };
     case "bpm":
       return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
-        const aMax =
-          a.displayBpm === "*" ? 999999 : (getMaxBpm(a.displayBpm) as number);
-        const bMax =
-          b.displayBpm === "*" ? 999999 : (getMaxBpm(b.displayBpm) as number);
-
-        return bMax - aMax;
+        return b.maxBpm - a.maxBpm;
       };
 
     default:
@@ -306,10 +264,9 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     getSortFunction
   );
 
-  const debouncedSetCurBpmRange = useMemo(
-    () => debounce(setCurBpmRange, 1000),
-    [setCurBpmRange]
-  );
+  const debouncedSetCurBpmRange = useMemo(() => debounce(setCurBpmRange, 30), [
+    setCurBpmRange,
+  ]);
 
   const currentTitles = useMemo(() => {
     let filteredTitles = sortedTitles;
@@ -318,22 +275,13 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       const compare = filter.trim().toLowerCase();
 
       filteredTitles = sortedTitles.filter((t) => {
-        return (
-          t.title.translitTitleName?.toLowerCase().includes(compare) ||
-          t.title.titleName.toLowerCase().includes(compare) ||
-          t.mix.mixName.toLowerCase().includes(compare) ||
-          t.artist.toLowerCase().includes(compare)
-        );
+        return t.filterString.includes(compare);
       });
     }
 
     if (curBpmRange[0] > 0 || curBpmRange[1] < maxBpm) {
       filteredTitles = filteredTitles.filter((t) => {
-        return (
-          t.displayBpm === "*" ||
-          (getMinBpm(t.displayBpm) >= curBpmRange[0] &&
-            getMaxBpm(t.displayBpm) <= curBpmRange[1])
-        );
+        return t.minBpm >= curBpmRange[0] && t.maxBpm <= curBpmRange[1];
       });
     }
 

@@ -64,6 +64,8 @@ type Simfile = {
   mix: Mix;
   availableTypes: StepchartType[];
   charts: Record<string, Stepchart>;
+  minBpm: number;
+  maxBpm: number;
   displayBpm: string;
   stopCount: number;
   stats: Stats;
