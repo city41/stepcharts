@@ -14,6 +14,7 @@ import { SortBar } from "./SortBar";
 
 import styles from "./AllSongsPage.module.css";
 import difficultyBgStyles from "./difficultyBackgroundColors.module.css";
+import { ImageFrame } from "./ImageFrame";
 
 type AllSongsPageStepchartType = StepchartType & { stats: Stats };
 
@@ -255,6 +256,17 @@ function AllSongsPageCell({
   return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
 }
 
+function ThumbComponent(props: any) {
+  return (
+    <div
+      {...props}
+      className="absolute top-0 w-6 h-6 inline-block bg-focal-500 rounded-lg text-white text-xs grid place-items-center"
+    >
+      {props["aria-valuenow"]}
+    </div>
+  );
+}
+
 function AllSongsPage({ titles }: AllSongsPageProps) {
   const maxBpm = getMaxBpmForAllTitles(titles);
   const [filter, setFilter] = useState("");
@@ -318,95 +330,97 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       title="All Songs"
       metaDescription={`All ${titles.length} songs available at stepcharts.com`}
     >
-      <div className="mt-8">
-        <div className={styles.controlsContainer}>
-          <div>Filter</div>
-          <div>Sort</div>
-          <div>BPM range</div>
-          <FilterInput
-            value={filter}
-            onChange={(newValue) => setFilter(newValue)}
-          />
-          <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
-          <Slider
-            value={curBpmRange}
-            max={maxBpm}
-            min={0}
-            onChange={(_e, r) => debouncedSetCurBpmRange(r as number[])}
-            valueLabelDisplay="on"
-            aria-labelledby="range-slider"
-            getAriaValueText={(v) => `${v}bpm`}
-          />
-        </div>
-        <div>{currentTitles.length} matching songs</div>
-        <table
-          {...getTableProps()}
-          className={clsx(styles.table, "table-fixed")}
-        >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()} className={column.id}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              const rowProps = row.getRowProps();
-
-              return (
-                <React.Fragment key={rowProps.key}>
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <AllSongsPageCell
-                          key={cell.getCellProps().key}
-                          row={row}
-                          cell={cell}
-                          sortedBy={sortedBy}
-                        />
-                      );
-                    })}
-                  </tr>
-                  {row.isExpanded && (
-                    <TitleSubRows row={row} sortedBy={sortedBy} />
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </tbody>
-        </table>
-        {pageCount > 1 && (
-          <div className="pagination">
-            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-              {"<<"}
-            </button>{" "}
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-              {"<"}
-            </button>{" "}
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-              {">"}
-            </button>{" "}
-            <button
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              {">>"}
-            </button>{" "}
-            <span>
-              Page{" "}
-              <strong>
-                {pageIndex + 1} of {pageOptions.length}
-              </strong>{" "}
-            </span>
-          </div>
+      <ImageFrame
+        className={clsx(
+          styles.controlsContainer,
+          "mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl"
         )}
-      </div>
+      >
+        <div className="text-xs ml-2">Filter</div>
+        <div className="text-xs ml-2">Sort</div>
+        <div className="text-xs ml-2">BPM</div>
+        <FilterInput
+          value={filter}
+          onChange={(newValue) => setFilter(newValue)}
+        />
+        <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
+        <Slider
+          value={curBpmRange}
+          max={maxBpm}
+          min={0}
+          step={10}
+          onChange={(_e, r) => debouncedSetCurBpmRange(r as number[])}
+          valueLabelDisplay="off"
+          ThumbComponent={ThumbComponent}
+          aria-labelledby="range-slider"
+          getAriaValueText={(v) => `${v}bpm`}
+        />
+      </ImageFrame>
+      <div className="mt-6">{currentTitles.length} matching songs</div>
+      <table {...getTableProps()} className={clsx(styles.table, "table-fixed")}>
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()} className={column.id}>
+                  {column.render("Header")}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map((row) => {
+            prepareRow(row);
+            const rowProps = row.getRowProps();
+
+            return (
+              <React.Fragment key={rowProps.key}>
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <AllSongsPageCell
+                        key={cell.getCellProps().key}
+                        row={row}
+                        cell={cell}
+                        sortedBy={sortedBy}
+                      />
+                    );
+                  })}
+                </tr>
+                {row.isExpanded && (
+                  <TitleSubRows row={row} sortedBy={sortedBy} />
+                )}
+              </React.Fragment>
+            );
+          })}
+        </tbody>
+      </table>
+      {pageCount > 1 && (
+        <div className="pagination">
+          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            {"<<"}
+          </button>{" "}
+          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+            {"<"}
+          </button>{" "}
+          <button onClick={() => nextPage()} disabled={!canNextPage}>
+            {">"}
+          </button>{" "}
+          <button
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {">>"}
+          </button>{" "}
+          <span>
+            Page{" "}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>{" "}
+          </span>
+        </div>
+      )}
     </Root>
   );
 }
