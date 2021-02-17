@@ -121,27 +121,39 @@ function TitleSubRows({
 
   return (
     <tr>
-      <td colSpan={6} className="p-4 bg-indigo-700 text-indigo-100">
-        <table className="w-full">
+      <td colSpan={7} className="xpl-16 xpr-4 xpt-1 pb-4 text-focal-100">
+        <table className={clsx(styles.innerTable, "w-full")}>
           <thead>
-            <tr>
-              <td>Difficulty</td>
+            <tr className="bg-focal-200 text-focal-700">
+              <td className="pl-16 py-2">Difficulty</td>
               {Object.keys(row.original.types[0].stats).map((k) => (
                 <td key={k}>{k}</td>
               ))}
             </tr>
           </thead>
           <tbody>
-            {sortedTypes.map((t) => {
+            {sortedTypes.map((t, i) => {
               return (
                 <tr key={t.slug}>
-                  <td>
-                    <a href={buildStepchartUrl(row.original, t)}>
+                  <td className="pl-16 py-2 hover:bg-focal-200 hover:text-focal-700">
+                    <a
+                      className="block w-full h-full"
+                      href={buildStepchartUrl(row.original, t)}
+                    >
                       {t.mode} {t.difficulty} - {t.feet}
                     </a>
                   </td>
                   {Object.keys(t.stats).map((k) => (
-                    <td key={k}>{t.stats[k as keyof Stats]}</td>
+                    <td
+                      key={k}
+                      className={clsx({
+                        [`inline-block px-1 py-2 -mx-1 ${
+                          difficultyBgStyles[t.difficulty]
+                        }`]: i === 0 && sortedBy === k,
+                      })}
+                    >
+                      {t.stats[k as keyof Stats]}
+                    </td>
                   ))}
                 </tr>
               );
@@ -317,7 +329,10 @@ const AllSongsTable = React.memo(function AllSongsTable({
     {
       columns,
       data: currentTitles,
-      initialState: { pageSize: 100, expanded: {} },
+      initialState: {
+        pageSize: 100,
+        expanded: { [titles[0].id.toString()]: true },
+      },
       getRowId: (row) => row.id.toString(),
     },
     useExpanded,
@@ -327,7 +342,11 @@ const AllSongsTable = React.memo(function AllSongsTable({
   return (
     <>
       <div className="my-6 ml-8">{currentTitles.length} matching songs</div>
-      <table {...getTableProps()} className={clsx(styles.table, "table-fixed")}>
+      <table
+        {...getTableProps()}
+        className={clsx(styles.table, "table-fixed")}
+        cellPadding={0}
+      >
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>

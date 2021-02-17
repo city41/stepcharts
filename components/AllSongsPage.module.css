@@ -45,3 +45,11 @@
 .table :global(.stops) {
     width: 7.5%;
 }
+
+.innerTable > tbody > tr:nth-child(odd) {
+    @apply bg-focal-700;
+}
+
+.innerTable > tbody > tr:nth-child(even) {
+    @apply bg-focal-600;
+}
