@@ -45,6 +45,18 @@ type AllSongsPageProps = {
   titles: AllSongsPageTitle[];
 };
 
+function buildStepchartUrl(t: AllSongsPageTitle, type: StepchartType): string {
+  return `/${t.mix.mixDir}/${t.title.titleDir}/${type.slug}`;
+}
+
+function buildTitleUrl(t: AllSongsPageTitle): string {
+  return `/${t.mix.mixDir}/${t.title.titleDir}`;
+}
+
+function buildMixUrl(t: AllSongsPageTitle): string {
+  return `/${t.mix.mixDir}`;
+}
+
 const columns = [
   {
     // Make an expander cell
@@ -63,12 +75,19 @@ const columns = [
   },
   {
     Header: "Title",
-    accessor: (t: AllSongsPageTitle) =>
-      t.title.translitTitleName || t.title.titleName,
+    accessor: (t: AllSongsPageTitle) => (
+      <a className="hover:underline" href={buildTitleUrl(t)}>
+        {t.title.translitTitleName || t.title.titleName}
+      </a>
+    ),
   },
   {
     Header: "Mix",
-    accessor: (t: AllSongsPageTitle) => shortMixNames[t.mix.mixDir],
+    accessor: (t: AllSongsPageTitle) => (
+      <a className="hover:underline" href={buildMixUrl(t)}>
+        {shortMixNames[t.mix.mixDir]}
+      </a>
+    ),
   },
   {
     Header: "Artist",
@@ -87,10 +106,6 @@ const columns = [
     accessor: (t: AllSongsPageTitle) => t.stopCount || "-",
   },
 ];
-
-function buildStepchartUrl(t: AllSongsPageTitle, type: StepchartType): string {
-  return `/${t.mix.mixDir}/${t.title.titleDir}/${type.slug}`;
-}
 
 function sortTypes(
   types: AllSongsPageStepchartType[],
@@ -296,25 +311,21 @@ const AllSongsTable = React.memo(function AllSongsTable({
 }) {
   const maxBpm = useRef(filter.bpm[1]);
 
-  const currentTitles = useMemo(() => {
-    let filteredTitles = titles;
+  let currentTitles = titles;
 
-    if (filter.text.trim()) {
-      const compare = filter.text.trim().toLowerCase();
+  if (filter.text.trim()) {
+    const compare = filter.text.trim().toLowerCase();
 
-      filteredTitles = titles.filter((t) => {
-        return t.filterString.includes(compare);
-      });
-    }
+    currentTitles = currentTitles.filter((t) => {
+      return t.filterString.includes(compare);
+    });
+  }
 
-    if (filter.bpm[0] > 0 || filter.bpm[1] < maxBpm.current) {
-      filteredTitles = filteredTitles.filter((t) => {
-        return t.minBpm >= filter.bpm[0] && t.maxBpm <= filter.bpm[1];
-      });
-    }
-
-    return filteredTitles;
-  }, [titles, filter]);
+  if (filter.bpm[0] > 0 || filter.bpm[1] < maxBpm.current) {
+    currentTitles = currentTitles.filter((t) => {
+      return t.minBpm >= filter.bpm[0] && t.maxBpm <= filter.bpm[1];
+    });
+  }
 
   const {
     getTableProps,
@@ -331,7 +342,7 @@ const AllSongsTable = React.memo(function AllSongsTable({
       data: currentTitles,
       initialState: {
         pageSize: 100,
-        expanded: { [titles[0].id.toString()]: true },
+        expanded: {},
       },
       getRowId: (row) => row.id.toString(),
     },
