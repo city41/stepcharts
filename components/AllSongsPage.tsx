@@ -62,9 +62,12 @@ const columns = [
     Header: () => null, // No header
     id: "expander",
     Cell: ({ row }: { row: Row<AllSongsPageTitle> }) => (
-      <span {...row.getToggleRowExpandedProps()}>
+      <div
+        {...row.getToggleRowExpandedProps()}
+        className="grid place-items-center w-8 h-full hover:bg-focal-200 text-2xl"
+      >
         {row.isExpanded ? <MdExpandMore /> : <MdExpandLess />}
-      </span>
+      </div>
     ),
   },
   {
@@ -130,7 +133,7 @@ function TitleSubRows({
 
   return (
     <tr>
-      <td colSpan={7} className="xpl-16 xpr-4 xpt-1 pb-4 text-focal-100">
+      <td colSpan={7} className="text-focal-100" style={{ padding: 0 }}>
         <table className={clsx(styles.innerTable, "w-full")}>
           <thead>
             <tr className="bg-focal-200 text-focal-700">
@@ -296,17 +299,18 @@ type Filter = {
 
 const AllSongsTable = React.memo(function AllSongsTable({
   titles,
+  totalTitleCount,
   filter,
   sortedBy,
 }: {
   titles: AllSongsPageTitle[];
+  totalTitleCount: number;
   filter: Filter;
   sortedBy: string;
 }) {
   const maxBpm = useRef(filter.bpm[1]);
 
   const currentTitles = useMemo(() => {
-    console.log("bpm", filter.bpm[0], filter.bpm[1]);
     let currentTitles = titles;
 
     if (filter.text.trim()) {
@@ -348,7 +352,7 @@ const AllSongsTable = React.memo(function AllSongsTable({
       data: currentTitles,
       initialState: {
         pageSize: 100,
-        expanded: {},
+        expanded: { [titles[0].id.toString()]: true },
       },
       getRowId: (row) => row.id.toString(),
     },
@@ -358,7 +362,19 @@ const AllSongsTable = React.memo(function AllSongsTable({
 
   return (
     <>
-      <div className="my-6 ml-8">{currentTitles.length} matching songs</div>
+      <div className="my-6 ml-8">
+        {currentTitles.length === totalTitleCount ? (
+          <span>{currentTitles.length} total songs</span>
+        ) : (
+          <span>
+            <span className="font-bold">{currentTitles.length}</span> songs
+            matching{" "}
+            <span className="text-focal-400">
+              (out of {totalTitleCount} total)
+            </span>
+          </span>
+        )}
+      </div>
       <table
         {...getTableProps()}
         className={clsx(styles.table, "table-fixed")}
@@ -492,6 +508,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       </ImageFrame>
       <AllSongsTable
         titles={sortedTitles}
+        totalTitleCount={titles.length}
         filter={currentFilter}
         sortedBy={sortedBy}
       />

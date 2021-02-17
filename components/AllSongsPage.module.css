@@ -13,16 +13,16 @@
     @apply bg-focal-50 border-focal-500 text-left sticky top-0 z-10;
 }
 
+.table > tbody > tr > td {
+    @apply py-2;
+}
+
 .table > tbody > tr:nth-child(odd) {
     @apply bg-focal-100;
 }
 
 .table > tbody > tr:nth-child(even) {
     @apply bg-focal-50;
-}
-
-.table :global(.expander) {
-    @apply w-8 text-left;
 }
 
 .table :global(.Title) {
