@@ -306,6 +306,7 @@ const AllSongsTable = React.memo(function AllSongsTable({
   const maxBpm = useRef(filter.bpm[1]);
 
   const currentTitles = useMemo(() => {
+    console.log("bpm", filter.bpm[0], filter.bpm[1]);
     let currentTitles = titles;
 
     if (filter.text.trim()) {
@@ -318,7 +319,14 @@ const AllSongsTable = React.memo(function AllSongsTable({
 
     if (filter.bpm[0] > 0 || filter.bpm[1] < maxBpm.current) {
       currentTitles = currentTitles.filter((t) => {
-        return t.minBpm >= filter.bpm[0] && t.maxBpm <= filter.bpm[1];
+        if (t.minBpm === t.maxBpm) {
+          return filter.bpm[0] <= t.minBpm && filter.bpm[1] >= t.minBpm;
+        } else {
+          return (
+            (filter.bpm[0] <= t.minBpm && filter.bpm[1] >= t.minBpm) ||
+            (filter.bpm[0] <= t.maxBpm && filter.bpm[1] >= t.maxBpm)
+          );
+        }
       });
     }
 
@@ -421,8 +429,8 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
   );
 
   const [currentFilter, setCurrentFilter] = useState<Filter>({
-    bpm: [0, 0],
-    text: "",
+    bpm: curBpmRange,
+    text: textFilter,
   });
 
   const debouncedSetCurrentFilter = useMemo(() => {
