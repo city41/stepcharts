@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { useTable, useExpanded, usePagination, Cell, Row } from "react-table";
 import Slider from "@material-ui/core/Slider";
@@ -268,38 +268,41 @@ function ThumbComponent(props: any) {
   );
 }
 
-function AllSongsPage({ titles }: AllSongsPageProps) {
-  const maxBpm = getMaxBpmForAllTitles(titles);
-  const [filter, setFilter] = useState("");
-  const [curBpmRange, setCurBpmRange] = useState([0, maxBpm]);
-  const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(
-    titles,
-    getSortFunction
-  );
+type Filter = {
+  bpm: [number, number];
+  text: string;
+};
 
-  const debouncedSetCurBpmRange = useMemo(() => debounce(setCurBpmRange, 30), [
-    setCurBpmRange,
-  ]);
+const AllSongsTable = React.memo(function AllSongsTable({
+  titles,
+  filter,
+  sortedBy,
+}: {
+  titles: AllSongsPageTitle[];
+  filter: Filter;
+  sortedBy: string;
+}) {
+  const maxBpm = useRef(filter.bpm[1]);
 
   const currentTitles = useMemo(() => {
-    let filteredTitles = sortedTitles;
+    let filteredTitles = titles;
 
-    if (filter.trim()) {
-      const compare = filter.trim().toLowerCase();
+    if (filter.text.trim()) {
+      const compare = filter.text.trim().toLowerCase();
 
-      filteredTitles = sortedTitles.filter((t) => {
+      filteredTitles = titles.filter((t) => {
         return t.filterString.includes(compare);
       });
     }
 
-    if (curBpmRange[0] > 0 || curBpmRange[1] < maxBpm) {
+    if (filter.bpm[0] > 0 || filter.bpm[1] < maxBpm.current) {
       filteredTitles = filteredTitles.filter((t) => {
-        return t.minBpm >= curBpmRange[0] && t.maxBpm <= curBpmRange[1];
+        return t.minBpm >= filter.bpm[0] && t.maxBpm <= filter.bpm[1];
       });
     }
 
     return filteredTitles;
-  }, [filter, sortedTitles, curBpmRange, maxBpm]);
+  }, [titles, filter]);
 
   const {
     getTableProps,
@@ -322,39 +325,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
   );
 
   return (
-    <Root
-      title="All Songs"
-      metaDescription={`All ${titles.length} songs available at stepcharts.com`}
-    >
-      <ImageFrame
-        className={clsx(
-          styles.controlsContainer,
-          "mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl"
-        )}
-      >
-        <div className="text-xs ml-2">Filter</div>
-        <div className="text-xs ml-2">Sort</div>
-        <div className="text-xs ml-2">BPM</div>
-        <FilterInput
-          value={filter}
-          onChange={(newValue) => setFilter(newValue)}
-        />
-        <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
-        <div className="pr-8 grid place-items-center">
-          <Slider
-            classes={{ rail: styles.sliderRail, track: styles.sliderTrack }}
-            value={curBpmRange}
-            max={maxBpm}
-            min={0}
-            step={10}
-            onChange={(_e, r) => debouncedSetCurBpmRange(r as number[])}
-            valueLabelDisplay="off"
-            ThumbComponent={ThumbComponent}
-            aria-labelledby="range-slider"
-            getAriaValueText={(v) => `${v}bpm`}
-          />
-        </div>
-      </ImageFrame>
+    <>
       <div className="my-6 ml-8">{currentTitles.length} matching songs</div>
       <table {...getTableProps()} className={clsx(styles.table, "table-fixed")}>
         <thead>
@@ -405,6 +376,90 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
           />
         </div>
       )}
+    </>
+  );
+});
+
+function AllSongsPage({ titles }: AllSongsPageProps) {
+  const maxBpm = getMaxBpmForAllTitles(titles);
+  const [textFilter, _setTextFilter] = useState("");
+  const [curBpmRange, _setCurBpmRange] = useState<[number, number]>([
+    0,
+    maxBpm,
+  ]);
+  const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(
+    titles,
+    getSortFunction
+  );
+
+  const [currentFilter, setCurrentFilter] = useState<Filter>({
+    bpm: curBpmRange,
+    text: textFilter,
+  });
+
+  const debouncedSetCurrentFilter = useMemo(() => {
+    return debounce(setCurrentFilter, 200);
+  }, [setCurrentFilter]);
+
+  function setCurBpmRange(newRange: [number, number]) {
+    _setCurBpmRange(newRange);
+    debouncedSetCurrentFilter((f) => {
+      return {
+        ...f,
+        bpm: newRange,
+      };
+    });
+  }
+
+  function setTextFilter(newText: string) {
+    _setTextFilter(newText);
+    debouncedSetCurrentFilter((f) => {
+      return {
+        ...f,
+        text: newText,
+      };
+    });
+  }
+
+  return (
+    <Root
+      title="All Songs"
+      metaDescription={`All ${titles.length} songs available at stepcharts.com`}
+    >
+      <ImageFrame
+        className={clsx(
+          styles.controlsContainer,
+          "mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl"
+        )}
+      >
+        <div className="text-xs ml-2">Filter</div>
+        <div className="text-xs ml-2">Sort</div>
+        <div className="text-xs ml-2">BPM</div>
+        <FilterInput
+          value={textFilter}
+          onChange={(newValue) => setTextFilter(newValue)}
+        />
+        <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
+        <div className="pr-8 grid place-items-center">
+          <Slider
+            classes={{ rail: styles.sliderRail, track: styles.sliderTrack }}
+            value={curBpmRange}
+            max={maxBpm}
+            min={0}
+            step={10}
+            onChange={(_e, r) => setCurBpmRange(r as [number, number])}
+            valueLabelDisplay="off"
+            ThumbComponent={ThumbComponent}
+            aria-labelledby="range-slider"
+            getAriaValueText={(v) => `${v}bpm`}
+          />
+        </div>
+      </ImageFrame>
+      <AllSongsTable
+        titles={sortedTitles}
+        filter={currentFilter}
+        sortedBy={sortedBy}
+      />
     </Root>
   );
 }
