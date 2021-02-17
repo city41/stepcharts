@@ -84,8 +84,8 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
     >
       <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sticky top-0 z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col items-center justify-center sm:justify-start sm:space-x-4">
         <p className="p-2 mt-2 mb-4 bg-red-200 text-red-900">
-          This page is still a work in progress and might not work well for you
-          just yet.
+          This page is temporary. You will probably find it's slow and hard to
+          use. A much better all songs page is on the way.
         </p>
         <div className="hide-if-noscript flex flex-row sm:flex-col mt-2 sm:mt-0">
           <div className="hidden sm:block text-sm ml-2 mb-1">sort by</div>
