@@ -14,7 +14,7 @@ function SortBar({ className, sorts, sortedBy, onSortChange }: SortBarProps) {
       className={className}
       namespace="sortBar"
       entries={sorts.map((s) => (
-        <div key={s} className="text-sm sm:text-xl">
+        <div key={s} className="text-lg">
           {s}
         </div>
       ))}

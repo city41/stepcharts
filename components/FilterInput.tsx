@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import { MdFilterList } from "react-icons/md";
+import { MdClose, MdFilterList } from "react-icons/md";
 
 type FilterInputProps = {
   className?: string;
@@ -22,6 +22,10 @@ function FilterInput({ className, value, onChange }: FilterInputProps) {
         type="text"
         onChange={(e) => onChange(e.target.value)}
         value={value}
+      />
+      <MdClose
+        className="w-10 text-xl text-focal-500 cursor-pointer"
+        onClick={() => onChange("")}
       />
     </div>
   );

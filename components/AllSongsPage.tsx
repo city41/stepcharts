@@ -59,19 +59,13 @@ function buildMixUrl(t: AllSongsPageTitle): string {
 
 const columns = [
   {
-    // Make an expander cell
     Header: () => null, // No header
-    id: "expander", // It needs an ID
+    id: "expander",
     Cell: ({ row }: { row: Row<AllSongsPageTitle> }) => (
-      // Use Cell to render an expander for each row.
-      // We can use the getToggleRowExpandedProps prop-getter
-      // to build the expander.
       <span {...row.getToggleRowExpandedProps()}>
         {row.isExpanded ? <MdExpandMore /> : <MdExpandLess />}
       </span>
     ),
-    // We can override the cell renderer with a SubCell to be used with an expanded row
-    SubCell: () => null, // No expander on an expanded row
   },
   {
     Header: "Title",
@@ -311,21 +305,25 @@ const AllSongsTable = React.memo(function AllSongsTable({
 }) {
   const maxBpm = useRef(filter.bpm[1]);
 
-  let currentTitles = titles;
+  const currentTitles = useMemo(() => {
+    let currentTitles = titles;
 
-  if (filter.text.trim()) {
-    const compare = filter.text.trim().toLowerCase();
+    if (filter.text.trim()) {
+      const compare = filter.text.trim().toLowerCase();
 
-    currentTitles = currentTitles.filter((t) => {
-      return t.filterString.includes(compare);
-    });
-  }
+      currentTitles = currentTitles.filter((t) => {
+        return t.filterString.includes(compare);
+      });
+    }
 
-  if (filter.bpm[0] > 0 || filter.bpm[1] < maxBpm.current) {
-    currentTitles = currentTitles.filter((t) => {
-      return t.minBpm >= filter.bpm[0] && t.maxBpm <= filter.bpm[1];
-    });
-  }
+    if (filter.bpm[0] > 0 || filter.bpm[1] < maxBpm.current) {
+      currentTitles = currentTitles.filter((t) => {
+        return t.minBpm >= filter.bpm[0] && t.maxBpm <= filter.bpm[1];
+      });
+    }
+
+    return currentTitles;
+  }, [titles, filter, sortedBy]);
 
   const {
     getTableProps,
@@ -423,8 +421,8 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
   );
 
   const [currentFilter, setCurrentFilter] = useState<Filter>({
-    bpm: curBpmRange,
-    text: textFilter,
+    bpm: [0, 0],
+    text: "",
   });
 
   const debouncedSetCurrentFilter = useMemo(() => {
@@ -456,21 +454,20 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       title="All Songs"
       metaDescription={`All ${titles.length} songs available at stepcharts.com`}
     >
-      <ImageFrame
-        className={clsx(
-          styles.controlsContainer,
-          "mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl"
-        )}
-      >
-        <div className="text-xs ml-2">Filter</div>
-        <div className="text-xs ml-2">Sort</div>
-        <div className="text-xs ml-2">BPM</div>
-        <FilterInput
-          value={textFilter}
-          onChange={(newValue) => setTextFilter(newValue)}
-        />
-        <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
-        <div className="pr-8 grid place-items-center">
+      <ImageFrame className="grid grid-cols-1 sm:grid-cols-4 mt-0 gap-y-4 sm:gap-x-2 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl">
+        <div className="sm:col-span-1">
+          <div className="text-xs ml-2">Filter</div>
+          <FilterInput
+            value={textFilter}
+            onChange={(newValue) => setTextFilter(newValue)}
+          />
+        </div>
+        <div className="sm:col-span-2 sm:justify-self-center">
+          <div className="text-xs ml-2">Sort</div>
+          <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
+        </div>
+        <div className="sm:col-span-1 pr-8">
+          <div className="text-xs ml-2">BPM</div>
           <Slider
             classes={{ rail: styles.sliderRail, track: styles.sliderTrack }}
             value={curBpmRange}
