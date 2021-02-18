@@ -27,6 +27,11 @@ function PageBar({
       onToggle={(chosenIndex) => {
         onGotoPage(chosenIndex);
         window.scrollTo(0, 0);
+        const firstCell = document.querySelector(".expander");
+
+        if (firstCell) {
+          firstCell.scrollIntoView();
+        }
       }}
       entries={pageEls}
       entryWidth="2.5rem"
