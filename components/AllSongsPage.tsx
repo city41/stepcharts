@@ -152,10 +152,15 @@ function TitleSubRows({
             </tr>
           </thead>
           <tbody>
-            {row.original.types.map((t, i) => {
+            {row.original.types.map((t, i, a) => {
               return (
                 <tr key={t.slug}>
-                  <td className="pl-16 py-2">
+                  <td
+                    className={clsx("p-0 pl-6", {
+                      "pt-2": i === 0,
+                      "pb-2": i === a.length - 1,
+                    })}
+                  >
                     <a
                       className="block"
                       href={buildStepchartUrl(row.original, t)}
@@ -167,7 +172,7 @@ function TitleSubRows({
                     <td
                       key={k}
                       className={clsx({
-                        [`inline-block px-1 py-4 -mx-1 text-white ${
+                        [`inline-block px-1 py-2 -mx-1 text-white ${
                           difficultyBgStyles[t.difficulty]
                         }`]:
                           t.stats[k as keyof Stats] === maxStat &&

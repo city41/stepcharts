@@ -35,8 +35,8 @@ function StepchartTypePageItem({
     >
       <div
         className={clsx(
-          "flex flex-row justify-between bg-focal-100 text-focal-700 p-2 border-b border-gray-900",
-          { "border-none": isLast }
+          "bg-focal-100 text-focal-700 p-2 border-b border-gray-900",
+          { "border-none": isLast, "flex flex-row justify-between": showMode }
         )}
       >
         {showMode && (
