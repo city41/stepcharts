@@ -19,7 +19,7 @@ function ToggleBar({
   checkedIndex,
 }: ToggleBarProps) {
   return (
-    <div className={clsx(className, styles.root, "flex flex-row flex-wrap")}>
+    <div className={clsx(className, styles.root)}>
       {entries.map((entry, i) => {
         const id = `toggle-${namespace}-${i}`;
         return (

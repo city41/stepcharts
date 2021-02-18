@@ -8,13 +8,19 @@ const sorts = [
   "freezes",
   "gallops",
   "stops",
+  "t.shifts",
 ];
 
 type SortFunction<T> = (a: T, b: T) => number;
 type GetSortFunction<T> = (key: typeof sorts[number]) => SortFunction<T>;
 
-function useSort<T>(titles: T[], getSortFunction: GetSortFunction<T>) {
-  const [sortedBy, _setSortBy] = useState(sorts[0]);
+function useSort<T>(
+  titles: T[],
+  getSortFunction: GetSortFunction<T>,
+  sortExcludes: string[] = []
+) {
+  const usedSorts = sorts.filter((s) => sortExcludes.indexOf(s) === -1);
+  const [sortedBy, _setSortBy] = useState(usedSorts[0]);
 
   function setSortBy(newSort: typeof sorts[number]) {
     window.history.replaceState(null, "", `?sort=${newSort}`);
@@ -36,7 +42,7 @@ function useSort<T>(titles: T[], getSortFunction: GetSortFunction<T>) {
     return [...titles].sort(getSortFunction(sortedBy));
   }, [sortedBy]);
 
-  return { sortedBy, sorts, setSortBy, sortedTitles };
+  return { sortedBy, sorts: usedSorts, setSortBy, sortedTitles };
 }
 
 export { useSort };

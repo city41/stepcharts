@@ -59,7 +59,8 @@ function getSortFunction(key: string) {
 function MixPage({ mix, titles }: MixPageProps) {
   const { sortedBy, setSortBy, sorts, sortedTitles } = useSort(
     titles,
-    getSortFunction
+    getSortFunction,
+    ["stops", "t.shifts"]
   );
 
   const mixBannerUrl = require(`../prodStepcharts/${mix.mixDir}/mix-banner.png`);
@@ -96,8 +97,8 @@ function MixPage({ mix, titles }: MixPageProps) {
             aria-label={`${mix.mixName} banner`}
           />
         </div>
-        <div className="hide-if-noscript flex flex-row sm:flex-col mt-2 sm:mt-0">
-          <div className="hidden sm:block text-sm ml-2 mb-1">sort by</div>
+        <div className="hide-if-noscript flex flex-row sm:flex-col mt-2 sm:mt-0 flex-1 max-w-xl">
+          <div className="hidden sm:block text-xs mb-1">sort by</div>
           <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
         </div>
       </ImageFrame>

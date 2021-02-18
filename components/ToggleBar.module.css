@@ -1,13 +1,27 @@
+.root {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+    @apply rounded-lg overflow-hidden bg-focal-200 border border-focal-500;
+
+}
+
 .root input[type="radio"] {
+    width: 0;
     display: none;
 }
 
+.root label {
+    @apply text-center;
+}
+
 .root label:first-of-type {
-    @apply rounded-l-lg;
+    /*@apply rounded-l-lg;*/
 }
 
 .root label:last-of-type {
-    @apply rounded-r-lg;
+    /*@apply rounded-r-lg;*/
 }
 
 .root input[type="radio"] + label {

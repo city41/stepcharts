@@ -211,6 +211,14 @@ function getSortFunction(key: string) {
       return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
         return b.maxBpm - a.maxBpm;
       };
+    case "t.shifts":
+      return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
+        return b.tempoShiftCount - a.tempoShiftCount;
+      };
+    case "stops":
+      return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
+        return b.stopCount - a.stopCount;
+      };
 
     default:
       return (a: AllSongsPageTitle, b: AllSongsPageTitle) => {
@@ -434,9 +442,10 @@ const AllSongsTable = React.memo(function AllSongsTable({
         </tbody>
       </table>
       {pageCount > 1 && (
-        <div className="my-4 flex flex-row items-center justify-center space-x-2">
+        <div className="mt-8 flex flex-row items-center justify-center space-x-2">
           <div className="text-sm">pages</div>
           <PageBar
+            className="max-w-lg"
             pageCount={pageCount}
             currentPageIndex={pageIndex}
             onGotoPage={gotoPage}
@@ -498,7 +507,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
           This page requires JavaScript to be enabled
         </div>
       </noscript>
-      <ImageFrame className="grid grid-cols-1 sm:grid-cols-4 mt-0 gap-y-4 sm:gap-x-2 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl">
+      <ImageFrame className="grid grid-cols-1 sm:grid-cols-3 mt-0 gap-y-4 sm:gap-x-6 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl">
         <div className="sm:col-span-1">
           <div className="text-xs ml-2">Filter</div>
           <FilterInput
@@ -506,7 +515,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
             onChange={(newValue) => setTextFilter(newValue)}
           />
         </div>
-        <div className="sm:col-span-2 sm:justify-self-center">
+        <div className="sm:col-span-1 sm:justify-self-stretch">
           <div className="text-xs ml-2">Sort</div>
           <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
         </div>
