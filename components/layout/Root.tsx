@@ -43,14 +43,11 @@ function Root({
                   height={52}
                 />
               </a>
-              <div className="text-2xl text-focal font-light text-center pl-4">
+              <div className="hidden sm:block text-2xl text-focal font-light text-center pl-4">
                 <a href="/">Stepcharts</a>
               </div>
             </div>
-            <a
-              className="hidden sm:block className text-link cursor-pointer"
-              href="/all-songs"
-            >
+            <a className="className text-link cursor-pointer" href="/all-songs">
               all songs
             </a>
             <ReportAnIssue className="text-link hover:underline mr-4 lg:mr-0" />

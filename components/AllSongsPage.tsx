@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { useTable, useExpanded, usePagination, Cell, Row } from "react-table";
 import Slider from "@material-ui/core/Slider";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
+import { IoIosPhoneLandscape } from "react-icons/io";
 import debounce from "lodash.debounce";
 
 import { Root } from "./layout/Root";
@@ -17,6 +18,7 @@ import styles from "./AllSongsPage.module.css";
 import difficultyBgStyles from "./difficultyBackgroundColors.module.css";
 import { ImageFrame } from "./ImageFrame";
 import { StepchartTypePageItem } from "./StepchartTypePageItem";
+import { IconType } from "react-icons/lib";
 
 type AllSongsPageStepchartType = StepchartType & { stats: Stats };
 
@@ -45,6 +47,16 @@ type AllSongsPageTitle = {
 type AllSongsPageProps = {
   titles: AllSongsPageTitle[];
 };
+
+function RotateYourPhone() {
+  return (
+    <div className="sm:hidden flex flex-col items-center mt-16">
+      <IoIosPhoneLandscape className="text-9xl w-full" />
+      <h1 className="text-lg font-bold mb-4">Please rotate your phone</h1>
+      <p>This page just barely fits in landscape mode</p>
+    </div>
+  );
+}
 
 function buildStepchartUrl(t: AllSongsPageTitle, type: StepchartType): string {
   return `/${t.mix.mixDir}/${t.title.titleDir}/${type.slug}`;
@@ -321,11 +333,13 @@ type Filter = {
 };
 
 const AllSongsTable = React.memo(function AllSongsTable({
+  className,
   titles,
   totalTitleCount,
   filter,
   sortedBy,
 }: {
+  className?: string;
   titles: AllSongsPageTitle[];
   totalTitleCount: number;
   filter: Filter;
@@ -384,7 +398,7 @@ const AllSongsTable = React.memo(function AllSongsTable({
   );
 
   return (
-    <>
+    <div className={className}>
       <div className="my-6 ml-8">
         {currentTitles.length === totalTitleCount ? (
           <span>{currentTitles.length} total songs</span>
@@ -452,7 +466,7 @@ const AllSongsTable = React.memo(function AllSongsTable({
           />
         </div>
       )}
-    </>
+    </div>
   );
 });
 
@@ -502,12 +516,13 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
       title="All Songs"
       metaDescription={`All ${titles.length} songs available at stepcharts.com`}
     >
+      <RotateYourPhone />
       <noscript>
         <div className="bg-red-200 text-red-900 w-96 p-2 m-2 mt-8 mx-auto text-center">
           This page requires JavaScript to be enabled
         </div>
       </noscript>
-      <ImageFrame className="grid grid-cols-1 sm:grid-cols-3 mt-0 gap-y-4 sm:gap-x-6 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl">
+      <ImageFrame className="hidden sm:grid grid-cols-1 sm:grid-cols-3 mt-0 gap-y-4 sm:gap-x-6 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl">
         <div className="sm:col-span-1">
           <div className="text-xs ml-2">Filter</div>
           <FilterInput
@@ -542,6 +557,7 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
         </div>
       </ImageFrame>
       <AllSongsTable
+        className="hidden sm:block"
         titles={sortedTitles}
         totalTitleCount={titles.length}
         filter={currentFilter}
