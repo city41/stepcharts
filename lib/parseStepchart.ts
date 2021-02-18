@@ -2,7 +2,6 @@ import * as fs from "fs";
 import * as path from "path";
 import { parseDwi } from "./parseDwi";
 import { parseSm } from "./parseSm";
-import { calculateStats } from "./calculateStats";
 
 type RawStepchart = Omit<Simfile, "mix" | "title"> & {
   title: string;
@@ -41,6 +40,12 @@ function toSafeName(name: string): string {
   return `${name}.png`;
 }
 
+function getBpms(sm: RawStepchart): number[] {
+  const chart = Object.values(sm.charts)[0];
+
+  return chart.bpm.map((b) => b.bpm);
+}
+
 function parseStepchart(
   rootDir: string,
   mixDir: string,
@@ -74,6 +79,13 @@ function parseStepchart(
     rawStepchart.banner = null;
   }
 
+  const bpms = getBpms(rawStepchart);
+  const minBpm = Math.round(Math.min(...bpms));
+  const maxBpm = Math.round(Math.max(...bpms));
+
+  const displayBpm =
+    minBpm === maxBpm ? minBpm.toString() : `${minBpm}-${maxBpm}`;
+
   return {
     ...rawStepchart,
     title: {
@@ -82,8 +94,10 @@ function parseStepchart(
       titleDir,
       banner: rawStepchart.banner,
     },
-    displayBpm: rawStepchart.displayBpm ?? "???",
-    stats: calculateStats(rawStepchart.availableTypes, rawStepchart.charts),
+    minBpm,
+    maxBpm,
+    displayBpm,
+    stopCount: Object.values(rawStepchart.charts)[0].stops.length,
   };
 }
 

@@ -37,7 +37,7 @@ ${notes}
 0000
 `);
 
-      const stats = calculateStats(stepchart.availableTypes, stepchart.charts);
+      const stats = calculateStats(stepchart.charts[0]);
 
       expect(stats.gallops).toEqual(3);
     });
@@ -62,7 +62,7 @@ ${notes}
 0000
 `);
 
-      const stats = calculateStats(stepchart.availableTypes, stepchart.charts);
+      const stats = calculateStats(stepchart.charts[0]);
 
       expect(stats.gallops).toEqual(0);
     });

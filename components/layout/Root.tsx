@@ -32,7 +32,7 @@ function Root({
       />
       <header className="shadow">
         <div className="bg-heading h-16 flex flex-row items-center justify-between lg:px-4">
-          <div className="flex flex-row items-center justify-between max-w-7xl mx-auto w-full">
+          <div className="flex flex-row items-center justify-start space-x-6 max-w-7xl mx-auto w-full">
             <div className="flex flex-row items-center">
               <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
                 <img

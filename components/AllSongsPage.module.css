@@ -1,0 +1,55 @@
+.controlsContainer {
+    /*display: grid;*/
+    /*grid-template-columns: 1fr 2fr 1fr;*/
+    /*grid-template-rows: max-content max-content;*/
+    /*column-gap: 1rem;*/
+}
+
+.sliderRail, .sliderTrack {
+    @apply bg-focal-700 !important;
+}
+
+.table > thead > tr > th {
+    @apply bg-focal-500 text-focal-50 text-left sticky top-0 z-10;
+}
+
+.table > tbody > tr > td {
+    @apply py-2;
+}
+
+.table > tbody > tr:nth-child(odd) {
+    @apply bg-focal-200;
+}
+
+.table > tbody > tr:nth-child(even) {
+    @apply bg-focal-50;
+}
+
+.table :global(.Title) {
+    width: calc(40% - 2rem);
+}
+
+.table :global(.Mix) {
+    width: 10%;
+}
+
+.table :global(.Artist) {
+    width: 25%;
+}
+
+.table :global(.bpm) {
+    width: 10%;
+}
+
+.table :global(.tempo),
+.table :global(.stops) {
+    width: 7.5%;
+}
+
+.innerTable > tbody > tr:nth-child(odd) {
+    @apply bg-focal-500;
+}
+
+.innerTable > tbody > tr:nth-child(even) {
+    @apply bg-focal-400;
+}

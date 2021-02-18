@@ -193,10 +193,6 @@ function CompactTitleCard({
         <div>
           G <span className="font-bold">{stats.gallops}</span>
         </div>
-        <div>
-          <GiStopSign className="inline-block" />{" "}
-          <span className="font-bold">{stats.stops}</span>
-        </div>
       </div>
     </ImageFrame>
   );

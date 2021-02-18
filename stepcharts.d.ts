@@ -35,11 +35,9 @@ type StepchartType = {
 
 type Stats = {
   jumps: number;
-  crossovers: number;
   drills: number;
   freezes: number;
   gallops: number;
-  stops: number;
 };
 
 type Bpm = {
@@ -66,7 +64,10 @@ type Simfile = {
   mix: Mix;
   availableTypes: StepchartType[];
   charts: Record<string, Stepchart>;
+  minBpm: number;
+  maxBpm: number;
   displayBpm: string;
+  stopCount: number;
   stats: Stats;
 };
 
