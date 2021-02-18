@@ -92,7 +92,11 @@ function ReportAnIssue({ className }: ReportAnIssueProps) {
       <div
         id="report_issue_modal"
         className="hidden fixed top-0 left-0 w-full h-full"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.75)", zIndex: 99999 }}
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.75)",
+          zIndex: 99999,
+          margin: 0,
+        }}
       >
         <div
           className="max-w-full mx-auto w-full sm:w-96 mt-16 bg-focal-200 p-4"
