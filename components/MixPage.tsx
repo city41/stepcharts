@@ -85,7 +85,7 @@ function MixPage({ mix, titles }: MixPageProps) {
           aria-label={`${mix.mixName} banner`}
         />
       </div>
-      <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center justify-center sm:justify-start sm:space-x-4">
+      <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center sm:justify-start sm:space-x-4">
         <div className="hidden sm:block w-full sm:w-64">
           <div
             className="border-2 border-white w-full bg-no-repeat bg-cover"
@@ -97,7 +97,7 @@ function MixPage({ mix, titles }: MixPageProps) {
             aria-label={`${mix.mixName} banner`}
           />
         </div>
-        <div className="hide-if-noscript flex flex-row sm:flex-col mt-2 sm:mt-0 flex-1 max-w-xl">
+        <div className="hide-if-noscript sm:flex sm:flex-col mt-2 sm:mt-0 sm:flex-1 w-full max-w-xl justify-center">
           <div className="hidden sm:block text-xs mb-1">sort by</div>
           <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
         </div>
