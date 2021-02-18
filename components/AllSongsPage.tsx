@@ -139,9 +139,11 @@ function TitleSubRows({
         <table className={clsx(styles.innerTable, "w-full")}>
           <thead>
             <tr className="bg-focal-200 text-focal-700">
-              <td className="pl-16 py-2">Difficulty</td>
+              <td className="w-2/6"></td>
               {Object.keys(row.original.types[0].stats).map((k) => (
-                <td key={k}>{k}</td>
+                <td key={k} className="py-2 w-1/6">
+                  {k}
+                </td>
               ))}
             </tr>
           </thead>
@@ -149,9 +151,9 @@ function TitleSubRows({
             {row.original.types.map((t, i) => {
               return (
                 <tr key={t.slug}>
-                  <td className="pl-16 py-2 hover:bg-focal-200 hover:text-focal-700">
+                  <td className="pl-16 py-2">
                     <a
-                      className="block w-full h-full"
+                      className="block"
                       href={buildStepchartUrl(row.original, t)}
                     >
                       <StepchartTypePageItem type={t} showMode />
