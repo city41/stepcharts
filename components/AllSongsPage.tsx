@@ -374,7 +374,7 @@ const AllSongsTable = React.memo(function AllSongsTable({
       columns,
       data: currentTitles,
       initialState: {
-        pageSize: 100,
+        pageSize: 200,
         expanded: {},
       },
       getRowId: (row) => row.id.toString(),
