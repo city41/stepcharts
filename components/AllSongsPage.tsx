@@ -58,6 +58,10 @@ function buildMixUrl(t: AllSongsPageTitle): string {
   return `/${t.mix.mixDir}`;
 }
 
+function Null() {
+  return <span className="text-focal-300">-</span>;
+}
+
 const columns = [
   {
     Header: () => null, // No header
@@ -97,11 +101,11 @@ const columns = [
   },
   {
     Header: "tempo shifts",
-    accessor: (t: AllSongsPageTitle) => t.tempoShiftCount || "-",
+    accessor: (t: AllSongsPageTitle) => t.tempoShiftCount || <Null />,
   },
   {
     Header: "stops",
-    accessor: (t: AllSongsPageTitle) => t.stopCount || "-",
+    accessor: (t: AllSongsPageTitle) => t.stopCount || <Null />,
   },
 ];
 
