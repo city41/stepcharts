@@ -167,7 +167,7 @@ function TitleSubRows({
                     <td
                       key={k}
                       className={clsx({
-                        [`inline-block px-1 py-4 -mx-1 ${
+                        [`inline-block px-1 py-4 -mx-1 text-white ${
                           difficultyBgStyles[t.difficulty]
                         }`]:
                           t.stats[k as keyof Stats] === maxStat &&
