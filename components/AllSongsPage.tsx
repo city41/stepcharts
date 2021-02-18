@@ -295,7 +295,7 @@ function ThumbComponent(props: any) {
   return (
     <div
       {...props}
-      className="absolute top-0 w-8 h-6 inline-block bg-focal-50 rounded-lg text-focal-500 text-xs grid place-items-center"
+      className="absolute top-0 w-8 h-8 inline-block outline-none bg-focal-50 text-focal-500 text-xs grid place-items-center"
     >
       {props["aria-valuenow"]}
     </div>
@@ -505,20 +505,26 @@ function AllSongsPage({ titles }: AllSongsPageProps) {
           <div className="text-xs ml-2">Sort</div>
           <SortBar sorts={sorts} sortedBy={sortedBy} onSortChange={setSortBy} />
         </div>
-        <div className="sm:col-span-1 pr-8">
+        <div className="sm:col-span-1">
           <div className="text-xs ml-2">BPM</div>
-          <Slider
-            classes={{ rail: styles.sliderRail, track: styles.sliderTrack }}
-            value={curBpmRange}
-            max={maxBpm}
-            min={0}
-            step={10}
-            onChange={(_e, r) => setCurBpmRange(r as [number, number])}
-            valueLabelDisplay="off"
-            ThumbComponent={ThumbComponent}
-            aria-labelledby="range-slider"
-            getAriaValueText={(v) => `${v}bpm`}
-          />
+          <div className={styles.sliderContainer}>
+            <Slider
+              classes={{
+                root: styles.sliderRoot,
+                rail: styles.sliderRail,
+                track: styles.sliderTrack,
+              }}
+              value={curBpmRange}
+              max={maxBpm}
+              min={0}
+              step={10}
+              onChange={(_e, r) => setCurBpmRange(r as [number, number])}
+              valueLabelDisplay="off"
+              ThumbComponent={ThumbComponent}
+              aria-labelledby="range-slider"
+              getAriaValueText={(v) => `${v}bpm`}
+            />
+          </div>
         </div>
       </ImageFrame>
       <AllSongsTable

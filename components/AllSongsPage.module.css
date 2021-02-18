@@ -1,12 +1,17 @@
-.controlsContainer {
-    /*display: grid;*/
-    /*grid-template-columns: 1fr 2fr 1fr;*/
-    /*grid-template-rows: max-content max-content;*/
-    /*column-gap: 1rem;*/
+.sliderContainer {
+    @apply h-8 pr-8 bg-focal-400 rounded-lg overflow-hidden;
 }
 
-.sliderRail, .sliderTrack {
-    @apply bg-focal-700 !important;
+.sliderRoot {
+    @apply p-0 h-8 bg-transparent !important;
+}
+
+.sliderTrack {
+    @apply bg-focal-700 h-8 !important;
+}
+
+.sliderRail {
+    @apply hidden !important;
 }
 
 .table > thead > tr > th {
