@@ -1,5 +1,5 @@
 .sliderContainer {
-    @apply h-8 pr-8 bg-focal-400 rounded-lg overflow-hidden;
+    @apply h-8 pr-8 bg-focal-400 rounded-lg overflow-hidden border border-focal-500;
 }
 
 .sliderRoot {
