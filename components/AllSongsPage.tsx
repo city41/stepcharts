@@ -16,6 +16,7 @@ import { PageBar } from "./PageBar";
 import styles from "./AllSongsPage.module.css";
 import difficultyBgStyles from "./difficultyBackgroundColors.module.css";
 import { ImageFrame } from "./ImageFrame";
+import { StepchartTypePageItem } from "./StepchartTypePageItem";
 
 type AllSongsPageStepchartType = StepchartType & { stats: Stats };
 
@@ -129,8 +130,9 @@ function TitleSubRows({
   row: Row<AllSongsPageTitle>;
   sortedBy: string;
 }) {
-  const sortedTypes = sortTypes(row.original.types, sortedBy);
-
+  const maxStat = Math.max(
+    ...row.original.types.map((t) => t.stats[sortedBy as keyof Stats])
+  );
   return (
     <tr>
       <td colSpan={7} className="text-focal-100" style={{ padding: 0 }}>
@@ -144,7 +146,7 @@ function TitleSubRows({
             </tr>
           </thead>
           <tbody>
-            {sortedTypes.map((t, i) => {
+            {row.original.types.map((t, i) => {
               return (
                 <tr key={t.slug}>
                   <td className="pl-16 py-2 hover:bg-focal-200 hover:text-focal-700">
@@ -152,16 +154,18 @@ function TitleSubRows({
                       className="block w-full h-full"
                       href={buildStepchartUrl(row.original, t)}
                     >
-                      {t.mode} {t.difficulty} - {t.feet}
+                      <StepchartTypePageItem type={t} showMode />
                     </a>
                   </td>
                   {Object.keys(t.stats).map((k) => (
                     <td
                       key={k}
                       className={clsx({
-                        [`inline-block px-1 py-2 -mx-1 ${
+                        [`inline-block px-1 py-4 -mx-1 ${
                           difficultyBgStyles[t.difficulty]
-                        }`]: i === 0 && sortedBy === k,
+                        }`]:
+                          t.stats[k as keyof Stats] === maxStat &&
+                          sortedBy === k,
                       })}
                     >
                       {t.stats[k as keyof Stats]}
@@ -352,7 +356,7 @@ const AllSongsTable = React.memo(function AllSongsTable({
       data: currentTitles,
       initialState: {
         pageSize: 100,
-        expanded: { [titles[0].id.toString()]: true },
+        expanded: {},
       },
       getRowId: (row) => row.id.toString(),
     },
