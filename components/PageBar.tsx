@@ -24,7 +24,10 @@ function PageBar({
     <ToggleBar
       className={className}
       checkedIndex={currentPageIndex}
-      onToggle={onGotoPage}
+      onToggle={(chosenIndex) => {
+        onGotoPage(chosenIndex);
+        window.scrollTo(0, 0);
+      }}
       entries={pageEls}
       entryWidth="2.5rem"
       namespace="pageBar"
