@@ -3,7 +3,6 @@ import { Root } from "./layout/Root";
 import { ImageFrame } from "./ImageFrame";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { CompactTitleCard } from "./CompactTitleCard";
-import { ToggleBar } from "./ToggleBar";
 import { useSort } from "./SortHook";
 import { SortBar } from "./SortBar";
 

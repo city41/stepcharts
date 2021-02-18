@@ -214,7 +214,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           title={stepchart.title}
         />
       </div>
-      <ImageFrame className="relative mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center justify-center sm:justify-start sm:space-x-4">
+      <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center sm:justify-start sm:space-x-4">
         <div className="w-full sm:w-64">
           <div className="hidden sm:block">
             <Banner
@@ -242,19 +242,17 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
               value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
             />
           </TitleDetailsTable>
-          <div>
-            <div className="sm:block text-sm ml-2 mb-1">speedmod</div>
-            <ToggleBar
-              namespace="speedmod"
-              entries={speedmods.map((sm) => (
-                <div key={sm} className="px-2">
-                  {sm}
-                </div>
-              ))}
-              onToggle={(i) => setSpeedmod(speedmods[i])}
-              checkedIndex={speedmods.indexOf(speedmod)}
-            />
-          </div>
+        </div>
+        <div className="hide-if-noscript sm:flex sm:flex-col mt-2 sm:mt-0 sm:flex-1 w-full max-w-xl justify-center">
+          <div className="hidden sm:block text-sm ml-2 mb-1">speedmod</div>
+          <ToggleBar
+            namespace="speedmod"
+            entries={speedmods.map((sm) => (
+              <div key={sm}>{sm}</div>
+            ))}
+            onToggle={(i) => setSpeedmod(speedmods[i])}
+            checkedIndex={speedmods.indexOf(speedmod)}
+          />
         </div>
       </ImageFrame>
       <div className="grid place-items-center">
