@@ -26,6 +26,7 @@ function PageBar({
       checkedIndex={currentPageIndex}
       onToggle={onGotoPage}
       entries={pageEls}
+      entryWidth="2.5rem"
       namespace="pageBar"
     />
   );

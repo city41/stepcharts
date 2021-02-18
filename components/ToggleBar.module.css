@@ -2,7 +2,7 @@
     width: 100%;
 
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--entry-width), 1fr));
     @apply rounded-lg overflow-hidden bg-focal-200 border border-focal-500;
 
 }
@@ -16,16 +16,12 @@
     @apply text-center;
 }
 
-.root label:first-of-type {
-    /*@apply rounded-l-lg;*/
-}
-
-.root label:last-of-type {
-    /*@apply rounded-r-lg;*/
-}
-
 .root input[type="radio"] + label {
     @apply py-1 px-2 bg-focal text-heading cursor-pointer;
+}
+
+.root input[type="radio"] + label:hover {
+    @apply bg-focal-300 text-focal-700;
 }
 
 .root input[type="radio"]:checked + label {
