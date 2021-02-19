@@ -13,9 +13,10 @@ import { ToggleBar } from "./ToggleBar";
 
 import styles from "./StepchartPage.module.css";
 import { Banner } from "./Banner";
+import { StepchartSection } from "./StepchartSection";
 
 type StepchartPageProps = {
-  stepchart: Simfile;
+  simfile: Simfile;
   currentType: string;
 };
 
@@ -26,15 +27,15 @@ const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
 const speedmods = [1, 1.5, 2, 3];
 
-function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
+function StepchartPage({ simfile, currentType }: StepchartPageProps) {
   const [speedmod, setSpeedmod] = useState(speedmods[0]);
   const isSingle = currentType.includes("single");
   const singleDoubleClass = isSingle ? "single" : "double";
-  const currentTypeMeta = stepchart.availableTypes.find(
+  const currentTypeMeta = simfile.availableTypes.find(
     (at) => at.slug === currentType
   )!;
 
-  const { arrows, freezes, bpm, stops } = stepchart.charts[currentType];
+  const { arrows, freezes, bpm, stops } = simfile.charts[currentType];
 
   const arrowImgs = [];
 
@@ -184,19 +185,19 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     <Root
       className={styles.rootPrint}
       title={`${
-        stepchart.title.translitTitleName || stepchart.title.titleName
+        simfile.title.translitTitleName || simfile.title.titleName
       } ${currentType.replace(/-/g, ", ")}`}
       subheading={
         <Breadcrumbs
           crumbs={[
             {
-              display: stepchart.mix.mixName,
-              pathSegment: stepchart.mix.mixDir,
+              display: simfile.mix.mixName,
+              pathSegment: simfile.mix.mixDir,
             },
             {
               display:
-                stepchart.title.translitTitleName || stepchart.title.titleName,
-              pathSegment: stepchart.title.titleDir,
+                simfile.title.translitTitleName || simfile.title.titleName,
+              pathSegment: simfile.title.titleDir,
             },
             {
               display: currentType.replace(/-/g, " "),
@@ -206,7 +207,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         />
       }
       metaDescription={`${currentType.replace(/-/g, " ")} stepchart for ${
-        stepchart.title.translitTitleName || stepchart.title.titleName
+        simfile.title.translitTitleName || simfile.title.titleName
       }`}
     >
       <div className="w-screen -mx-4 bg-focal-300 sticky top-0 z-10 shadow-lg sm:hidden">
@@ -215,7 +216,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
             styles.hideForPrint,
             "mx-auto border-b-4 border-white w-full absolute top-0 left-0"
           )}
-          title={stepchart.title}
+          title={simfile.title}
         />
       </div>
       <ImageFrame
@@ -228,24 +229,24 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
           <div className="hidden sm:block">
             <Banner
               className="mx-auto border-2 border-white w-full absolute top-0 left-0"
-              title={stepchart.title}
+              title={simfile.title}
             />
           </div>
         </div>
         <div className="flex-1 flex flex-col sm:grid sm:grid-cols-2 space-y-2 sm:space-y-0">
           <TitleDetailsTable>
-            {stepchart.title.translitTitleName && (
+            {simfile.title.translitTitleName && (
               <TitleDetailsRow
                 name="Native title"
-                value={stepchart.title.titleName}
+                value={simfile.title.titleName}
               />
             )}
-            <TitleDetailsRow name="BPM" value={stepchart.displayBpm} />
+            <TitleDetailsRow name="BPM" value={simfile.displayBpm} />
             <TitleDetailsRow
               name="Artist"
-              value={stepchart.artist ?? "unknown"}
+              value={simfile.artist ?? "unknown"}
             />
-            <TitleDetailsRow name="Mix" value={stepchart.mix.mixName} />
+            <TitleDetailsRow name="Mix" value={simfile.mix.mixName} />
             <TitleDetailsRow
               name="difficulty"
               value={`${currentTypeMeta.difficulty} (${currentTypeMeta.feet})`}
@@ -265,38 +266,46 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         </div>
       </ImageFrame>
       <div className="grid place-items-center">
-        <div className="relative">
-          <div
-            className={clsx(
-              styles.container,
-              styles[`container-${singleDoubleClass}`],
-              "relative bg-indigo-100 overflow-y-hidden"
-            )}
-            style={
-              {
-                height: totalSongHeight,
-                "--arrow-size": `${ARROW_HEIGHT}px`,
-              } as CSSProperties
-            }
-            role="img"
-            aria-label={`${currentType} step chart for ${
-              stepchart.title.translitTitleName || stepchart.title.titleName
-            }`}
-          >
-            {barDivs}
-            {bpmRangeDivs}
-            {freezeDivs}
-            {!isSingle && (
-              <div className={clsx(styles.doubleDivider, "h-full")} />
-            )}
-            {arrowImgs}
-          </div>
-          {bpmLabelDivs}
-          {stopLabels}
-        </div>
+        <StepchartSection
+          arrowSize={40}
+          chart={simfile.charts[currentType]}
+          startOffset={5}
+          endOffset={8}
+          speedMod={speedmod}
+        />
+        {/*<div className="relative">*/}
+        {/*  <div*/}
+        {/*    className={clsx(*/}
+        {/*      styles.container,*/}
+        {/*      styles[`container-${singleDoubleClass}`],*/}
+        {/*      "relative bg-indigo-100 overflow-y-hidden"*/}
+        {/*    )}*/}
+        {/*    style={*/}
+        {/*      {*/}
+        {/*        height: totalSongHeight,*/}
+        {/*        "--arrow-size": `${ARROW_HEIGHT}px`,*/}
+        {/*      } as CSSProperties*/}
+        {/*    }*/}
+        {/*    role="img"*/}
+        {/*    aria-label={`${currentType} step chart for ${*/}
+        {/*      simfile.title.translitTitleName || simfile.title.titleName*/}
+        {/*    }`}*/}
+        {/*  >*/}
+        {/*    {barDivs}*/}
+        {/*    {bpmRangeDivs}*/}
+        {/*    {freezeDivs}*/}
+        {/*    {!isSingle && (*/}
+        {/*      <div className={clsx(styles.doubleDivider, "h-full")} />*/}
+        {/*    )}*/}
+        {/*    {arrowImgs}*/}
+        {/*  </div>*/}
+        {/*  {bpmLabelDivs}*/}
+        {/*  {stopLabels}*/}
+        {/*</div>*/}
       </div>
     </Root>
   );
 }
 
 export { StepchartPage };
+export type { StepchartPageProps };

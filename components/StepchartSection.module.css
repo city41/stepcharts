@@ -1,0 +1,20 @@
+.container-single {
+    width: calc(var(--arrow-size) * 4);
+}
+
+.container-double {
+    width: calc(var(--arrow-size) * 8);
+}
+
+.doubleDivider {
+    width: calc(var(--arrow-size) * 4);
+    @apply border-r border-dashed border-blue-500 absolute;
+}
+
+.bar:nth-child(odd) {
+    @apply bg-indigo-50;
+}
+
+.bar:last-of-type {
+    border-width: 0;
+}

@@ -8,11 +8,8 @@ import {
 
 import { getAllStepchartData } from "../../../lib/getAllStepchartData";
 import { StepchartPage } from "../../../components/StepchartPage";
-
-type NextSongDifficultyTypePageProps = {
-  stepchart: Simfile;
-  currentType: string;
-};
+import type { StepchartPageProps } from "../../../components/StepchartPage";
+import { Step } from "@material-ui/core";
 
 export async function getStaticPaths(
   _context: GetStaticPathsContext
@@ -52,19 +49,19 @@ export async function getStaticPaths(
 
 export async function getStaticProps(
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<NextSongDifficultyTypePageProps>> {
+): Promise<GetStaticPropsResult<StepchartPageProps>> {
   const mixDir = context.params!.mix as string;
   const titleDir = context.params!.title as string;
   const type = context.params!.type as string;
 
   const allData = getAllStepchartData();
-  const stepchart = allData
+  const simfile = allData
     .find((m) => m.mixDir === mixDir)!
     .simfiles.find((s) => s.title.titleDir === titleDir)!;
 
   const results = {
     props: {
-      stepchart,
+      simfile,
       currentType: type,
     },
   };
@@ -72,8 +69,6 @@ export async function getStaticProps(
   return results;
 }
 
-export default function NextSongDifficultyTypePage(
-  props: NextSongDifficultyTypePageProps
-) {
+export default function NextSongDifficultyTypePage(props: StepchartPageProps) {
   return <StepchartPage {...props} />;
 }
