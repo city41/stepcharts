@@ -1,10 +1,6 @@
-import React, { CSSProperties, useState } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
-import { GiStopSign } from "react-icons/gi";
 
-import { ArrowImg } from "./ArrowImg";
-import type { ArrowImgProps } from "./ArrowImg";
-import { FreezeBody } from "./FreezeBody";
 import { Root } from "./layout/Root";
 import { ImageFrame } from "./ImageFrame";
 import { Breadcrumbs } from "./Breadcrumbs";
@@ -21,12 +17,13 @@ type StepchartPageProps = {
 };
 
 const ARROW_HEIGHT = 40;
-const MEASURE_HEIGHT = ARROW_HEIGHT * 4;
+const SECTION_SIZE_IN_MEASURES = 4;
 const speedmods = [1, 1.5, 2, 3];
-const SECTION_SIZE_IN_MEASURES = 6;
 
 function StepchartPage({ simfile, currentType }: StepchartPageProps) {
   const [speedmod, setSpeedmod] = useState(speedmods[0]);
+  const isSingle = currentType.includes("single");
+  const singleDoubleClass = isSingle ? "single" : "double";
   const currentTypeMeta = simfile.availableTypes.find(
     (at) => at.slug === currentType
   )!;
@@ -138,7 +135,11 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         </div>
       </ImageFrame>
       <div className="grid place-items-center">
-        <div>{sections}</div>
+        <div
+          className={clsx(styles.stepchartSections, styles[singleDoubleClass])}
+        >
+          {sections}
+        </div>
       </div>
     </Root>
   );

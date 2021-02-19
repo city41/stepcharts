@@ -1,25 +1,12 @@
-.container-single {
-    width: calc(var(--arrow-size) * 4);
-}
-
-.container-double {
-    width: calc(var(--arrow-size) * 8);
-}
-
-.doubleDivider {
-    width: calc(var(--arrow-size) * 4);
-    @apply border-r border-dashed border-blue-500 absolute;
-}
-
-.bar:nth-child(odd) {
-    @apply bg-indigo-50;
-}
-
-.bar:last-of-type {
-    border-width: 0;
+.stepchartSections {
+    @apply flex flex-col;
 }
 
 @media print {
+    .rootPrint {
+        @apply w-full h-full m-0 p-0 !important;
+    }
+
     .rootPrint header, .rootPrint footer {
         @apply hidden;
     }
@@ -27,4 +14,16 @@
     .hideForPrint {
         @apply hidden;
     }
+
+    .stepchartSections {
+        @apply flex flex-row flex-wrap space-x-8;
+    }
+
+    /*.stepchartSections {*/
+    /*    transform: translate(-25%, -12.5%) scale(0.5);*/
+    /*}*/
+
+    /*.stepchartSections.double {*/
+    /*    transform: scale(0.35);*/
+    /*}*/
 }
