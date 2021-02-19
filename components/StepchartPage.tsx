@@ -182,6 +182,7 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
 
   return (
     <Root
+      className={styles.rootPrint}
       title={`${
         stepchart.title.translitTitleName || stepchart.title.titleName
       } ${currentType.replace(/-/g, ", ")}`}
@@ -211,20 +212,22 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
       <div className="w-screen -mx-4 bg-focal-300 sticky top-0 z-10 shadow-lg sm:hidden">
         <Banner
           className={clsx(
-            styles.bannerPrint,
+            styles.hideForPrint,
             "mx-auto border-b-4 border-white w-full absolute top-0 left-0"
           )}
           title={stepchart.title}
         />
       </div>
-      <ImageFrame className="mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center sm:justify-start sm:space-x-4">
+      <ImageFrame
+        className={clsx(
+          styles.hideForPrint,
+          "mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center sm:justify-start sm:space-x-4"
+        )}
+      >
         <div className="w-full sm:w-64">
           <div className="hidden sm:block">
             <Banner
-              className={clsx(
-                styles.bannerPrint,
-                "mx-auto border-2 border-white w-full absolute top-0 left-0"
-              )}
+              className="mx-auto border-2 border-white w-full absolute top-0 left-0"
               title={stepchart.title}
             />
           </div>

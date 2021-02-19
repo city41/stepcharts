@@ -9,6 +9,7 @@ import logoSvg from "./logoArrow.svg";
 import styles from "./Root.module.css";
 
 type RootProps = {
+  className?: string;
   title: string;
   subheading?: React.ReactNode;
   metaDescription: string;
@@ -17,6 +18,7 @@ type RootProps = {
 };
 
 function Root({
+  className,
   title,
   subheading,
   metaDescription,
@@ -24,7 +26,14 @@ function Root({
   children,
 }: RootProps) {
   return (
-    <div className={clsx(styles.background, "flex flex-col items-stretch", {})}>
+    <div
+      className={clsx(
+        className,
+        styles.background,
+        "flex flex-col items-stretch",
+        {}
+      )}
+    >
       <Head
         title={title}
         metaDescription={metaDescription}

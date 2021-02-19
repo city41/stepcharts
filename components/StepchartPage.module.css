@@ -20,7 +20,11 @@
 }
 
 @media print {
-    .bannerPrint img {
-        display: none;
+    .rootPrint header, .rootPrint footer {
+        @apply hidden;
+    }
+
+    .hideForPrint {
+        @apply hidden;
     }
 }
