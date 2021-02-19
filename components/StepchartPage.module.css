@@ -2,28 +2,31 @@
     @apply flex flex-col;
 }
 
+.stepchartSectionGroup {
+    @apply grid place-items-center;
+}
+
 @media print {
     .rootPrint {
         @apply w-full h-full m-0 p-0 !important;
+        background: none !important;
     }
 
     .rootPrint header, .rootPrint footer {
         @apply hidden;
     }
 
+    .rootPrint main {
+        max-width: initial !important;
+        max-height: initial !important;
+    }
+
     .hideForPrint {
         @apply hidden;
     }
 
-    .stepchartSections {
-        @apply flex flex-row flex-wrap space-x-8;
+    .stepchartSectionGroup {
+        @apply flex flex-row items-start justify-center space-x-8 p-4 mt-16;
+        page-break-after: always;
     }
-
-    /*.stepchartSections {*/
-    /*    transform: translate(-25%, -12.5%) scale(0.5);*/
-    /*}*/
-
-    /*.stepchartSections.double {*/
-    /*    transform: scale(0.35);*/
-    /*}*/
 }

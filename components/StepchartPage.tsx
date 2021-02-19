@@ -16,8 +16,8 @@ type StepchartPageProps = {
   currentType: string;
 };
 
-const ARROW_HEIGHT = 40;
-const SECTION_SIZE_IN_MEASURES = 4;
+const ARROW_HEIGHT = 20;
+const SECTION_SIZE_IN_MEASURES = 10;
 const speedmods = [1, 1.5, 2, 3];
 
 function StepchartPage({ simfile, currentType }: StepchartPageProps) {
@@ -47,6 +47,18 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         startOffset={i}
         endOffset={Math.min(totalSongHeight, i + SECTION_SIZE_IN_MEASURES)}
       />
+    );
+  }
+
+  const sectionGroups = [];
+  const sectionsPerChunk = isSingle ? 8 : 4;
+
+  while (sections.length) {
+    const sectionChunk = sections.splice(0, sectionsPerChunk);
+    sectionGroups.push(
+      <div key={sectionGroups.length} className={styles.stepchartSectionGroup}>
+        {sectionChunk}
+      </div>
     );
   }
 
@@ -134,13 +146,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
           />
         </div>
       </ImageFrame>
-      <div className="grid place-items-center">
-        <div
-          className={clsx(styles.stepchartSections, styles[singleDoubleClass])}
-        >
-          {sections}
-        </div>
-      </div>
+      {sectionGroups}
     </Root>
   );
 }
