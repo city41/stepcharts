@@ -210,7 +210,10 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
     >
       <div className="w-screen -mx-4 bg-focal-300 sticky top-0 z-10 shadow-lg sm:hidden">
         <Banner
-          className="mx-auto border-b-4 border-white w-full absolute top-0 left-0"
+          className={clsx(
+            styles.bannerPrint,
+            "mx-auto border-b-4 border-white w-full absolute top-0 left-0"
+          )}
           title={stepchart.title}
         />
       </div>
@@ -218,7 +221,10 @@ function StepchartPage({ stepchart, currentType }: StepchartPageProps) {
         <div className="w-full sm:w-64">
           <div className="hidden sm:block">
             <Banner
-              className="mx-auto border-2 border-white w-full absolute top-0 left-0"
+              className={clsx(
+                styles.bannerPrint,
+                "mx-auto border-2 border-white w-full absolute top-0 left-0"
+              )}
               title={stepchart.title}
             />
           </div>

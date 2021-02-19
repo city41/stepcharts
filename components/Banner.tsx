@@ -15,7 +15,7 @@ function Banner({ className, title }: BannerProps) {
   if (currentBanner) {
     bannerEl = (
       <img
-        className={clsx(className, "absolute top-0 left-0")}
+        className="absolute top-0 left-0"
         src={require(`./bannerImages/${currentBanner}`)}
         onError={() => setCurrentBanner(null)}
         loading="lazy"
@@ -24,12 +24,7 @@ function Banner({ className, title }: BannerProps) {
     );
   } else {
     bannerEl = (
-      <div
-        className={clsx(
-          className,
-          "absolute top-0 left-0 w-full h-full bg-focal text-focal-400 flex flex-col items-center justify-center"
-        )}
-      >
+      <div className="absolute top-0 left-0 w-full h-full bg-focal text-focal-400 flex flex-col items-center justify-center">
         <div className="text-focal-200 text-xl font-bold">{name}</div>
         <div className="text-xs text-focal-50">(banner missing)</div>
       </div>
@@ -38,7 +33,7 @@ function Banner({ className, title }: BannerProps) {
 
   return (
     <div
-      className="relative"
+      className={clsx(className, "relative")}
       style={{
         paddingTop: "calc(80 / 256 * 100%)",
       }}

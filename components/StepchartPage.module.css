@@ -19,4 +19,8 @@
     border-width: 0;
 }
 
-
+@media print {
+    .bannerPrint img {
+        display: none;
+    }
+}
