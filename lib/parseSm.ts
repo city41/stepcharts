@@ -1,5 +1,5 @@
 import Fraction from "fraction.js";
-import { RawStepchart } from "./parseStepchart";
+import { RawSimfile } from "./parseSimfile";
 import {
   determineBeat,
   mergeSimilarBpmRanges,
@@ -74,14 +74,14 @@ function findFirstNonEmptyMeasure(
   );
 }
 
-function parseSm(sm: string, _titlePath: string): RawStepchart {
+function parseSm(sm: string, _titlePath: string): RawSimfile {
   const lines = sm.split("\n").map((l) => l.trim());
 
   let i = 0;
   let bpmString: string | null = null;
   let stopsString: string | null = null;
 
-  const sc: Partial<RawStepchart> = {
+  const sc: Partial<RawSimfile> = {
     charts: {},
     availableTypes: [],
     banner: null,
@@ -327,7 +327,7 @@ function parseSm(sm: string, _titlePath: string): RawStepchart {
       }
     }
 
-    return sc as RawStepchart;
+    return sc as RawSimfile;
   } catch (e) {
     throw new Error(
       `error, ${e.message}, ${e.stack}, parsing ${sm.substring(0, 300)}`

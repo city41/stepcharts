@@ -25,38 +25,38 @@ export async function getStaticProps(
 ): Promise<GetStaticPropsResult<AllSongsPageProps>> {
   const allData = getAllStepchartData();
 
-  const allStepcharts = allData.reduce<Simfile[]>((building, mix) => {
-    return building.concat(mix.stepcharts);
+  const allSimfiles = allData.reduce<Simfile[]>((building, mix) => {
+    return building.concat(mix.simfiles);
   }, []);
 
   const results = {
     props: {
-      titles: allStepcharts.map((sc, index) => {
+      titles: allSimfiles.map((sm, index) => {
         return {
           id: index,
           title: {
-            titleName: sc.title.titleName,
-            translitTitleName: sc.title.translitTitleName,
-            titleDir: sc.title.titleDir,
-            banner: sc.title.banner ?? null,
+            titleName: sm.title.titleName,
+            translitTitleName: sm.title.translitTitleName,
+            titleDir: sm.title.titleDir,
+            banner: sm.title.banner ?? null,
           },
           mix: {
-            mixName: sc.mix.mixName,
-            mixDir: sc.mix.mixDir,
+            mixName: sm.mix.mixName,
+            mixDir: sm.mix.mixDir,
           },
-          artist: sc.artist || "",
-          types: sc.availableTypes.map((t) => {
+          artist: sm.artist || "",
+          types: sm.availableTypes.map((t) => {
             return {
               ...t,
-              stats: calculateStats(sc.charts[t.slug]),
+              stats: calculateStats(sm.charts[t.slug]),
             };
           }),
-          displayBpm: sc.displayBpm,
-          minBpm: sc.minBpm,
-          maxBpm: sc.maxBpm,
-          stopCount: sc.stopCount,
-          tempoShiftCount: getTempShiftCount(sc),
-          filterString: getFilterString(sc),
+          displayBpm: sm.displayBpm,
+          minBpm: sm.minBpm,
+          maxBpm: sm.maxBpm,
+          stopCount: sm.stopCount,
+          tempoShiftCount: getTempShiftCount(sm),
+          filterString: getFilterString(sm),
         };
       }),
     },

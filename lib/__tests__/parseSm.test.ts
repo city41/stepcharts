@@ -1,5 +1,5 @@
 import { parseSm } from "../parseSm";
-import { RawStepchart } from "../parseStepchart";
+import { RawSimfile } from "../parseSimfile";
 
 describe("parseSm", () => {
   it("should parse basic tags in a stepchart", () => {
@@ -42,7 +42,7 @@ describe("parseSm", () => {
   });
 
   describe("#notes", () => {
-    function parse(notes: string): RawStepchart {
+    function parse(notes: string): RawSimfile {
       const stepchart = `#NOTES:
      dance-single:
      :

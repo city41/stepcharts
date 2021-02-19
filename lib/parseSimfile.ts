@@ -3,18 +3,16 @@ import * as path from "path";
 import { parseDwi } from "./parseDwi";
 import { parseSm } from "./parseSm";
 
-type RawStepchart = Omit<Simfile, "mix" | "title"> & {
+type RawSimfile = Omit<Simfile, "mix" | "title"> & {
   title: string;
   titletranslit: string | null;
   banner: string | null;
   displayBpm: string | undefined;
 };
-type Parser = (chart: string, titleDir: string) => RawStepchart;
+type Parser = (simfileSource: string, titleDir: string) => RawSimfile;
 
 const parsers: Record<string, Parser> = {
   ".sm": parseSm,
-  // TODO: actual ssc parser
-  ".ssc": parseSm,
   ".dwi": parseDwi,
 };
 
@@ -40,13 +38,13 @@ function toSafeName(name: string): string {
   return `${name}.png`;
 }
 
-function getBpms(sm: RawStepchart): number[] {
+function getBpms(sm: RawSimfile): number[] {
   const chart = Object.values(sm.charts)[0];
 
   return chart.bpm.map((b) => b.bpm);
 }
 
-function parseStepchart(
+function parseSimfile(
   rootDir: string,
   mixDir: string,
   titleDir: string
@@ -101,5 +99,5 @@ function parseStepchart(
   };
 }
 
-export { parseStepchart };
-export type { RawStepchart };
+export { parseSimfile };
+export type { RawSimfile };

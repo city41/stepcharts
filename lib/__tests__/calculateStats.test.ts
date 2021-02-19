@@ -1,9 +1,9 @@
 import { calculateStats } from "../calculateStats";
 import { parseSm } from "../parseSm";
-import { RawStepchart } from "../parseStepchart";
+import { RawSimfile } from "../parseSimfile";
 
 describe("calculateStats", () => {
-  function parse(notes: string): RawStepchart {
+  function parse(notes: string): RawSimfile {
     const stepchart = `#NOTES:
      dance-single:
      :

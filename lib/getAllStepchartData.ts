@@ -1,12 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
-import { parseStepchart } from "./parseStepchart";
+import { parseSimfile } from "./parseSimfile";
 
 const ROOT =
   process.env.NODE_ENV === "production" ? "prodStepcharts" : "devStepcharts";
 
 type EntireMix = Mix & {
-  stepcharts: Simfile[];
+  simfiles: Simfile[];
 };
 
 function getFiles(...dirPath: string[]): string[] {
@@ -39,10 +39,10 @@ function _getAllStepchartData(): EntireMix[] {
       songCount: mixSongDirs.length,
     };
 
-    const stepcharts = mixSongDirs.map((songDir) => {
+    const simfiles = mixSongDirs.map((songDir) => {
       try {
         return {
-          ...parseStepchart(ROOT, mixDir, songDir),
+          ...parseSimfile(ROOT, mixDir, songDir),
           mix,
         };
       } catch (e) {
@@ -54,7 +54,7 @@ function _getAllStepchartData(): EntireMix[] {
 
     return {
       ...mix,
-      stepcharts,
+      simfiles,
     };
   });
 }

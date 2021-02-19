@@ -1,6 +1,6 @@
 import fs from "fs";
 import Fraction from "fraction.js";
-import { RawStepchart } from "./parseStepchart";
+import { RawSimfile } from "./parseSimfile";
 import {
   determineBeat,
   mergeSimilarBpmRanges,
@@ -233,7 +233,7 @@ function findBanner(titlePath: string): string | null {
   return bannerFile ?? null;
 }
 
-function parseDwi(dwi: string, titlePath?: string): RawStepchart {
+function parseDwi(dwi: string, titlePath?: string): RawSimfile {
   let bpm: string | null = null;
   let changebpm: string | null = null;
   let displaybpm: string | null = null;
@@ -243,7 +243,7 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
 
   let i = 0;
 
-  const sc: Partial<RawStepchart> = {
+  const sc: Partial<RawSimfile> = {
     charts: {},
     availableTypes: [],
     banner: titlePath ? findBanner(titlePath) : null,
@@ -418,7 +418,7 @@ function parseDwi(dwi: string, titlePath?: string): RawStepchart {
       throw new Error(`No BPM found for ${titlePath}`);
     }
 
-    return sc as RawStepchart;
+    return sc as RawSimfile;
   } catch (e) {
     throw new Error(`error, ${e.message}, ${e.stack}, parsing ${dwi}`);
   }

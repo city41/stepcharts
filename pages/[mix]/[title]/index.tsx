@@ -17,13 +17,13 @@ export async function getStaticPaths(
   _context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
   const allData = getAllStepchartData();
-  const allStepcharts = allData.reduce<Simfile[]>((building, mix) => {
-    return building.concat(mix.stepcharts);
+  const allSimfiles = allData.reduce<Simfile[]>((building, mix) => {
+    return building.concat(mix.simfiles);
   }, []);
 
   return {
-    paths: allStepcharts.map((stepchart) => ({
-      params: { mix: stepchart.mix.mixDir, title: stepchart.title.titleDir },
+    paths: allSimfiles.map((simfile) => ({
+      params: { mix: simfile.mix.mixDir, title: simfile.title.titleDir },
     })),
     fallback: false,
   };
@@ -36,20 +36,20 @@ export async function getStaticProps(
   const titleDir = context.params!.title as string;
 
   const allData = getAllStepchartData();
-  const stepchart = allData
+  const simfile = allData
     .find((m) => m.mixDir === mixDir)!
-    .stepcharts.find((s) => s.title.titleDir === titleDir)!;
+    .simfiles.find((s) => s.title.titleDir === titleDir)!;
 
   const results: GetStaticPropsResult<TitlePageProps> = {
     props: {
-      title: stepchart.title,
-      artist: stepchart.artist ?? null,
-      displayBpm: stepchart.displayBpm,
+      title: simfile.title,
+      artist: simfile.artist ?? null,
+      displayBpm: simfile.displayBpm,
       mix: {
-        mixName: stepchart.mix.mixName,
-        mixDir: stepchart.mix.mixDir,
+        mixName: simfile.mix.mixName,
+        mixDir: simfile.mix.mixDir,
       },
-      types: stepchart.availableTypes,
+      types: simfile.availableTypes,
     },
   };
 

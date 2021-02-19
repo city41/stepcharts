@@ -30,8 +30,8 @@ const difficultyPriority = [
   "beginner",
 ];
 
-function getMostDifficultChart(sm: Simfile) {
-  const { availableTypes: types, charts } = sm;
+function getMostDifficultChart(simfile: Simfile) {
+  const { availableTypes: types, charts } = simfile;
   const maxFeet = Math.max(...types.map((t) => t.feet));
 
   const maxFeetTypes = types.filter((t) => t.feet === maxFeet);
@@ -59,17 +59,17 @@ export async function getStaticProps(
   const results = {
     props: {
       mix,
-      titles: mix.stepcharts.map((sc) => {
+      titles: mix.simfiles.map((sm) => {
         return {
           title: {
-            titleDir: sc.title.titleDir,
-            titleName: sc.title.titleName,
-            translitTitleName: sc.title.translitTitleName,
-            banner: sc.title.banner,
+            titleDir: sm.title.titleDir,
+            titleName: sm.title.titleName,
+            translitTitleName: sm.title.translitTitleName,
+            banner: sm.title.banner,
           },
-          types: sc.availableTypes,
-          displayBpm: sc.displayBpm,
-          stats: calculateStats(getMostDifficultChart(sc)),
+          types: sm.availableTypes,
+          displayBpm: sm.displayBpm,
+          stats: calculateStats(getMostDifficultChart(sm)),
         };
       }),
     },
