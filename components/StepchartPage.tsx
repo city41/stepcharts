@@ -22,164 +22,36 @@ type StepchartPageProps = {
 
 const ARROW_HEIGHT = 40;
 const MEASURE_HEIGHT = ARROW_HEIGHT * 4;
-
-const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
-
 const speedmods = [1, 1.5, 2, 3];
+const SECTION_SIZE_IN_MEASURES = 6;
 
 function StepchartPage({ simfile, currentType }: StepchartPageProps) {
   const [speedmod, setSpeedmod] = useState(speedmods[0]);
-  const isSingle = currentType.includes("single");
-  const singleDoubleClass = isSingle ? "single" : "double";
   const currentTypeMeta = simfile.availableTypes.find(
     (at) => at.slug === currentType
   )!;
 
-  const { arrows, freezes, bpm, stops } = simfile.charts[currentType];
+  const chart = simfile.charts[currentType];
+  const { arrows, freezes } = chart;
 
-  const arrowImgs = [];
-
-  for (let ai = arrows.length - 1; ai >= 0; --ai) {
-    const a = arrows[ai];
-    const isShockArrow = a.direction.indexOf("0") === -1;
-    const isFreezeArrow = a.direction.indexOf("2") > -1;
-
-    for (let i = 0; i < a.direction.length; ++i) {
-      if (a.direction[i] !== "0") {
-        arrowImgs.push(
-          <ArrowImg
-            key={`Arrow-${ai}-${i}`}
-            className={clsx(styles.arrow, "absolute text-xs ease-in-out")}
-            style={{
-              top: a.offset * MEASURE_HEIGHT * speedmod,
-              transition: "top 500ms",
-            }}
-            size={ARROW_HEIGHT}
-            position={i as ArrowImgProps["position"]}
-            beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
-          />
-        );
-      }
-    }
-  }
-
-  const barDivs = [];
-
-  const barHeight = ARROW_HEIGHT * speedmod;
   const lastArrowOffset = (arrows[arrows.length - 1]?.offset ?? 0) + 0.25;
   const lastFreezeOffset = freezes[freezes.length - 1]?.endOffset ?? 0;
-  const totalSongHeight =
-    Math.max(lastArrowOffset, lastFreezeOffset) * MEASURE_HEIGHT * speedmod;
+  const totalSongHeight = Math.max(lastArrowOffset, lastFreezeOffset);
 
-  for (let i = 0; i < totalSongHeight / barHeight; ++i) {
-    barDivs.push(
-      <div
-        key={`barDiv-${i}`}
-        className={clsx(
-          styles.bar,
-          "w-full absolute transition-all ease-in-out duration-500",
-          {
-            "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
-            "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
-          }
-        )}
-        style={{
-          left: 0,
-          top: i * ARROW_HEIGHT * speedmod - (barHeight - ARROW_HEIGHT) / 2,
-          height: barHeight,
-        }}
+  const sections = [];
+
+  for (let i = 0; i < totalSongHeight; i += SECTION_SIZE_IN_MEASURES) {
+    sections.push(
+      <StepchartSection
+        key={i}
+        chart={chart}
+        arrowSize={ARROW_HEIGHT}
+        speedMod={speedmod}
+        startOffset={i}
+        endOffset={Math.min(totalSongHeight, i + SECTION_SIZE_IN_MEASURES)}
       />
     );
   }
-
-  const freezeDivs = freezes.map((f) => {
-    return (
-      <div
-        key={`${f.startOffset}-${f.direction}`}
-        className={clsx("absolute transition-all ease-in-out duration-500")}
-        style={{
-          top: f.startOffset * MEASURE_HEIGHT * speedmod + ARROW_HEIGHT / 2,
-          left: f.direction * ARROW_HEIGHT,
-          width: ARROW_HEIGHT,
-          height:
-            (f.endOffset - f.startOffset) * MEASURE_HEIGHT * speedmod -
-            (ARROW_HEIGHT / 2) * speedmod,
-        }}
-      >
-        <FreezeBody />
-      </div>
-    );
-  });
-
-  const bpmRangeDivs = [];
-  const bpmLabelDivs = [];
-
-  if (bpm.length > 1) {
-    for (let i = 0; i < bpm.length; ++i) {
-      const even = (i & 1) === 0;
-      const b = bpm[i];
-
-      bpmRangeDivs.push(
-        <div
-          key={b.startOffset}
-          className={clsx(
-            "absolute left-0 w-full transition-all ease-in-out duration-500",
-            {
-              "border-t border-blue-500": even,
-              "border-t border-difficult": !even,
-            }
-          )}
-          style={{
-            backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
-            top:
-              b.startOffset * MEASURE_HEIGHT * speedmod -
-              (barHeight - ARROW_HEIGHT) / 2,
-            height:
-              ((b.endOffset ?? totalSongHeight) - b.startOffset) *
-              MEASURE_HEIGHT *
-              speedmod,
-          }}
-        />
-      );
-
-      bpmLabelDivs.push(
-        <div
-          key={b.startOffset}
-          className="absolute flex flex-row justify-end transition-all ease-in-out duration-500"
-          style={{
-            top: Math.max(
-              0,
-              b.startOffset * MEASURE_HEIGHT * speedmod -
-                1 -
-                (barHeight - ARROW_HEIGHT) / 2
-            ),
-            left: -100,
-            width: 100,
-          }}
-        >
-          <div
-            className={clsx("text-white p-0.5 rounded-l-lg", {
-              "bg-blue-500": even,
-              "bg-difficult": !even,
-            })}
-            style={{ fontSize: "0.675rem" }}
-          >
-            {Math.round(b.bpm)}
-          </div>
-        </div>
-      );
-    }
-  }
-
-  const stopLabels = stops.map((s) => {
-    return (
-      <GiStopSign
-        key={s.offset}
-        className="text-red-600 text-2xl absolute -right-7"
-        style={{ top: s.offset * MEASURE_HEIGHT * speedmod }}
-      />
-    );
-  });
 
   return (
     <Root
@@ -266,42 +138,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         </div>
       </ImageFrame>
       <div className="grid place-items-center">
-        <StepchartSection
-          arrowSize={40}
-          chart={simfile.charts[currentType]}
-          startOffset={5}
-          endOffset={8}
-          speedMod={speedmod}
-        />
-        {/*<div className="relative">*/}
-        {/*  <div*/}
-        {/*    className={clsx(*/}
-        {/*      styles.container,*/}
-        {/*      styles[`container-${singleDoubleClass}`],*/}
-        {/*      "relative bg-indigo-100 overflow-y-hidden"*/}
-        {/*    )}*/}
-        {/*    style={*/}
-        {/*      {*/}
-        {/*        height: totalSongHeight,*/}
-        {/*        "--arrow-size": `${ARROW_HEIGHT}px`,*/}
-        {/*      } as CSSProperties*/}
-        {/*    }*/}
-        {/*    role="img"*/}
-        {/*    aria-label={`${currentType} step chart for ${*/}
-        {/*      simfile.title.translitTitleName || simfile.title.titleName*/}
-        {/*    }`}*/}
-        {/*  >*/}
-        {/*    {barDivs}*/}
-        {/*    {bpmRangeDivs}*/}
-        {/*    {freezeDivs}*/}
-        {/*    {!isSingle && (*/}
-        {/*      <div className={clsx(styles.doubleDivider, "h-full")} />*/}
-        {/*    )}*/}
-        {/*    {arrowImgs}*/}
-        {/*  </div>*/}
-        {/*  {bpmLabelDivs}*/}
-        {/*  {stopLabels}*/}
-        {/*</div>*/}
+        <div>{sections}</div>
       </div>
     </Root>
   );

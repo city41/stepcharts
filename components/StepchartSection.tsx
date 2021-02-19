@@ -36,7 +36,8 @@ function StepchartSection({
   for (let ai = arrows.length - 1; ai >= 0; --ai) {
     const a = arrows[ai];
 
-    if (a.offset < startOffset || a.offset > endOffset) {
+    // TODO: just iterate over the relevant arrows
+    if (a.offset < startOffset || a.offset >= endOffset) {
       continue;
     }
 
@@ -184,7 +185,7 @@ function StepchartSection({
         className={clsx(
           styles.container,
           styles[`container-${singleDoubleClass}`],
-          "relative bg-indigo-100 overflow-y-hidden"
+          "relative bg-indigo-100 xoverflow-y-hidden"
         )}
         style={
           {
