@@ -12,6 +12,7 @@ type StepchartSectionProps = {
   speedMod: number;
   startOffset: number;
   endOffset: number;
+  zIndex: number;
 };
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
@@ -22,6 +23,7 @@ function StepchartSection({
   speedMod,
   startOffset,
   endOffset,
+  zIndex,
 }: StepchartSectionProps) {
   const { arrows, freezes, bpm, stops } = chart;
   const isSingle = arrows[0].direction.length === 4;
@@ -108,7 +110,7 @@ function StepchartSection({
           } * var(--arrow-size) * 4 * ${speedMod} - var(--arrow-size) / 2 * ${speedMod})`,
         }}
       >
-        <FreezeBody />
+        <FreezeBody includeTail={f.endOffset <= endOffset} />
       </div>
     );
   });
@@ -185,7 +187,7 @@ function StepchartSection({
   // });
 
   return (
-    <div className={clsx(className, "relative")}>
+    <div className={clsx(className, "relative")} style={{ zIndex }}>
       <div
         className={clsx(
           styles.container,

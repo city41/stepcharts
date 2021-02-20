@@ -44,6 +44,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         speedMod={speedmod}
         startOffset={i}
         endOffset={Math.min(totalSongHeight, i + SECTION_SIZE_IN_MEASURES)}
+        zIndex={SECTION_SIZE_IN_MEASURES - i}
       />
     );
   }
@@ -54,7 +55,11 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
   while (sections.length) {
     const sectionChunk = sections.splice(0, sectionsPerChunk);
     sectionGroups.push(
-      <div key={sectionGroups.length} className={styles.stepchartSectionGroup}>
+      <div
+        key={sectionGroups.length}
+        className={styles.stepchartSectionGroup}
+        style={{ zIndex: 99999 - sectionGroups.length }}
+      >
         {sectionChunk}
       </div>
     );
