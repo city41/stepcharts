@@ -9,7 +9,6 @@ import styles from "./StepchartSection.module.css";
 type StepchartSectionProps = {
   className?: string;
   chart: Stepchart;
-  arrowSize: number;
   speedMod: number;
   startOffset: number;
   endOffset: number;
@@ -20,7 +19,6 @@ const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 function StepchartSection({
   className,
   chart,
-  arrowSize,
   speedMod,
   startOffset,
   endOffset,
@@ -28,8 +26,6 @@ function StepchartSection({
   const { arrows, freezes, bpm, stops } = chart;
   const isSingle = arrows[0].direction.length === 4;
   const singleDoubleClass = isSingle ? "single" : "double";
-  const totalHeight = (endOffset - startOffset) * arrowSize * 4 * speedMod;
-  const measureHeight = arrowSize * 4;
 
   const arrowImgs = [];
 
@@ -51,10 +47,9 @@ function StepchartSection({
             key={`Arrow-${ai}-${i}`}
             className={clsx(styles.arrow, "absolute text-xs ease-in-out")}
             style={{
-              top: (a.offset - startOffset) * measureHeight * speedMod,
+              top: `calc((${a.offset} - ${startOffset}) * var(--arrow-size) * 4 * ${speedMod})`,
               transition: "top 500ms",
             }}
-            size={arrowSize}
             position={i as ArrowImgProps["position"]}
             beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
           />
@@ -65,11 +60,7 @@ function StepchartSection({
 
   const barDivs = [];
 
-  const barHeight = arrowSize * speedMod;
-  // const lastArrowOffset = (arrows[arrows.length - 1]?.offset ?? 0) + 0.25;
-  // const lastFreezeOffset = freezes[freezes.length - 1]?.endOffset ?? 0;
-
-  for (let i = 0; i < totalHeight / barHeight; ++i) {
+  for (let i = 0; i < (endOffset - startOffset) / 0.25; ++i) {
     barDivs.push(
       <div
         key={`barDiv-${i}`}
@@ -83,8 +74,8 @@ function StepchartSection({
         )}
         style={{
           left: 0,
-          top: i * arrowSize * speedMod - (barHeight - arrowSize) / 2,
-          height: barHeight,
+          top: `calc(${i} * var(--arrow-size) * ${speedMod} - ((var(--arrow-size) * ${speedMod}) - var(--arrow-size)) / 2)`,
+          height: `calc(var(--arrow-size) * ${speedMod})`,
         }}
       />
     );
@@ -189,8 +180,7 @@ function StepchartSection({
         )}
         style={
           {
-            height: totalHeight,
-            "--arrow-size": `${arrowSize}px`,
+            height: `calc((${endOffset} - ${startOffset}) * var(--arrow-size) * 4 * ${speedMod})`,
           } as CSSProperties
         }
       >

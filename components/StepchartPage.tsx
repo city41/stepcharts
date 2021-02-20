@@ -16,7 +16,6 @@ type StepchartPageProps = {
   currentType: string;
 };
 
-const ARROW_HEIGHT = 20;
 const SECTION_SIZE_IN_MEASURES = 10;
 const speedmods = [1, 1.5, 2, 3];
 
@@ -42,7 +41,6 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
       <StepchartSection
         key={i}
         chart={chart}
-        arrowSize={ARROW_HEIGHT}
         speedMod={speedmod}
         startOffset={i}
         endOffset={Math.min(totalSongHeight, i + SECTION_SIZE_IN_MEASURES)}
