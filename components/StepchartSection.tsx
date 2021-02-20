@@ -32,9 +32,13 @@ function StepchartSection({
   for (let ai = arrows.length - 1; ai >= 0; --ai) {
     const a = arrows[ai];
 
-    // TODO: just iterate over the relevant arrows
-    if (a.offset < startOffset || a.offset >= endOffset) {
+    if (a.offset >= endOffset) {
       continue;
+    }
+
+    // moved past the current section? bail
+    if (a.offset < startOffset) {
+      break;
     }
 
     const isShockArrow = a.direction.indexOf("0") === -1;
