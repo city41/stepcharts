@@ -185,7 +185,7 @@ function StepchartSection({
         className={clsx(
           styles.container,
           styles[`container-${singleDoubleClass}`],
-          "relative bg-indigo-100 xoverflow-y-hidden"
+          "relative bg-indigo-100"
         )}
         style={
           {
