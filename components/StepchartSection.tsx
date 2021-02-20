@@ -85,24 +85,34 @@ function StepchartSection({
     );
   }
 
-  // const freezeDivs = freezes.map((f) => {
-  //   return (
-  //     <div
-  //       key={`${f.startOffset}-${f.direction}`}
-  //       className={clsx("absolute transition-all ease-in-out duration-500")}
-  //       style={{
-  //         top: f.startOffset * measureHeight * speedMod + arrowSize / 2,
-  //         left: f.direction * arrowSize,
-  //         width: arrowSize,
-  //         height:
-  //           (f.endOffset - f.startOffset) * measureHeight * speedMod -
-  //           (arrowSize / 2) * speedMod,
-  //       }}
-  //     >
-  //       <FreezeBody />
-  //     </div>
-  //   );
-  // });
+  const freezeDivs = freezes.map((f) => {
+    const inRangeStartOffset = Math.max(f.startOffset, startOffset);
+    const inRangeEndOffset = Math.min(f.endOffset, endOffset);
+
+    if (inRangeEndOffset < startOffset || inRangeStartOffset >= endOffset) {
+      return null;
+    }
+
+    return (
+      <div
+        key={`${f.startOffset}-${f.direction}`}
+        className={clsx("absolute transition-all ease-in-out duration-500")}
+        style={{
+          top: `calc(${
+            inRangeStartOffset - startOffset
+          } * var(--arrow-size) * 4 * ${speedMod} + var(--arrow-size) / 2)`,
+          left: `calc(${f.direction} * var(--arrow-size))`,
+          width: "var(--arrow-size)",
+          height: `calc(${
+            inRangeEndOffset - inRangeStartOffset
+          } * var(--arrow-size) * 4 * ${speedMod} - var(--arrow-size) / 2 * ${speedMod})`,
+        }}
+      >
+        <FreezeBody />
+      </div>
+    );
+  });
+
   //
   // const bpmRangeDivs = [];
   // const bpmLabelDivs = [];
@@ -190,7 +200,7 @@ function StepchartSection({
       >
         {barDivs}
         {/*{bpmRangeDivs}*/}
-        {/*{freezeDivs}*/}
+        {freezeDivs}
         {!isSingle && <div className={clsx(styles.doubleDivider, "h-full")} />}
         {arrowImgs}
       </div>
