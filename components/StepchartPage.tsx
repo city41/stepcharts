@@ -16,13 +16,19 @@ type StepchartPageProps = {
   currentType: string;
 };
 
-const SECTION_SIZE_IN_MEASURES = 10;
 const speedmods = [1, 1.5, 2, 3];
+const sectionSizesInMeasures: Record<typeof speedmods[number], number> = {
+  1: 10,
+  1.5: 7,
+  2: 5,
+  3: 3,
+};
 
 function StepchartPage({ simfile, currentType }: StepchartPageProps) {
   const [speedmod, setSpeedmod] = useState(speedmods[0]);
+  const sectionSizeInMeasures = sectionSizesInMeasures[speedmod];
+
   const isSingle = currentType.includes("single");
-  const singleDoubleClass = isSingle ? "single" : "double";
   const currentTypeMeta = simfile.availableTypes.find(
     (at) => at.slug === currentType
   )!;
@@ -36,21 +42,21 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
 
   const sections = [];
 
-  for (let i = 0; i < totalSongHeight; i += SECTION_SIZE_IN_MEASURES) {
+  for (let i = 0; i < totalSongHeight; i += sectionSizeInMeasures) {
     sections.push(
       <StepchartSection
         key={i}
         chart={chart}
         speedMod={speedmod}
         startOffset={i}
-        endOffset={Math.min(totalSongHeight, i + SECTION_SIZE_IN_MEASURES)}
-        zIndex={SECTION_SIZE_IN_MEASURES - i}
+        endOffset={Math.min(totalSongHeight, i + sectionSizeInMeasures)}
+        zIndex={sectionSizeInMeasures - i}
       />
     );
   }
 
   const sectionGroups = [];
-  const sectionsPerChunk = isSingle ? 8 : 4;
+  const sectionsPerChunk = isSingle ? 7 : 4;
 
   while (sections.length) {
     const sectionChunk = sections.splice(0, sectionsPerChunk);
