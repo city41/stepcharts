@@ -54,7 +54,6 @@ function StepchartSection({
             className={clsx(styles.arrow, "absolute text-xs ease-in-out")}
             style={{
               top: `calc((${a.offset} - ${startOffset}) * var(--arrow-size) * 4 * ${speedMod})`,
-              transition: "top 500ms",
             }}
             position={i as ArrowImgProps["position"]}
             beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
@@ -70,14 +69,10 @@ function StepchartSection({
     barDivs.push(
       <div
         key={`barDiv-${i}`}
-        className={clsx(
-          styles.bar,
-          "w-full absolute transition-all ease-in-out duration-500",
-          {
-            "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
-            "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
-          }
-        )}
+        className={clsx(styles.bar, "w-full absolute", {
+          "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
+          "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
+        })}
         style={{
           left: 0,
           top: `calc(${i} * var(--arrow-size) * ${speedMod} - ((var(--arrow-size) * ${speedMod}) - var(--arrow-size)) / 2)`,
@@ -98,7 +93,7 @@ function StepchartSection({
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
-        className={clsx("absolute transition-all ease-in-out duration-500")}
+        className={clsx("absolute")}
         style={{
           top: `calc(${
             inRangeStartOffset - startOffset
@@ -128,7 +123,7 @@ function StepchartSection({
   //       <div
   //         key={b.startOffset}
   //         className={clsx(
-  //           "absolute left-0 w-full transition-all ease-in-out duration-500",
+  //           "absolute left-0 w-full",
   //           {
   //             "border-t border-blue-500": even,
   //             "border-t border-difficult": !even,
@@ -150,7 +145,7 @@ function StepchartSection({
   //     bpmLabelDivs.push(
   //       <div
   //         key={b.startOffset}
-  //         className="absolute flex flex-row justify-end transition-all ease-in-out duration-500"
+  //         className="absolute flex flex-row justify-end"
   //         style={{
   //           top: Math.max(
   //             0,
