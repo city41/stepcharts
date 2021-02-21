@@ -110,25 +110,33 @@ function StepchartSection({
     );
   });
 
-  //
   // const bpmRangeDivs = [];
   // const bpmLabelDivs = [];
   //
   // if (bpm.length > 1) {
   //   for (let i = 0; i < bpm.length; ++i) {
-  //     const even = (i & 1) === 0;
   //     const b = bpm[i];
+  //
+  //     const inRangeStartOffset = Math.max(b.startOffset, startOffset);
+  //     const inRangeEndOffset = Math.min(b.endOffset ?? endOffset, endOffset);
+  //
+  //     if (inRangeStartOffset >= endOffset) {
+  //       break;
+  //     }
+  //
+  //     if (inRangeEndOffset < startOffset) {
+  //       continue;
+  //     }
+  //
+  //     const even = (i & 1) === 0;
   //
   //     bpmRangeDivs.push(
   //       <div
   //         key={b.startOffset}
-  //         className={clsx(
-  //           "absolute left-0 w-full",
-  //           {
-  //             "border-t border-blue-500": even,
-  //             "border-t border-difficult": !even,
-  //           }
-  //         )}
+  //         className={clsx("absolute left-0 w-full", {
+  //           "border-t border-blue-500": even,
+  //           "border-t border-difficult": !even,
+  //         })}
   //         style={{
   //           backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
   //           top:
@@ -170,7 +178,7 @@ function StepchartSection({
   //     );
   //   }
   // }
-  //
+
   const stopLabels = stops.map((s) => {
     if (s.offset < startOffset || s.offset >= endOffset) {
       return null;
