@@ -112,6 +112,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
       <ImageFrame
         className={clsx(
           styles.hideForPrint,
+          styles.imageFrame,
           "mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center sm:justify-start sm:space-x-4"
         )}
       >

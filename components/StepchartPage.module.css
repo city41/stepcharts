@@ -1,3 +1,7 @@
+.imageFrame {
+    z-index: 999999;
+}
+
 .stepchartSections {
     @apply flex flex-col;
 }

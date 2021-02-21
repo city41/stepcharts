@@ -176,15 +176,23 @@ function StepchartSection({
   //   }
   // }
   //
-  // const stopLabels = stops.map((s) => {
-  //   return (
-  //     <GiStopSign
-  //       key={s.offset}
-  //       className="text-red-600 text-2xl absolute -right-7"
-  //       style={{ top: s.offset * measureHeight * speedMod }}
-  //     />
-  //   );
-  // });
+  const stopLabels = stops.map((s) => {
+    if (s.offset < startOffset || s.offset >= endOffset) {
+      return null;
+    }
+
+    return (
+      <GiStopSign
+        key={s.offset}
+        className="text-red-600 text-2xl absolute -right-7"
+        style={{
+          top: `calc(${
+            s.offset - startOffset
+          } * var(--arrow-size) * 4 * ${speedMod})`,
+        }}
+      />
+    );
+  });
 
   return (
     <div className={clsx(className, "relative")} style={{ zIndex }}>
@@ -207,7 +215,7 @@ function StepchartSection({
         {arrowImgs}
       </div>
       {/*{bpmLabelDivs}*/}
-      {/*{stopLabels}*/}
+      {stopLabels}
     </div>
   );
 }
