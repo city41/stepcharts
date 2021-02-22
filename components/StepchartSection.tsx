@@ -110,74 +110,78 @@ function StepchartSection({
     );
   });
 
-  // const bpmRangeDivs = [];
-  // const bpmLabelDivs = [];
-  //
-  // if (bpm.length > 1) {
-  //   for (let i = 0; i < bpm.length; ++i) {
-  //     const b = bpm[i];
-  //
-  //     const inRangeStartOffset = Math.max(b.startOffset, startOffset);
-  //     const inRangeEndOffset = Math.min(b.endOffset ?? endOffset, endOffset);
-  //
-  //     if (inRangeStartOffset >= endOffset) {
-  //       break;
-  //     }
-  //
-  //     if (inRangeEndOffset < startOffset) {
-  //       continue;
-  //     }
-  //
-  //     const even = (i & 1) === 0;
-  //
-  //     bpmRangeDivs.push(
-  //       <div
-  //         key={b.startOffset}
-  //         className={clsx("absolute left-0 w-full", {
-  //           "border-t border-blue-500": even,
-  //           "border-t border-difficult": !even,
-  //         })}
-  //         style={{
-  //           backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
-  //           top:
-  //             b.startOffset * measureHeight * speedMod -
-  //             (barHeight - arrowSize) / 2,
-  //           height:
-  //             ((b.endOffset ?? totalSongHeight) - b.startOffset) *
-  //             measureHeight *
-  //             speedMod,
-  //         }}
-  //       />
-  //     );
-  //
-  //     bpmLabelDivs.push(
-  //       <div
-  //         key={b.startOffset}
-  //         className="absolute flex flex-row justify-end"
-  //         style={{
-  //           top: Math.max(
-  //             0,
-  //             b.startOffset * measureHeight * speedMod -
-  //               1 -
-  //               (barHeight - arrowSize) / 2
-  //           ),
-  //           left: -100,
-  //           width: 100,
-  //         }}
-  //       >
-  //         <div
-  //           className={clsx("text-white p-0.5 rounded-l-lg", {
-  //             "bg-blue-500": even,
-  //             "bg-difficult": !even,
-  //           })}
-  //           style={{ fontSize: "0.675rem" }}
-  //         >
-  //           {Math.round(b.bpm)}
-  //         </div>
-  //       </div>
-  //     );
-  //   }
-  // }
+  const bpmRangeDivs = [];
+  const bpmLabelDivs = [];
+
+  const measureHeight = `var(--arrow-size) * 4 * ${speedMod}`;
+  const barHeight = `var(--arrow-size) * ${speedMod}`;
+
+  if (bpm.length > 1) {
+    for (let i = 0; i < bpm.length; ++i) {
+      const b = bpm[i];
+
+      const inRangeStartOffset = Math.max(b.startOffset, startOffset);
+      const inRangeEndOffset = Math.min(b.endOffset ?? endOffset, endOffset);
+
+      if (inRangeStartOffset >= endOffset) {
+        break;
+      }
+
+      if (inRangeEndOffset < startOffset) {
+        continue;
+      }
+
+      const even = (i & 1) === 0;
+
+      bpmRangeDivs.push(
+        <div
+          key={b.startOffset}
+          className={clsx("absolute left-0 w-full", {
+            "border-t border-blue-500": even,
+            "border-t border-difficult": !even,
+          })}
+          style={{
+            backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
+            top: `calc(${
+              inRangeStartOffset - startOffset
+            } * ${measureHeight} - (${barHeight} - var(--arrow-size)) / 2)`,
+            height: `calc(${
+              inRangeEndOffset - inRangeStartOffset
+            } * ${measureHeight})`,
+          }}
+        />
+      );
+
+      if (b.startOffset >= startOffset && b.startOffset < endOffset) {
+        bpmLabelDivs.push(
+          <div
+            key={b.startOffset}
+            className="absolute flex flex-row justify-end"
+            style={{
+              top:
+                b.startOffset <= 0
+                  ? 0
+                  : `calc(${
+                      inRangeStartOffset - startOffset
+                    } * ${measureHeight} - 1px - (${barHeight} - var(--arrow-size)) / 2)`,
+              left: -100,
+              width: 100,
+            }}
+          >
+            <div
+              className={clsx("text-white p-0.5 rounded-l-lg", {
+                "bg-blue-500": even,
+                "bg-difficult": !even,
+              })}
+              style={{ fontSize: "0.675rem" }}
+            >
+              {Math.round(b.bpm)}
+            </div>
+          </div>
+        );
+      }
+    }
+  }
 
   const stopLabels = stops.map((s) => {
     if (s.offset < startOffset || s.offset >= endOffset) {
@@ -212,12 +216,12 @@ function StepchartSection({
         }
       >
         {barDivs}
-        {/*{bpmRangeDivs}*/}
+        {bpmRangeDivs}
         {freezeDivs}
         {!isSingle && <div className={clsx(styles.doubleDivider, "h-full")} />}
         {arrowImgs}
       </div>
-      {/*{bpmLabelDivs}*/}
+      {bpmLabelDivs}
       {stopLabels}
     </div>
   );
