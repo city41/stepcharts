@@ -100,7 +100,12 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         simfile.title.translitTitleName || simfile.title.titleName
       }`}
     >
-      <div className="w-screen -mx-4 bg-focal-300 sticky top-0 z-10 shadow-lg sm:hidden">
+      <div
+        className={clsx(
+          styles.aboveStepChart,
+          "w-screen -mx-4 bg-focal-300 sticky top-0 shadow-lg sm:hidden"
+        )}
+      >
         <Banner
           className={clsx(
             styles.hideForPrint,
@@ -112,7 +117,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
       <ImageFrame
         className={clsx(
           styles.hideForPrint,
-          styles.imageFrame,
+          styles.aboveStepChart,
           "mt-0 w-screen sm:w-auto border-none sm:border-solid sm:border-1 -mx-4 sm:mx-auto sm:mt-8 mb-8 sm:sticky sm:top-0 sm:z-10 w-full p-4 bg-focal-300 sm:rounded-tl-xl sm:rounded-br-xl flex flex-col sm:flex-row items-center sm:justify-start sm:space-x-4"
         )}
       >
