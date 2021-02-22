@@ -144,10 +144,14 @@ function StepchartSection({
 
       const even = (i & 1) === 0;
 
+      // push negative starts to zero, as they still need to be seen
+      const normalizedStartOffset = Math.max(0, b.startOffset);
+
       // if this bpm range is continuing from a previous section,
       // don't put the upper border
       const startsInThisSection =
-        b.startOffset >= startOffset && b.startOffset < endOffset;
+        normalizedStartOffset >= startOffset &&
+        normalizedStartOffset < endOffset;
 
       bpmRangeDivs.push(
         <div
@@ -166,9 +170,6 @@ function StepchartSection({
           }}
         />
       );
-
-      // push negative starts to zero, as they still need to be seen
-      const normalizedStartOffset = Math.max(0, b.startOffset);
 
       if (
         normalizedStartOffset >= startOffset &&
