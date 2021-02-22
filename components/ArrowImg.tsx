@@ -13,7 +13,6 @@ import styles from "./ArrowImg.module.css";
 type ArrowImgProps = {
   className?: string;
   style?: React.CSSProperties;
-  size: number;
   position: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
   beat: Arrow["beat"] | "shock" | "freeze";
 };
@@ -39,7 +38,7 @@ const arrowImgs: Record<ArrowImgProps["beat"], string> = {
   freeze: arrowFreezeSvg,
 };
 
-function ArrowImg({ className, style, size, position, beat }: ArrowImgProps) {
+function ArrowImg({ className, style, position, beat }: ArrowImgProps) {
   return (
     <img
       className={clsx(
@@ -48,9 +47,7 @@ function ArrowImg({ className, style, size, position, beat }: ArrowImgProps) {
         arrowClasses[position],
         styles[`beat${beat}`]
       )}
-      width={size}
-      height={size}
-      style={{ ...style, "--arrow-size": `${size}px` } as CSSProperties}
+      style={style}
       src={arrowImgs[beat]}
       alt={`${beat} arrow`}
       data-beat={beat}

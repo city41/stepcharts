@@ -1,22 +1,39 @@
-.container-single {
-    width: calc(var(--arrow-size) * 4);
-}
-
-.container-double {
-    width: calc(var(--arrow-size) * 8);
-}
-
-.doubleDivider {
-    width: calc(var(--arrow-size) * 4);
-    @apply border-r border-dashed border-blue-500 absolute;
-}
-
-.bar:nth-child(odd) {
-    @apply bg-indigo-50;
-}
-
-.bar:last-of-type {
-    border-width: 0;
+.aboveStepChart {
+    z-index: 999999;
 }
 
 
+.stepchartSections {
+    @apply flex flex-col;
+}
+
+.stepchartSectionGroup {
+    --arrow-size: 40px;
+    @apply grid place-items-center;
+}
+
+@media print {
+    .rootPrint {
+        @apply w-full h-full m-0 p-0 !important;
+        background: none !important;
+    }
+
+    .rootPrint header, .rootPrint footer {
+        @apply hidden;
+    }
+
+    .rootPrint main {
+        max-width: initial !important;
+        max-height: initial !important;
+    }
+
+    .hideForPrint {
+        @apply hidden;
+    }
+
+    .stepchartSectionGroup {
+        --arrow-size: 20px;
+        @apply flex flex-row items-start justify-center space-x-4 p-4 mt-16;
+        page-break-after: always;
+    }
+}
