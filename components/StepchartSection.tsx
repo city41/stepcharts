@@ -32,6 +32,7 @@ function StepchartSection({
 
   const barHeight = `var(--arrow-size) * ${speedMod}`;
   const measureHeight = `${barHeight} * 4`;
+  const arrowAdjustment = `(${barHeight} - var(--arrow-size)) /2`;
 
   const arrowImgs = [];
 
@@ -49,8 +50,6 @@ function StepchartSection({
 
     const isShockArrow = a.direction.indexOf("0") === -1;
     const isFreezeArrow = a.direction.indexOf("2") > -1;
-
-    const arrowAdjustment = `(${barHeight} - var(--arrow-size)) /2`;
 
     for (let i = 0; i < a.direction.length; ++i) {
       if (a.direction[i] !== "0") {
@@ -96,6 +95,9 @@ function StepchartSection({
       return null;
     }
 
+    // this is because freezes need to start halfway down their corresponding arrow
+    const freezeOffset = `var(--arrow-size) / 2`;
+
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
@@ -103,12 +105,12 @@ function StepchartSection({
         style={{
           top: `calc(${
             inRangeStartOffset - startOffset
-          }  * ${measureHeight} + var(--arrow-size) / 2)`,
+          }  * ${measureHeight} + ${freezeOffset} + ${arrowAdjustment})`,
           left: `calc(${f.direction} * var(--arrow-size))`,
           width: "var(--arrow-size)",
           height: `calc(${
             inRangeEndOffset - inRangeStartOffset
-          } * ${measureHeight} - var(--arrow-size) / 2 * ${speedMod})`,
+          } * ${measureHeight})`,
         }}
       >
         <FreezeBody includeTail={f.endOffset <= endOffset} />
