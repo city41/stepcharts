@@ -105,7 +105,6 @@ function StepchartSection({
       <div
         key={`${f.startOffset}-${f.direction}`}
         className={clsx("absolute")}
-        data-hasHead={hasHead}
         style={{
           top: `calc(${inRangeStartOffset - startOffset}  * ${measureHeight} ${
             hasHead ? `+ ${freezeOffset} + ${arrowAdjustment}` : ""
