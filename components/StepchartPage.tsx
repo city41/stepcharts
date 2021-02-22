@@ -50,7 +50,8 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         speedMod={speedmod}
         startOffset={i}
         endOffset={Math.min(totalSongHeight, i + sectionSizeInMeasures)}
-        zIndex={sectionSizeInMeasures - i}
+        isLastSection={i >= totalSongHeight - sectionSizeInMeasures}
+        style={{ zIndex: sectionSizeInMeasures - i }}
       />
     );
   }

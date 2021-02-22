@@ -8,26 +8,32 @@ import styles from "./StepchartSection.module.css";
 
 type StepchartSectionProps = {
   className?: string;
+  style?: CSSProperties;
   chart: Stepchart;
   speedMod: number;
   startOffset: number;
   endOffset: number;
-  zIndex: number;
+  isLastSection: boolean;
 };
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
 function StepchartSection({
   className,
+  style,
   chart,
   speedMod,
   startOffset,
   endOffset,
-  zIndex,
+  isLastSection,
 }: StepchartSectionProps) {
   const { arrows, freezes, bpm, stops } = chart;
   const isSingle = arrows[0].direction.length === 4;
   const singleDoubleClass = isSingle ? "single" : "double";
+
+  const measureHeight = `var(--arrow-size) * 4 * ${speedMod}`;
+  const barHeight = `var(--arrow-size) * ${speedMod}`;
+  const heightAdjustment = `- ((${barHeight} - var(--arrow-size)) / 2)`;
 
   const arrowImgs = [];
 
@@ -66,6 +72,21 @@ function StepchartSection({
   const barDivs = [];
 
   for (let i = 0; i < (endOffset - startOffset) / 0.25; ++i) {
+    const isVeryFirstBar = i === 0 && startOffset === 0;
+    const isVeryLastBar =
+      isLastSection && i === (endOffset - startOffset) / 0.25 - 1;
+
+    // for the very first bar in the entire song, don't let it creep up above
+    // this used to be handled with overflow: hidden, but that is no longer
+    // possible with sections
+    const top = isVeryFirstBar
+      ? 0
+      : `calc(${i} * var(--arrow-size) * ${speedMod} - ((var(--arrow-size) * ${speedMod}) - var(--arrow-size)) / 2)`;
+
+    const height = `calc(var(--arrow-size) * ${speedMod} ${
+      isVeryFirstBar || isVeryLastBar ? heightAdjustment : ""
+    })`;
+
     barDivs.push(
       <div
         key={`barDiv-${i}`}
@@ -75,8 +96,8 @@ function StepchartSection({
         })}
         style={{
           left: 0,
-          top: `calc(${i} * var(--arrow-size) * ${speedMod} - ((var(--arrow-size) * ${speedMod}) - var(--arrow-size)) / 2)`,
-          height: `calc(var(--arrow-size) * ${speedMod})`,
+          top,
+          height,
         }}
       />
     );
@@ -112,9 +133,6 @@ function StepchartSection({
 
   const bpmRangeDivs = [];
   const bpmLabelDivs = [];
-
-  const measureHeight = `var(--arrow-size) * 4 * ${speedMod}`;
-  const barHeight = `var(--arrow-size) * ${speedMod}`;
 
   if (bpm.length > 1) {
     for (let i = 0; i < bpm.length; ++i) {
@@ -202,7 +220,7 @@ function StepchartSection({
   });
 
   return (
-    <div className={clsx(className, "relative")} style={{ zIndex }}>
+    <div className={clsx(className, "relative")} style={style}>
       <div
         className={clsx(
           styles.container,
@@ -211,7 +229,9 @@ function StepchartSection({
         )}
         style={
           {
-            height: `calc((${endOffset} - ${startOffset}) * var(--arrow-size) * 4 * ${speedMod})`,
+            height: `calc((${endOffset} - ${startOffset}) * var(--arrow-size) * 4 * ${speedMod} ${
+              isLastSection ? heightAdjustment : ""
+            })`,
           } as CSSProperties
         }
       >
