@@ -96,7 +96,7 @@ function StepchartSection({
     }
 
     const hasHead = f.startOffset >= startOffset && f.startOffset < endOffset;
-    const includeTail = f.endOffset <= endOffset;
+    const hasTail = f.endOffset <= endOffset;
 
     // this is because freezes need to start halfway down their corresponding arrow
     const freezeOffset = `var(--arrow-size) / 2`;
@@ -105,18 +105,21 @@ function StepchartSection({
       <div
         key={`${f.startOffset}-${f.direction}`}
         className={clsx("absolute")}
+        data-hasHead={hasHead}
         style={{
           top: `calc(${inRangeStartOffset - startOffset}  * ${measureHeight} ${
-            hasHead ? `+ ${freezeOffset}` : ""
-          } + ${arrowAdjustment})`,
+            hasHead ? `+ ${freezeOffset} + ${arrowAdjustment}` : ""
+          })`,
           left: `calc(${f.direction} * var(--arrow-size))`,
           width: "var(--arrow-size)",
           height: `calc(${
             inRangeEndOffset - inRangeStartOffset
-          } * ${measureHeight} ${hasHead ? `- ${freezeOffset}` : ""})`,
+          } * ${measureHeight} ${
+            hasHead ? `- ${freezeOffset} * ${speedMod}` : ""
+          })`,
         }}
       >
-        <FreezeBody includeTail={includeTail} />
+        <FreezeBody includeTail={hasTail} />
       </div>
     );
   });
@@ -209,7 +212,12 @@ function StepchartSection({
   });
 
   return (
-    <div className={clsx(className, "relative")} style={style}>
+    <div
+      className={clsx(className, "relative", {
+        "border-b-4 border-yellow-400": process.env.NODE_ENV !== "production",
+      })}
+      style={style}
+    >
       <div
         className={clsx(
           styles.container,
