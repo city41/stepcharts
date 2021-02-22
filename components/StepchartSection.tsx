@@ -13,7 +13,6 @@ type StepchartSectionProps = {
   speedMod: number;
   startOffset: number;
   endOffset: number;
-  isLastSection: boolean;
 };
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
@@ -25,15 +24,14 @@ function StepchartSection({
   speedMod,
   startOffset,
   endOffset,
-  isLastSection,
 }: StepchartSectionProps) {
   const { arrows, freezes, bpm, stops } = chart;
+
   const isSingle = arrows[0].direction.length === 4;
   const singleDoubleClass = isSingle ? "single" : "double";
 
-  const measureHeight = `var(--arrow-size) * 4 * ${speedMod}`;
   const barHeight = `var(--arrow-size) * ${speedMod}`;
-  const heightAdjustment = `- ((${barHeight} - var(--arrow-size)) / 2)`;
+  const measureHeight = `${barHeight} * 4`;
 
   const arrowImgs = [];
 
@@ -52,6 +50,8 @@ function StepchartSection({
     const isShockArrow = a.direction.indexOf("0") === -1;
     const isFreezeArrow = a.direction.indexOf("2") > -1;
 
+    const arrowAdjustment = `(${barHeight} - var(--arrow-size)) /2`;
+
     for (let i = 0; i < a.direction.length; ++i) {
       if (a.direction[i] !== "0") {
         arrowImgs.push(
@@ -59,7 +59,7 @@ function StepchartSection({
             key={`Arrow-${ai}-${i}`}
             className={clsx(styles.arrow, "absolute text-xs ease-in-out")}
             style={{
-              top: `calc((${a.offset} - ${startOffset}) * var(--arrow-size) * 4 * ${speedMod})`,
+              top: `calc((${a.offset} - ${startOffset}) * ${measureHeight} + ${arrowAdjustment})`,
             }}
             position={i as ArrowImgProps["position"]}
             beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
@@ -72,31 +72,16 @@ function StepchartSection({
   const barDivs = [];
 
   for (let i = 0; i < (endOffset - startOffset) / 0.25; ++i) {
-    const isVeryFirstBar = i === 0 && startOffset === 0;
-    const isVeryLastBar =
-      isLastSection && i === (endOffset - startOffset) / 0.25 - 1;
-
-    // for the very first bar in the entire song, don't let it creep up above
-    // this used to be handled with overflow: hidden, but that is no longer
-    // possible with sections
-    const top = isVeryFirstBar
-      ? 0
-      : `calc(${i} * var(--arrow-size) * ${speedMod} - ((var(--arrow-size) * ${speedMod}) - var(--arrow-size)) / 2)`;
-
-    const height = `calc(var(--arrow-size) * ${speedMod} ${
-      isVeryFirstBar || isVeryLastBar ? heightAdjustment : ""
-    })`;
+    const height = `calc(${barHeight})`;
 
     barDivs.push(
       <div
         key={`barDiv-${i}`}
-        className={clsx(styles.bar, "w-full absolute", {
+        className={clsx(styles.bar, {
           "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
           "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
         })}
         style={{
-          left: 0,
-          top,
           height,
         }}
       />
@@ -118,12 +103,12 @@ function StepchartSection({
         style={{
           top: `calc(${
             inRangeStartOffset - startOffset
-          } * var(--arrow-size) * 4 * ${speedMod} + var(--arrow-size) / 2)`,
+          }  * ${measureHeight} + var(--arrow-size) / 2)`,
           left: `calc(${f.direction} * var(--arrow-size))`,
           width: "var(--arrow-size)",
           height: `calc(${
             inRangeEndOffset - inRangeStartOffset
-          } * var(--arrow-size) * 4 * ${speedMod} - var(--arrow-size) / 2 * ${speedMod})`,
+          } * ${measureHeight} - var(--arrow-size) / 2 * ${speedMod})`,
         }}
       >
         <FreezeBody includeTail={f.endOffset <= endOffset} />
@@ -160,9 +145,7 @@ function StepchartSection({
           })}
           style={{
             backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
-            top: `calc(${
-              inRangeStartOffset - startOffset
-            } * ${measureHeight} - (${barHeight} - var(--arrow-size)) / 2)`,
+            top: `calc(${inRangeStartOffset - startOffset} * ${measureHeight})`,
             height: `calc(${
               inRangeEndOffset - inRangeStartOffset
             } * ${measureHeight})`,
@@ -176,12 +159,9 @@ function StepchartSection({
             key={b.startOffset}
             className="absolute flex flex-row justify-end"
             style={{
-              top:
-                b.startOffset <= 0
-                  ? 0
-                  : `calc(${
-                      inRangeStartOffset - startOffset
-                    } * ${measureHeight} - 1px - (${barHeight} - var(--arrow-size)) / 2)`,
+              top: `calc(${
+                inRangeStartOffset - startOffset
+              } * ${measureHeight})`,
               left: -100,
               width: 100,
             }}
@@ -211,9 +191,7 @@ function StepchartSection({
         key={s.offset}
         className="text-red-600 text-2xl absolute -right-7"
         style={{
-          top: `calc(${
-            s.offset - startOffset
-          } * var(--arrow-size) * 4 * ${speedMod})`,
+          top: `calc(${s.offset - startOffset} * ${measureHeight})`,
         }}
       />
     );
@@ -229,9 +207,7 @@ function StepchartSection({
         )}
         style={
           {
-            height: `calc((${endOffset} - ${startOffset}) * var(--arrow-size) * 4 * ${speedMod} ${
-              isLastSection ? heightAdjustment : ""
-            })`,
+            height: `calc((${endOffset} - ${startOffset}) * ${measureHeight})`,
           } as CSSProperties
         }
       >
