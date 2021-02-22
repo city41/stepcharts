@@ -35,6 +35,10 @@ function Footer({ className }: FooterProps) {
           >
             GitHub repo
           </a>
+          <span className="mx-2">&#124;</span>
+          <a className="text-link hover:underline" href="/whats-new">
+            What's New
+          </a>
         </div>
       </div>
     </footer>

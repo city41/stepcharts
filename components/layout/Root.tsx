@@ -5,6 +5,7 @@ import { Footer } from "./Footer";
 import { ReportAnIssue } from "../ReportAnIssue";
 
 import logoSvg from "./logoArrow.svg";
+import babylonSvg from "./babylon.svg";
 
 import styles from "./Root.module.css";
 
@@ -60,6 +61,13 @@ function Root({
               all songs
             </a>
             <ReportAnIssue className="text-link hover:underline mr-4 lg:mr-0" />
+            <a href="/whats-new" className="hidden sm:block self-end -mb-0.5">
+              <img
+                src={babylonSvg}
+                alt="click to see what is new"
+                className="h-10 w-auto pl-16"
+              />
+            </a>
           </div>
         </div>
         {subheading && (

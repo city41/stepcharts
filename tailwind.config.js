@@ -1,3 +1,5 @@
+// const plugin = require("tailwindcss/plugin");
+
 module.exports = {
   purge: {
     content: ["./components/**/*.{ts,tsx}", "./pages/**/*.{ts,tsx}"],
@@ -71,7 +73,18 @@ module.exports = {
     extend: {
       margin: ["group-hover", "first"],
       borderColor: ["last"],
+      backgroundColor: ["odd"],
     },
   },
-  plugins: [],
+  plugins: [
+    // // taken from https://github.com/tailwindlabs/tailwindcss/discussions/2483
+    // // Let's add a `first-of-type` variant!
+    // plugin(function ({ addVariant, e }) {
+    //   addVariant("first-of-type", ({ modifySelectors, separator }) => {
+    //     modifySelectors(({ className }) => {
+    //       return `.${e(`first-of-type${separator}${className}`)}:first-of-type`;
+    //     });
+    //   });
+    // }),
+  ],
 };
