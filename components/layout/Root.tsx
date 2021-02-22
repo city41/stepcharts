@@ -61,7 +61,7 @@ function Root({
               all songs
             </a>
             <ReportAnIssue className="text-link hover:underline mr-4 lg:mr-0" />
-            <a href="/whats-new" className="hidden sm:block self-end -mb-0.5">
+            <a href="/whats-new" className="hidden sm:block self-start -mt-0.5">
               <img
                 src={babylonSvg}
                 alt="click to see what is new"
