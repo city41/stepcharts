@@ -8,7 +8,7 @@
 
 .doubleDivider {
     width: calc(var(--arrow-size) * 4);
-    @apply border-r border-dashed border-blue-500 absolute;
+    @apply border-r border-dashed border-blue-500 absolute top-0;
 }
 
 .bar:nth-child(odd) {
