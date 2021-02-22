@@ -144,12 +144,18 @@ function StepchartSection({
 
       const even = (i & 1) === 0;
 
+      // if this bpm range is continuing from a previous section,
+      // don't put the upper border
+      const startsInThisSection =
+        b.startOffset >= startOffset && b.startOffset < endOffset;
+
       bpmRangeDivs.push(
         <div
           key={b.startOffset}
           className={clsx("absolute left-0 w-full", {
-            "border-t border-blue-500": even,
-            "border-t border-difficult": !even,
+            "border-t": startsInThisSection,
+            "border-blue-500": even,
+            "border-difficult": !even,
           })}
           style={{
             backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
