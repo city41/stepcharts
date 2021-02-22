@@ -70,7 +70,7 @@ function StepchartSection({
 
   const barDivs = [];
 
-  for (let i = 0; i < (endOffset - startOffset) / 0.25; ++i) {
+  for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
     const height = `calc(${barHeight})`;
 
     barDivs.push(
@@ -95,6 +95,9 @@ function StepchartSection({
       return null;
     }
 
+    const hasHead = f.startOffset >= startOffset && f.startOffset < endOffset;
+    const includeTail = f.endOffset <= endOffset;
+
     // this is because freezes need to start halfway down their corresponding arrow
     const freezeOffset = `var(--arrow-size) / 2`;
 
@@ -103,17 +106,17 @@ function StepchartSection({
         key={`${f.startOffset}-${f.direction}`}
         className={clsx("absolute")}
         style={{
-          top: `calc(${
-            inRangeStartOffset - startOffset
-          }  * ${measureHeight} + ${freezeOffset} + ${arrowAdjustment})`,
+          top: `calc(${inRangeStartOffset - startOffset}  * ${measureHeight} ${
+            hasHead ? `+ ${freezeOffset}` : ""
+          } + ${arrowAdjustment})`,
           left: `calc(${f.direction} * var(--arrow-size))`,
           width: "var(--arrow-size)",
           height: `calc(${
             inRangeEndOffset - inRangeStartOffset
-          } * ${measureHeight})`,
+          } * ${measureHeight} ${hasHead ? `- ${freezeOffset}` : ""})`,
         }}
       >
-        <FreezeBody includeTail={f.endOffset <= endOffset} />
+        <FreezeBody includeTail={includeTail} />
       </div>
     );
   });
@@ -155,7 +158,13 @@ function StepchartSection({
         />
       );
 
-      if (b.startOffset >= startOffset && b.startOffset < endOffset) {
+      // push negative starts to zero, as they still need to be seen
+      const normalizedStartOffset = Math.max(0, b.startOffset);
+
+      if (
+        normalizedStartOffset >= startOffset &&
+        normalizedStartOffset < endOffset
+      ) {
         bpmLabelDivs.push(
           <div
             key={b.startOffset}
@@ -209,7 +218,9 @@ function StepchartSection({
         )}
         style={
           {
-            height: `calc((${endOffset} - ${startOffset}) * ${measureHeight})`,
+            height: `calc(${Math.ceil(
+              endOffset - startOffset
+            )} * ${measureHeight})`,
           } as CSSProperties
         }
       >
