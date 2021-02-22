@@ -188,11 +188,14 @@ function StepchartSection({
             }}
           >
             <div
-              className={clsx("text-white p-0.5 rounded-l-lg", {
-                "bg-blue-500": even,
-                "bg-difficult": !even,
-              })}
-              style={{ fontSize: "0.675rem" }}
+              className={clsx(
+                styles.bpmLabelText,
+                "text-white p-0.5 rounded-l-lg",
+                {
+                  "bg-blue-500": even,
+                  "bg-difficult": !even,
+                }
+              )}
             >
               {Math.round(b.bpm)}
             </div>
@@ -210,7 +213,7 @@ function StepchartSection({
     return (
       <GiStopSign
         key={s.offset}
-        className="text-red-600 text-2xl absolute -right-7"
+        className={clsx(styles.stopSign, "text-red-600 absolute ")}
         style={{
           top: `calc(${s.offset - startOffset} * ${measureHeight})`,
         }}

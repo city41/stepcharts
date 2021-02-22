@@ -18,3 +18,22 @@
 .bar:last-of-type {
     border-width: 0;
 }
+
+
+.bpmLabelText {
+    font-size: 0.675rem;
+}
+
+.stopSign {
+    @apply text-2xl -right-7;
+}
+
+@media print {
+    .bpmLabelText {
+        font-size: 0.45rem;
+    }
+
+    .stopSign {
+        @apply text-lg -right-4;
+    }
+}
