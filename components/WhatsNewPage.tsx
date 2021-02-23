@@ -32,7 +32,7 @@ function NewEntry({
 }) {
   return (
     <div className="xmt-8 py-8 px-4 sm:px-0 border-b border-dashed border-focal-300 last:border-transparent">
-      <h3 className="text-focal-700 font-bold mb-4 text-xl flex flex-row justify-between">
+      <h3 className="text-focal-700 font-bold mb-4 text-xl flex flex-row justify-between items-baseline">
         <span className="flex-1">{title}</span>
         <time className="text-focal-400 text-sm" dateTime={date}>
           {dateToHumanString(date)}
