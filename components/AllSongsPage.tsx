@@ -18,7 +18,6 @@ import styles from "./AllSongsPage.module.css";
 import difficultyBgStyles from "./difficultyBackgroundColors.module.css";
 import { ImageFrame } from "./ImageFrame";
 import { StepchartTypePageItem } from "./StepchartTypePageItem";
-import { IconType } from "react-icons/lib";
 
 type AllSongsPageStepchartType = StepchartType & { stats: Stats };
 
@@ -168,7 +167,7 @@ function TitleSubRows({
               return (
                 <tr key={t.slug}>
                   <td
-                    className={clsx("p-0 pl-6", {
+                    className={clsx("block p-0 pl-6", {
                       "pt-2": i === 0,
                       "pb-2": i === a.length - 1,
                     })}
@@ -181,17 +180,18 @@ function TitleSubRows({
                     </a>
                   </td>
                   {Object.keys(t.stats).map((k) => (
-                    <td
-                      key={k}
-                      className={clsx({
-                        [`inline-block px-1 py-2 -mx-1 text-white ${
-                          difficultyBgStyles[t.difficulty]
-                        }`]:
-                          t.stats[k as keyof Stats] === maxStat &&
-                          sortedBy === k,
-                      })}
-                    >
-                      {t.stats[k as keyof Stats]}
+                    <td key={k}>
+                      <div
+                        className={clsx({
+                          [`inline-block px-1 py-1 -mx-1 text-white ${
+                            difficultyBgStyles[t.difficulty]
+                          }`]:
+                            t.stats[k as keyof Stats] === maxStat &&
+                            sortedBy === k,
+                        })}
+                      >
+                        {t.stats[k as keyof Stats]}
+                      </div>
                     </td>
                   ))}
                 </tr>
