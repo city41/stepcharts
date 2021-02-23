@@ -12,6 +12,10 @@
     @apply grid place-items-center;
 }
 
+.printTitle {
+    @apply hidden;
+}
+
 @media print {
     .rootPrint {
         @apply w-full h-full m-0 p-0 !important;
@@ -29,6 +33,10 @@
 
     .hideForPrint {
         @apply hidden;
+    }
+
+    .printTitle {
+        @apply block;
     }
 
     .stepchartSectionGroup {

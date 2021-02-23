@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 
 import { Root } from "./layout/Root";
@@ -25,6 +25,12 @@ const sectionSizesInMeasures: Record<typeof speedmods[number], number> = {
 };
 
 function StepchartPage({ simfile, currentType }: StepchartPageProps) {
+  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    setCurrentUrl(window.location.toString());
+  }, []);
+
   const [speedmod, setSpeedmod] = useState(speedmods[0]);
   const sectionSizeInMeasures = sectionSizesInMeasures[speedmod];
 
@@ -71,12 +77,14 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
     );
   }
 
+  const title = `${
+    simfile.title.translitTitleName || simfile.title.titleName
+  } - ${currentType.replace(/-/g, ", ")} (${currentTypeMeta.feet})`;
+
   return (
     <Root
       className={styles.rootPrint}
-      title={`${
-        simfile.title.translitTitleName || simfile.title.titleName
-      } ${currentType.replace(/-/g, ", ")}`}
+      title={title}
       subheading={
         <Breadcrumbs
           crumbs={[
@@ -161,6 +169,14 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
           />
         </div>
       </ImageFrame>
+      <div className={styles.printTitle}>
+        <div>
+          {simfile.mix.mixName}: {title}
+        </div>
+        {currentUrl && (
+          <div className="text-xs text-gray-400">{currentUrl}</div>
+        )}
+      </div>
       {sectionGroups}
     </Root>
   );
