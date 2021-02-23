@@ -68,6 +68,8 @@ function WhatsNewPage() {
             style={{ margin: "3rem auto" }}
             src={printPreviewPng}
             alt="print preview of a step chart"
+            width={495}
+            height={654}
           />
           <p>
             If you see something weird, please let me know by clicking "report
