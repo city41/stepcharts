@@ -52,6 +52,7 @@ body {
 
 @media print {
   body {
-    @apply bg-gradient-to-r from-transparent to-transparent;
+    background: none !important;
+    background-color: white !important;
   }
 }

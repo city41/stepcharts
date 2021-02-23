@@ -41,7 +41,7 @@
 
     .stepchartSectionGroup {
         --arrow-size: 20px;
-        @apply flex flex-row items-start justify-center space-x-4 p-4 mt-16;
+        @apply flex flex-row items-start justify-center space-x-4 p-4 mt-16 h-full;
         page-break-after: always;
     }
 }
