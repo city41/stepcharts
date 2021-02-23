@@ -76,13 +76,13 @@ function WhatsNewPage() {
             an issue" up at the top.
           </p>
         </NewEntry>
-        <NewEntry title="Banner fixes" date="2020-02-21">
+        <NewEntry title="Banner fixes" date="2021-02-21">
           <p>
             Some banners for 5th mix, Max, Max2 and Extreme were incorrect. They
             have now been fixed.
           </p>
         </NewEntry>
-        <NewEntry title="All songs page" date="2020-02-17">
+        <NewEntry title="All songs page" date="2021-02-17">
           <p>
             The all songs page is now live! It's a good way to explore songs. I
             will keep improving this page, adding things like sort by
