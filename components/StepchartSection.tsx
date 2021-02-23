@@ -114,8 +114,8 @@ function StepchartSection({
           height: `calc(${
             inRangeEndOffset - inRangeStartOffset
           } * ${measureHeight} ${
-            hasHead ? `- ${freezeOffset} * ${speedMod}` : ""
-          })`,
+            hasTail && hasHead ? `- ${arrowAdjustment}` : ""
+          } ${hasHead ? `- ${freezeOffset} * ${speedMod}` : ""})`,
         }}
       >
         <FreezeBody includeTail={hasTail} />
