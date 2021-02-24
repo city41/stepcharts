@@ -2,6 +2,7 @@ import React, { CSSProperties } from "react";
 import clsx from "clsx";
 import { FreezeBody } from "./FreezeBody";
 import { GiStopSign } from "react-icons/gi";
+import { FiLink } from "react-icons/fi";
 import { ArrowImg, ArrowImgProps } from "./ArrowImg";
 
 import styles from "./StepchartSection.module.css";
@@ -16,6 +17,21 @@ type StepchartSectionProps = {
 };
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
+
+function SelfLink({ id }: { id: string }) {
+  return (
+    <a
+      className={clsx(
+        styles.headingSelfLink,
+        "pl-1 text-fg-fade font-bold float-left -mx-8 w-8"
+      )}
+      aria-hidden
+      href={`#${id}`}
+    >
+      <FiLink />
+    </a>
+  );
+}
 
 function StepchartSection({
   className,
@@ -71,19 +87,22 @@ function StepchartSection({
   const barDivs = [];
 
   for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
-    const height = `calc(${barHeight})`;
+    const id = `b-${startOffset}-${i}`;
 
     barDivs.push(
       <div
-        key={`barDiv-${i}`}
+        key={id}
+        id={id}
         className={clsx(styles.bar, {
           "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
           "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
         })}
         style={{
-          height,
+          height: `calc(${barHeight})`,
         }}
-      />
+      >
+        <SelfLink id={id} />
+      </div>
     );
   }
 
