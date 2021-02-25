@@ -20,7 +20,7 @@
 }
 
 .bar:hover {
-    @apply bg-indigo-300;
+    @apply sm:bg-indigo-300;
 }
 
 .bar:target {
@@ -29,12 +29,12 @@
 }
 
 .selfLink {
-    @apply flex flex-col h-auto justify-center;
+    @apply hidden sm:flex flex-col justify-center items-center;
+    font-size: 1.5rem;
 }
 
 .selfLink svg {
-    @apply sm:invisible mt-2 bg-indigo-500 text-white;
-    font-size: 1.5rem;
+    @apply invisible px-1 bg-indigo-500 text-white h-full rounded-l-lg;
 }
 
 .bar:hover .selfLink svg,

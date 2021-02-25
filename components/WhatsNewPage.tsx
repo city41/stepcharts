@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import { Root } from "./layout/Root";
 
 import printPreviewPng from "./printPreview.png";
+import linkToBarScreeshotPng from "./linkToBarScreenshot.png";
 
 function dateToHumanString(input: string): string {
   const date = new Date(input);
@@ -53,6 +54,32 @@ function WhatsNewPage() {
         <h2 className="text-focal-700 mb-12 text-2xl pl-4 sm:pl-0">
           What’s new
         </h2>
+        <NewEntry title="Link to a specific bar in a chart" date="2021-02-25">
+          <p>
+            If you are on a desktop computer, you can now link to a specific
+            beat in a chart. When you run your mouse over the chart, you will
+            see a small link button
+          </p>
+          <img
+            className="block w-1/2 shadow-lg"
+            style={{ margin: "3rem auto" }}
+            src={linkToBarScreeshotPng}
+            alt="print preview of a step chart"
+            width={288}
+            height={213}
+          />
+          <p>
+            clicking it will create a url that goes directly to that beat. For
+            example,{" "}
+            <a
+              className="text-link cursor-pointer"
+              href="/3rdMix/AFRONOVA/single-expert/#beat-50"
+            >
+              here are the famous "Afronova steps"
+            </a>{" "}
+            in Afronova.
+          </p>
+        </NewEntry>
         <NewEntry title="Printer friendly step charts" date="2021-02-22">
           <p>
             The step charts are now printer friendly. Just print the page like

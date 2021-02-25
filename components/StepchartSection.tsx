@@ -18,14 +18,12 @@ type StepchartSectionProps = {
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
-function SelfLink({ id }: { id: string }) {
+function SelfLink({ style, id }: { style: CSSProperties; id: string }) {
   return (
     <a
-      className={clsx(
-        styles.selfLink,
-        "pl-1 text-fg-fade font-bold float-left -mx-8 w-8"
-      )}
+      className={clsx(styles.selfLink, "float-left -mx-8 w-10")}
       href={`#${id}`}
+      style={style}
     >
       <FiLink />
     </a>
@@ -86,7 +84,10 @@ function StepchartSection({
   const barDivs = [];
 
   for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
-    const id = `measure-${startOffset + i * 0.25}`;
+    // this converts the offset to the beat in the song, starting at 1
+    // beat 3 is the third beat in the first measure in the song
+    const id = `beat-${(startOffset + i * 0.25) * 4 + 1}`;
+    const height = `calc(${barHeight})`;
 
     barDivs.push(
       <div
@@ -97,10 +98,10 @@ function StepchartSection({
           "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
         })}
         style={{
-          height: `calc(${barHeight})`,
+          height,
         }}
       >
-        <SelfLink id={id} />
+        <SelfLink id={id} style={{ height }} />
       </div>
     );
   }
