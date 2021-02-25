@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import clsx from "clsx";
 import { FreezeBody } from "./FreezeBody";
 import { GiStopSign } from "react-icons/gi";
@@ -40,6 +40,12 @@ function StepchartSection({
   startOffset,
   endOffset,
 }: StepchartSectionProps) {
+  const [secondRender, setSecondRender] = useState(false);
+
+  useEffect(() => {
+    setSecondRender(true);
+  }, []);
+
   const { arrows, freezes, bpm, stops } = chart;
 
   const isSingle = arrows[0].direction.length === 4;
