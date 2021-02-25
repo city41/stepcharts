@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { CSSProperties } from "react";
 import clsx from "clsx";
 import { FreezeBody } from "./FreezeBody";
 import { GiStopSign } from "react-icons/gi";
@@ -40,12 +40,6 @@ function StepchartSection({
   startOffset,
   endOffset,
 }: StepchartSectionProps) {
-  const [secondRender, setSecondRender] = useState(false);
-
-  useEffect(() => {
-    setSecondRender(true);
-  }, []);
-
   const { arrows, freezes, bpm, stops } = chart;
 
   const isSingle = arrows[0].direction.length === 4;
@@ -90,10 +84,6 @@ function StepchartSection({
   }
 
   const barDivs = [];
-  const urlTargetedBar = (typeof window !== "undefined"
-    ? window.location.hash || ""
-    : ""
-  ).replace("#", "");
 
   for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
     const id = `measure-${startOffset + i * 0.25}`;
@@ -105,7 +95,6 @@ function StepchartSection({
         className={clsx(styles.bar, {
           "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
           "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
-          "bg-red-500": id === urlTargetedBar,
         })}
         style={{
           height: `calc(${barHeight})`,
@@ -133,7 +122,7 @@ function StepchartSection({
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
-        className={clsx("absolute")}
+        className={clsx("absolute pointer-events-none")}
         style={{
           top: `calc(${inRangeStartOffset - startOffset}  * ${measureHeight} ${
             hasHead ? `+ ${freezeOffset} + ${arrowAdjustment}` : ""
@@ -184,7 +173,7 @@ function StepchartSection({
       bpmRangeDivs.push(
         <div
           key={b.startOffset}
-          className={clsx("absolute left-0 w-full", {
+          className={clsx("absolute left-0 w-full pointer-events-none", {
             "border-t": startsInThisSection,
             "border-blue-500": even,
             "border-difficult": !even,
@@ -206,7 +195,7 @@ function StepchartSection({
         bpmLabelDivs.push(
           <div
             key={b.startOffset}
-            className="absolute flex flex-row justify-end"
+            className="absolute flex flex-row justify-end pointer-events-none"
             style={{
               top: `calc(${
                 inRangeStartOffset - startOffset
@@ -241,7 +230,7 @@ function StepchartSection({
     return (
       <GiStopSign
         key={s.offset}
-        className={clsx(styles.stopSign, "text-red-600 absolute ")}
+        className={clsx(styles.stopSign, "text-red-600 absolute")}
         style={{
           top: `calc(${s.offset - startOffset} * ${measureHeight})`,
         }}
@@ -260,7 +249,7 @@ function StepchartSection({
         className={clsx(
           styles.container,
           styles[`container-${singleDoubleClass}`],
-          "relative bg-indigo-100"
+          "relative bg-indigo-100 z-10"
         )}
         style={
           {
