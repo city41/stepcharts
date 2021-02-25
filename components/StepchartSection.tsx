@@ -22,10 +22,9 @@ function SelfLink({ id }: { id: string }) {
   return (
     <a
       className={clsx(
-        styles.headingSelfLink,
+        styles.selfLink,
         "pl-1 text-fg-fade font-bold float-left -mx-8 w-8"
       )}
-      aria-hidden
       href={`#${id}`}
     >
       <FiLink />
@@ -85,9 +84,13 @@ function StepchartSection({
   }
 
   const barDivs = [];
+  const urlTargetedBar = (typeof window !== "undefined"
+    ? window.location.hash || ""
+    : ""
+  ).replace("#", "");
 
   for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
-    const id = `b-${startOffset}-${i}`;
+    const id = `measure-${startOffset + i * 0.25}`;
 
     barDivs.push(
       <div
@@ -96,6 +99,7 @@ function StepchartSection({
         className={clsx(styles.bar, {
           "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
           "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
+          "bg-red-500": id === urlTargetedBar,
         })}
         style={{
           height: `calc(${barHeight})`,

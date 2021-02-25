@@ -19,17 +19,21 @@
     border-width: 0;
 }
 
-.headingSelfLink {
+.bar {
+    scroll-margin-top: 25vh;
+}
+
+.selfLink {
     @apply flex flex-col h-auto justify-center;
 }
 
-.headingSelfLink svg {
-    @apply sm:invisible mt-1;
+.selfLink svg {
+    /*@apply sm:invisible mt-1;*/
     font-size: 0.8em;
 }
 
-.bar:hover .headingSelfLink svg,
-.headingSelfLink:hover svg {
+.bar:hover .selfLink svg,
+.selfLink:hover svg {
     @apply sm:visible;
 }
 
