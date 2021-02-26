@@ -54,7 +54,7 @@ function WhatsNewPage() {
         <h2 className="text-focal-700 mb-12 text-2xl pl-4 sm:pl-0">
           What’s new
         </h2>
-        <NewEntry title="Link to a specific bar in a chart" date="2021-02-25">
+        <NewEntry title="Link to a specific beat in a chart" date="2021-02-25">
           <p>
             If you are on a desktop computer, you can now link to a specific
             beat in a chart. When you run your mouse over the chart, you will
