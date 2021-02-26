@@ -18,12 +18,33 @@ type StepchartSectionProps = {
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
+/*
+ * since safari does not support scroll-margin-top, a hack
+ * to ensure the targeted beat is in view when either chosen
+ * or the page first renders
+ */
+function safariScroll(id: string) {
+  if (navigator.vendor?.indexOf("Apple") > -1) {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+
+      if (el) {
+        el.scrollIntoView(true);
+        window.scroll(0, window.scrollY - 300);
+      }
+    }, 10);
+  }
+}
+
 function SelfLink({ style, id }: { style: CSSProperties; id: string }) {
   return (
     <a
       className={clsx(styles.selfLink, "float-left -mx-8 w-10")}
       href={`#${id}`}
       style={style}
+      onClick={() => {
+        safariScroll(id);
+      }}
     >
       <FiLink />
     </a>
@@ -46,6 +67,7 @@ function StepchartSection({
     const hash = (window.location.hash ?? "").replace("#", "");
     if (hash) {
       setTargetedBeat(hash);
+      safariScroll(hash);
     }
   }, []);
 
