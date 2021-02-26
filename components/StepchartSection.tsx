@@ -36,7 +36,15 @@ function safariScroll(id: string) {
   }
 }
 
-function SelfLink({ style, id }: { style: CSSProperties; id: string }) {
+function SelfLink({
+  style,
+  id,
+  onClick,
+}: {
+  style: CSSProperties;
+  id: string;
+  onClick?: () => void;
+}) {
   return (
     <a
       className={clsx(styles.selfLink, "float-left -mx-8 w-10")}
@@ -44,6 +52,7 @@ function SelfLink({ style, id }: { style: CSSProperties; id: string }) {
       style={style}
       onClick={() => {
         safariScroll(id);
+        onClick?.();
       }}
     >
       <FiLink />
@@ -135,7 +144,11 @@ function StepchartSection({
           height,
         }}
       >
-        <SelfLink id={id} style={{ height }} />
+        <SelfLink
+          id={id}
+          style={{ height }}
+          onClick={() => setTargetedBeat(id)}
+        />
       </div>
     );
   }
