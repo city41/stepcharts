@@ -1,7 +1,8 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import clsx from "clsx";
 import { FreezeBody } from "./FreezeBody";
 import { GiStopSign } from "react-icons/gi";
+import { FiLink } from "react-icons/fi";
 import { ArrowImg, ArrowImgProps } from "./ArrowImg";
 
 import styles from "./StepchartSection.module.css";
@@ -17,6 +18,18 @@ type StepchartSectionProps = {
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
+function SelfLink({ style, id }: { style: CSSProperties; id: string }) {
+  return (
+    <a
+      className={clsx(styles.selfLink, "float-left -mx-8 w-10")}
+      href={`#${id}`}
+      style={style}
+    >
+      <FiLink />
+    </a>
+  );
+}
+
 function StepchartSection({
   className,
   style,
@@ -25,6 +38,17 @@ function StepchartSection({
   startOffset,
   endOffset,
 }: StepchartSectionProps) {
+  const [targetedBeat, setTargetedBeat] = useState<string | null>(null);
+
+  useEffect(() => {
+    // this is needed because :target is not very robust (tested in both chrome and ff)
+    // when just using :target, if the user changes the speedmod, :target gets wiped out
+    const hash = (window.location.hash ?? "").replace("#", "");
+    if (hash) {
+      setTargetedBeat(hash);
+    }
+  }, []);
+
   const { arrows, freezes, bpm, stops } = chart;
 
   const isSingle = arrows[0].direction.length === 4;
@@ -71,19 +95,26 @@ function StepchartSection({
   const barDivs = [];
 
   for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
+    // this converts the offset to the beat in the song, starting at 1
+    // beat 3 is the third beat in the first measure in the song
+    const id = `beat-${(startOffset + i * 0.25) * 4 + 1}`;
     const height = `calc(${barHeight})`;
 
     barDivs.push(
       <div
-        key={`barDiv-${i}`}
+        key={id}
+        id={id}
         className={clsx(styles.bar, {
           "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
           "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
+          [styles.targeted]: id === targetedBeat,
         })}
         style={{
           height,
         }}
-      />
+      >
+        <SelfLink id={id} style={{ height }} />
+      </div>
     );
   }
 
@@ -104,7 +135,7 @@ function StepchartSection({
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
-        className={clsx("absolute")}
+        className={clsx("absolute pointer-events-none")}
         style={{
           top: `calc(${inRangeStartOffset - startOffset}  * ${measureHeight} ${
             hasHead ? `+ ${freezeOffset} + ${arrowAdjustment}` : ""
@@ -155,7 +186,7 @@ function StepchartSection({
       bpmRangeDivs.push(
         <div
           key={b.startOffset}
-          className={clsx("absolute left-0 w-full", {
+          className={clsx("absolute left-0 w-full pointer-events-none", {
             "border-t": startsInThisSection,
             "border-blue-500": even,
             "border-difficult": !even,
@@ -177,7 +208,7 @@ function StepchartSection({
         bpmLabelDivs.push(
           <div
             key={b.startOffset}
-            className="absolute flex flex-row justify-end"
+            className="absolute flex flex-row justify-end pointer-events-none"
             style={{
               top: `calc(${
                 inRangeStartOffset - startOffset
@@ -212,7 +243,7 @@ function StepchartSection({
     return (
       <GiStopSign
         key={s.offset}
-        className={clsx(styles.stopSign, "text-red-600 absolute ")}
+        className={clsx(styles.stopSign, "text-red-600 absolute")}
         style={{
           top: `calc(${s.offset - startOffset} * ${measureHeight})`,
         }}
@@ -231,7 +262,7 @@ function StepchartSection({
         className={clsx(
           styles.container,
           styles[`container-${singleDoubleClass}`],
-          "relative bg-indigo-100"
+          "relative bg-indigo-100 z-10"
         )}
         style={
           {

@@ -8,7 +8,7 @@
 
 .doubleDivider {
     width: calc(var(--arrow-size) * 4);
-    @apply border-r border-dashed border-blue-500 absolute top-0;
+    @apply border-r border-dashed border-blue-500 absolute top-0 pointer-events-none;
 }
 
 .bar:nth-child(odd) {
@@ -17,6 +17,29 @@
 
 .bar:last-of-type {
     border-width: 0;
+}
+
+.bar:hover {
+    @apply sm:bg-indigo-300;
+}
+
+.bar:target, .targeted {
+    scroll-margin-top: 30vh;
+    @apply bg-indigo-400;
+}
+
+.selfLink {
+    @apply hidden sm:flex flex-col justify-center items-center;
+    font-size: 1.5rem;
+}
+
+.selfLink svg {
+    @apply invisible px-1 bg-indigo-500 text-white h-full rounded-l-lg;
+}
+
+.bar:hover .selfLink svg,
+.selfLink:hover svg {
+    @apply sm:visible;
 }
 
 
