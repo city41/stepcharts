@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import clsx from "clsx";
 import { FreezeBody } from "./FreezeBody";
 import { GiStopSign } from "react-icons/gi";
@@ -38,6 +38,17 @@ function StepchartSection({
   startOffset,
   endOffset,
 }: StepchartSectionProps) {
+  const [targetedBeat, setTargetedBeat] = useState<string | null>(null);
+
+  useEffect(() => {
+    // this is needed because :target is not very robust (tested in both chrome and ff)
+    // when just using :target, if the user changes the speedmod, :target gets wiped out
+    const hash = (window.location.hash ?? "").replace("#", "");
+    if (hash) {
+      setTargetedBeat(hash);
+    }
+  }, []);
+
   const { arrows, freezes, bpm, stops } = chart;
 
   const isSingle = arrows[0].direction.length === 4;
@@ -96,6 +107,7 @@ function StepchartSection({
         className={clsx(styles.bar, {
           "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
           "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
+          [styles.targeted]: id === targetedBeat,
         })}
         style={{
           height,
