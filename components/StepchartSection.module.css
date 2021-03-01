@@ -24,7 +24,7 @@
 }
 
 .bar:target, .targeted {
-    /*scroll-margin-top: 30vh;*/
+    scroll-margin-top: 30vh;
     @apply bg-indigo-400;
 }
 
