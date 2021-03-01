@@ -57,6 +57,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         startOffset={i}
         endOffset={Math.min(totalSongHeight, i + sectionSizeInMeasures)}
         style={{ zIndex: Math.round(totalSongHeight) - i }}
+        headerId="stepchart-page-header"
       />
     );
   }
@@ -123,6 +124,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         />
       </div>
       <ImageFrame
+        id="stepchart-page-header"
         className={clsx(
           styles.hideForPrint,
           styles.aboveStepChart,

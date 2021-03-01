@@ -14,26 +14,21 @@ type StepchartSectionProps = {
   speedMod: number;
   startOffset: number;
   endOffset: number;
+  headerId: string;
 };
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
-/*
- * since safari does not support scroll-margin-top, a hack
- * to ensure the targeted beat is in view when either chosen
- * or the page first renders
- */
-function safariScroll(id: string) {
-  if (navigator.vendor?.indexOf("Apple") > -1) {
-    setTimeout(() => {
-      const el = document.getElementById(id);
+function scrollTargetBeatJustUnderHeader(beatId: string, headerId: string) {
+  setTimeout(() => {
+    const targetBeat = document.getElementById(beatId);
+    const header = document.getElementById(headerId);
 
-      if (el) {
-        el.scrollIntoView(true);
-        window.scroll(0, window.scrollY - 300);
-      }
-    }, 10);
-  }
+    if (targetBeat && header) {
+      const headerBounds = header.getBoundingClientRect();
+      window.scrollBy(0, -headerBounds.height);
+    }
+  }, 10);
 }
 
 function SelfLink({
@@ -50,10 +45,7 @@ function SelfLink({
       className={clsx(styles.selfLink, "float-left -mx-8 w-10")}
       href={`#${id}`}
       style={style}
-      onClick={() => {
-        safariScroll(id);
-        onClick?.();
-      }}
+      onClick={onClick}
     >
       <FiLink />
     </a>
@@ -67,6 +59,7 @@ function StepchartSection({
   speedMod,
   startOffset,
   endOffset,
+  headerId,
 }: StepchartSectionProps) {
   const [targetedBeat, setTargetedBeat] = useState<string | null>(null);
 
@@ -76,7 +69,7 @@ function StepchartSection({
     const hash = (window.location.hash ?? "").replace("#", "");
     if (hash) {
       setTargetedBeat(hash);
-      safariScroll(hash);
+      scrollTargetBeatJustUnderHeader(hash, headerId);
     }
   }, []);
 
@@ -147,7 +140,10 @@ function StepchartSection({
         <SelfLink
           id={id}
           style={{ height }}
-          onClick={() => setTargetedBeat(id)}
+          onClick={() => {
+            setTargetedBeat(id);
+            scrollTargetBeatJustUnderHeader(id, headerId);
+          }}
         />
       </div>
     );
