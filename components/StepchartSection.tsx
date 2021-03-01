@@ -25,6 +25,7 @@ function scrollTargetBeatJustUnderHeader(beatId: string, headerId: string) {
     const header = document.getElementById(headerId);
 
     if (targetBeat && header) {
+      targetBeat.style.removeProperty('scroll-margin-top');
       const headerBounds = header.getBoundingClientRect();
       window.scrollBy(0, -headerBounds.height);
     }
