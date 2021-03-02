@@ -35,6 +35,7 @@ function scrollTargetBeatJustUnderHeader(beatId: string, headerId: string) {
         "headerBounds.height",
         headerBounds.height
       );
+      targetBeat.scrollIntoView(true);
       window.scrollBy(0, -headerBounds.height);
       console.log("window.scrollY", window.scrollY);
     }
