@@ -80,7 +80,6 @@ function StepchartSection({
     console.log("hash", hash);
     if (hash) {
       setTargetedBeat(hash);
-      scrollTargetBeatJustUnderHeader(hash, headerId);
     }
   }, []);
 
@@ -346,4 +345,4 @@ function StepchartSection({
   );
 }
 
-export { StepchartSection };
+export { StepchartSection, scrollTargetBeatJustUnderHeader };
