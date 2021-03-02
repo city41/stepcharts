@@ -25,7 +25,6 @@ function scrollTargetBeatJustUnderHeader(beatId: string, headerId: string) {
     const header = document.getElementById(headerId);
 
     if (targetBeat && header) {
-      targetBeat.style.removeProperty('scroll-margin-top');
       const headerBounds = header.getBoundingClientRect();
       window.scrollBy(0, -headerBounds.height);
     }
@@ -283,36 +282,56 @@ function StepchartSection({
     );
   });
 
+  // for noscript users, use scroll-margin-top to help ensure targeted beat is out
+  // from under the header. JS users don't need this, as scrollTargetBeatJustUnderHeader
+  // moves the targeted beat to the right spot
+  const noscriptStyle =
+    // only add this style once, with the very first section
+    startOffset === 0 ? (
+      <noscript>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `.${styles.bar}:target, .${styles.targeted} { scroll-margin-top: 30vh }`,
+          }}
+        />
+      </noscript>
+    ) : null;
+
   return (
-    <div
-      className={clsx(className, "relative", {
-        "border-b-4 border-yellow-400": process.env.NODE_ENV !== "production",
-      })}
-      style={style}
-    >
+    <>
+      {noscriptStyle}
       <div
-        className={clsx(
-          styles.container,
-          styles[`container-${singleDoubleClass}`],
-          "relative bg-indigo-100 z-10"
-        )}
-        style={
-          {
-            height: `calc(${Math.ceil(
-              endOffset - startOffset
-            )} * ${measureHeight})`,
-          } as CSSProperties
-        }
+        className={clsx(className, "relative", {
+          "border-b-4 border-yellow-400": process.env.NODE_ENV !== "production",
+        })}
+        style={style}
       >
-        {barDivs}
-        {bpmRangeDivs}
-        {freezeDivs}
-        {!isSingle && <div className={clsx(styles.doubleDivider, "h-full")} />}
-        {arrowImgs}
+        <div
+          className={clsx(
+            styles.container,
+            styles[`container-${singleDoubleClass}`],
+            "relative bg-indigo-100 z-10"
+          )}
+          style={
+            {
+              height: `calc(${Math.ceil(
+                endOffset - startOffset
+              )} * ${measureHeight})`,
+            } as CSSProperties
+          }
+        >
+          {barDivs}
+          {bpmRangeDivs}
+          {freezeDivs}
+          {!isSingle && (
+            <div className={clsx(styles.doubleDivider, "h-full")} />
+          )}
+          {arrowImgs}
+        </div>
+        {bpmLabelDivs}
+        {stopLabels}
       </div>
-      {bpmLabelDivs}
-      {stopLabels}
-    </div>
+    </>
   );
 }
 
