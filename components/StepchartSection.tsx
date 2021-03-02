@@ -20,13 +20,23 @@ type StepchartSectionProps = {
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
 function scrollTargetBeatJustUnderHeader(beatId: string, headerId: string) {
+  console.log("called scrollTargetBeatJustUnderHeader", beatId, headerId);
   setTimeout(() => {
     const targetBeat = document.getElementById(beatId);
     const header = document.getElementById(headerId);
 
+    console.log("after timeout", targetBeat, header);
+
     if (targetBeat && header) {
       const headerBounds = header.getBoundingClientRect();
+      console.log(
+        "window.scrollY",
+        window.scrollY,
+        "headerBounds.height",
+        headerBounds.height
+      );
       window.scrollBy(0, -headerBounds.height);
+      console.log("window.scrollY", window.scrollY);
     }
   }, 10);
 }
@@ -67,6 +77,7 @@ function StepchartSection({
     // this is needed because :target is not very robust (tested in both chrome and ff)
     // when just using :target, if the user changes the speedmod, :target gets wiped out
     const hash = (window.location.hash ?? "").replace("#", "");
+    console.log("hash", hash);
     if (hash) {
       setTargetedBeat(hash);
       scrollTargetBeatJustUnderHeader(hash, headerId);
