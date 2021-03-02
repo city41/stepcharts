@@ -9,7 +9,10 @@ import { ToggleBar } from "./ToggleBar";
 
 import styles from "./StepchartPage.module.css";
 import { Banner } from "./Banner";
-import { StepchartSection } from "./StepchartSection";
+import {
+  scrollTargetBeatJustUnderHeader,
+  StepchartSection,
+} from "./StepchartSection";
 
 type StepchartPageProps = {
   simfile: Simfile;
@@ -24,7 +27,18 @@ const sectionSizesInMeasures: Record<typeof speedmods[number], number> = {
   3: 3,
 };
 
+const HEADER_ID = "stepchart-page-header";
+
 function StepchartPage({ simfile, currentType }: StepchartPageProps) {
+  useEffect(() => {
+    // this is needed because :target is not very robust (tested in both chrome and ff)
+    // when just using :target, if the user changes the speedmod, :target gets wiped out
+    const hash = (window.location.hash ?? "").replace("#", "");
+    if (hash) {
+      scrollTargetBeatJustUnderHeader(hash, HEADER_ID);
+    }
+  }, []);
+
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -57,6 +71,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         startOffset={i}
         endOffset={Math.min(totalSongHeight, i + sectionSizeInMeasures)}
         style={{ zIndex: Math.round(totalSongHeight) - i }}
+        headerId={HEADER_ID}
       />
     );
   }
@@ -123,6 +138,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
         />
       </div>
       <ImageFrame
+        id={HEADER_ID}
         className={clsx(
           styles.hideForPrint,
           styles.aboveStepChart,

@@ -14,26 +14,22 @@ type StepchartSectionProps = {
   speedMod: number;
   startOffset: number;
   endOffset: number;
+  headerId: string;
 };
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
-/*
- * since safari does not support scroll-margin-top, a hack
- * to ensure the targeted beat is in view when either chosen
- * or the page first renders
- */
-function safariScroll(id: string) {
-  if (navigator.vendor?.indexOf("Apple") > -1) {
-    setTimeout(() => {
-      const el = document.getElementById(id);
+function scrollTargetBeatJustUnderHeader(beatId: string, headerId: string) {
+  setTimeout(() => {
+    const targetBeat = document.getElementById(beatId);
+    const header = document.getElementById(headerId);
 
-      if (el) {
-        el.scrollIntoView(true);
-        window.scroll(0, window.scrollY - 300);
-      }
-    }, 10);
-  }
+    if (targetBeat && header) {
+      const headerBounds = header.getBoundingClientRect();
+      targetBeat.scrollIntoView(true);
+      window.scrollBy(0, -headerBounds.height);
+    }
+  }, 10);
 }
 
 function SelfLink({
@@ -50,10 +46,7 @@ function SelfLink({
       className={clsx(styles.selfLink, "float-left -mx-8 w-10")}
       href={`#${id}`}
       style={style}
-      onClick={() => {
-        safariScroll(id);
-        onClick?.();
-      }}
+      onClick={onClick}
     >
       <FiLink />
     </a>
@@ -67,6 +60,7 @@ function StepchartSection({
   speedMod,
   startOffset,
   endOffset,
+  headerId,
 }: StepchartSectionProps) {
   const [targetedBeat, setTargetedBeat] = useState<string | null>(null);
 
@@ -76,7 +70,6 @@ function StepchartSection({
     const hash = (window.location.hash ?? "").replace("#", "");
     if (hash) {
       setTargetedBeat(hash);
-      safariScroll(hash);
     }
   }, []);
 
@@ -147,7 +140,10 @@ function StepchartSection({
         <SelfLink
           id={id}
           style={{ height }}
-          onClick={() => setTargetedBeat(id)}
+          onClick={() => {
+            setTargetedBeat(id);
+            scrollTargetBeatJustUnderHeader(id, headerId);
+          }}
         />
       </div>
     );
@@ -286,37 +282,57 @@ function StepchartSection({
     );
   });
 
+  // for noscript users, use scroll-margin-top to help ensure targeted beat is out
+  // from under the header. JS users don't need this, as scrollTargetBeatJustUnderHeader
+  // moves the targeted beat to the right spot
+  const noscriptStyle =
+    // only add this style once, with the very first section
+    startOffset === 0 ? (
+      <noscript>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `.${styles.bar}:target, .${styles.targeted} { scroll-margin-top: 30vh }`,
+          }}
+        />
+      </noscript>
+    ) : null;
+
   return (
-    <div
-      className={clsx(className, "relative", {
-        "border-b-4 border-yellow-400": process.env.NODE_ENV !== "production",
-      })}
-      style={style}
-    >
+    <>
+      {noscriptStyle}
       <div
-        className={clsx(
-          styles.container,
-          styles[`container-${singleDoubleClass}`],
-          "relative bg-indigo-100 z-10"
-        )}
-        style={
-          {
-            height: `calc(${Math.ceil(
-              endOffset - startOffset
-            )} * ${measureHeight})`,
-          } as CSSProperties
-        }
+        className={clsx(className, "relative", {
+          "border-b-4 border-yellow-400": process.env.NODE_ENV !== "production",
+        })}
+        style={style}
       >
-        {barDivs}
-        {bpmRangeDivs}
-        {freezeDivs}
-        {!isSingle && <div className={clsx(styles.doubleDivider, "h-full")} />}
-        {arrowImgs}
+        <div
+          className={clsx(
+            styles.container,
+            styles[`container-${singleDoubleClass}`],
+            "relative bg-indigo-100 z-10"
+          )}
+          style={
+            {
+              height: `calc(${Math.ceil(
+                endOffset - startOffset
+              )} * ${measureHeight})`,
+            } as CSSProperties
+          }
+        >
+          {barDivs}
+          {bpmRangeDivs}
+          {freezeDivs}
+          {!isSingle && (
+            <div className={clsx(styles.doubleDivider, "h-full")} />
+          )}
+          {arrowImgs}
+        </div>
+        {bpmLabelDivs}
+        {stopLabels}
       </div>
-      {bpmLabelDivs}
-      {stopLabels}
-    </div>
+    </>
   );
 }
 
-export { StepchartSection };
+export { StepchartSection, scrollTargetBeatJustUnderHeader };

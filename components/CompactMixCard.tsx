@@ -34,7 +34,6 @@ function CompactMixCard({ className, mix }: CompactMixCardProps) {
           "flex flex-col bg-gray-900 overflow-hidden rounded-tl-2xl rounded-br-2xl"
         )
       )}
-      customColor
     >
       <div
         className={clsx("grid bg-gray-600 items-center pl-3")}
