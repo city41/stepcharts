@@ -404,7 +404,8 @@ const AllSongsTable = React.memo(function AllSongsTable({
           <span>{currentTitles.length} total songs</span>
         ) : (
           <span>
-            <span className="font-bold">{currentTitles.length}</span> songs
+            <span className="font-bold">{currentTitles.length}</span> song
+            {currentTitles.length === 1 ? " " : "s "}
             matching{" "}
             <span className="text-focal-400">
               (out of {totalTitleCount} total)
