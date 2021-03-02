@@ -2343,6 +2343,11 @@ crypto-browserify@3.12.0, crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+css-class-generator@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/css-class-generator/-/css-class-generator-2.0.0.tgz#611ea8b9565763439779100f2473d03b9a8bd99d"
+  integrity sha512-zlmG8hCTmtc+3Esj1R5PgXCKDqJT1Uqhm8NyALvg3kSjAK0+tByFTkMhEh101V+f7toETM4RGigBU4BjGvphLg==
+
 css-loader@4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-4.3.0.tgz#c888af64b2a5b2e85462c72c0f4a85c7e2e0821e"
@@ -5637,6 +5642,13 @@ next-compose-plugins@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/next-compose-plugins/-/next-compose-plugins-2.2.1.tgz#020fc53f275a7e719d62521bef4300fbb6fde5ab"
   integrity sha512-OjJ+fV15FXO2uQXQagLD4C0abYErBjyjE0I0FHpOEIB8upw0hg1ldFP6cqHTJBH1cZqy96OeR3u1dJ+Ez2D4Bg==
+
+next-optimized-classnames@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/next-optimized-classnames/-/next-optimized-classnames-1.0.1.tgz#5725775a7312f11e357651c711f75f2dfc13e828"
+  integrity sha512-MfkRjNQBo2hh3mNxBCBce8TSSnCYBwv8umKn74gD6MreiOD4J5aFcb8+8p6jD4FQp+YGgjKawh0qaRrhl1PQlw==
+  dependencies:
+    css-class-generator "^2.0.0"
 
 next-optimized-images@^2.6.2:
   version "2.6.2"

@@ -25,6 +25,7 @@
     "lodash.debounce": "^4.0.8",
     "next": "latest",
     "next-compose-plugins": "^2.2.1",
+    "next-optimized-classnames": "^1.0.1",
     "next-optimized-images": "^2.6.2",
     "prettier": "^2.2.1",
     "react": "^16.13.1",
