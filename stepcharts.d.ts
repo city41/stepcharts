@@ -35,7 +35,7 @@ type StepchartType = {
 
 type Stats = {
   jumps: number;
-  drills: number;
+  jacks: number;
   freezes: number;
   gallops: number;
 };

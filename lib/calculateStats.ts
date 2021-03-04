@@ -32,7 +32,7 @@ function isGallop(
   }
 
   // the gallop must move to a new direction,
-  // otherwise it's at the least a mini drill
+  // otherwise it's at the least a mini jack
   if (d.direction === p.direction) {
     return false;
   }
@@ -47,7 +47,7 @@ function isGallop(
   return false;
 }
 
-function isDrill(d: Arrow, p: Arrow | undefined): boolean {
+function isJack(d: Arrow, p: Arrow | undefined): boolean {
   if (!p) {
     return false;
   }
@@ -69,11 +69,11 @@ function calculateStats(chart: Stepchart): Stats {
   const gallops = chart.arrows.filter((a, i, array) =>
     isGallop(a, array[i - 1], array[i - 2])
   );
-  const drills = chart.arrows.filter((a, i, array) => isDrill(a, array[i - 1]));
+  const jacks = chart.arrows.filter((a, i, array) => isJack(a, array[i - 1]));
 
   return {
     jumps: jumps.length,
-    drills: drills.length,
+    jacks: jacks.length,
     freezes: freezes.length,
     gallops: gallops.length,
   };

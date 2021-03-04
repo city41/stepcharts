@@ -42,7 +42,7 @@ ${notes}
       expect(stats.gallops).toEqual(3);
     });
 
-    it("should ignore 16th drills", () => {
+    it("should ignore 16th jacks", () => {
       const stepchart = parse(`
 0000
 0000

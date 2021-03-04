@@ -178,19 +178,19 @@ function CompactTitleCard({
           </div>
         </div>
         <div>
-          J <span className="font-bold">{stats.jumps}</span>
+          Jmp <span className="font-bold">{stats.jumps}</span>
         </div>
         {/*<div>*/}
         {/*  C <span className="font-bold">{stats.crossovers}</span>*/}
         {/*</div>*/}
         <div>
-          D <span className="font-bold">{stats.drills}</span>
+          Jck <span className="font-bold">{stats.jacks}</span>
         </div>
         <div>
-          F <span className="font-bold">{stats.freezes}</span>
+          Frz <span className="font-bold">{stats.freezes}</span>
         </div>
         <div>
-          G <span className="font-bold">{stats.gallops}</span>
+          Glp <span className="font-bold">{stats.gallops}</span>
         </div>
       </div>
     </ImageFrame>

@@ -4,7 +4,7 @@ const sorts = [
   "title",
   "bpm",
   "jumps",
-  "drills",
+  "jacks",
   "freezes",
   "gallops",
   "stops",
