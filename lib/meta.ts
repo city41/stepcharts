@@ -13,6 +13,7 @@ const dateReleased: Record<string, string> = {
   "5thMix": "2001-03-27",
   A: "2016-03-30",
   "A20": "2019-03-20",
+  "A20-Plus": "2020-07-01",
   "Disney-Rave": "2000-11-30",
   "Dreams-Come-True": "1999-12-25",
   EuroMIX: "2000-08-01",
@@ -45,6 +46,7 @@ const shortMixNames: Record<keyof typeof dateReleased, string> = {
   "5thMix": "5th",
   A: "A",
   "A20": "A20",
+  "A20-Plus": "A20+",
   "Disney-Rave": "Disney",
   "Dreams-Come-True": "DCT",
   EuroMIX: "Euro",
@@ -87,7 +89,8 @@ const groupedOrder: GroupedOrder = {
     "2013",
     "2014",
     "A",
-    "A20"
+    "A20",
+    "A20-Plus"
   ],
   "Dancing Stage": ["EuroMIX", "EuroMIX2", "Fusion"],
   "Spin-offs": ["Solo-Bass", "Solo-2000", "Disney-Rave", "Dreams-Come-True"],
