@@ -54,6 +54,15 @@ function WhatsNewPage() {
         <h2 className="text-focal-700 mb-12 text-2xl pl-4 sm:pl-0">
           What’s new
         </h2>
+        <NewEntry title="More mixes added" date="2022-09-18">
+          <p>New mixes have been added:</p>
+          <ul className='ml-4 list-disc'>
+            <li>A20</li>
+            <li>A20 Plus</li>
+            <li>A3</li>
+          </ul>
+          <p>And the missing nonstop mixes in DDR Solo Bass have been added</p>
+        </NewEntry>
         <NewEntry title="Link to a specific beat in a chart" date="2021-02-25">
           <p>
             If you are on a desktop computer, you can now link to a specific
