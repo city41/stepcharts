@@ -21,7 +21,7 @@ type StepchartPageProps = {
 
 const speedmods = [1, 1.5, 2, 3];
 const sectionSizesInMeasures: Record<typeof speedmods[number], number> = {
-  1: 8,
+  1: 1,
   1.5: 5,
   2: 4,
   3: 3,
@@ -129,13 +129,15 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
           "w-screen -mx-4 bg-focal-300 sticky top-0 shadow-lg sm:hidden"
         )}
       >
-        <Banner
-          className={clsx(
-            styles.hideForPrint,
-            "mx-auto border-b-4 border-white w-full absolute top-0 left-0"
-          )}
-          title={simfile.title}
-        />
+        <a href="..">
+          <Banner
+            className={clsx(
+              styles.hideForPrint,
+              "mx-auto border-b-4 border-white w-full absolute top-0 left-0"
+            )}
+            title={simfile.title}
+          />
+        </a>
       </div>
       <ImageFrame
         id={HEADER_ID}
@@ -160,7 +162,7 @@ function StepchartPage({ simfile, currentType }: StepchartPageProps) {
                 name="Native title"
                 value={simfile.title.titleName}
               />
-            )}
+            ) || null}
             <TitleDetailsRow name="BPM" value={simfile.displayBpm} />
             <TitleDetailsRow
               name="Artist"

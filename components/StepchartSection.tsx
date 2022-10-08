@@ -80,7 +80,7 @@ function StepchartSection({
 
   const barHeight = `var(--arrow-size) * ${speedMod}`;
   const measureHeight = `${barHeight} * 4`;
-  const arrowAdjustment = `(${barHeight} - var(--arrow-size)) /2`;
+  const arrowAdjustment = `(${barHeight} - var(--arrow-size)) / 2`;
 
   const arrowImgs = [];
 
@@ -158,7 +158,7 @@ function StepchartSection({
     }
 
     const hasHead = f.startOffset >= startOffset && f.startOffset < endOffset;
-    const hasTail = f.endOffset <= endOffset;
+    const hasTail = f.endOffset - 0.5 <= endOffset;
 
     // this is because freezes need to start halfway down their corresponding arrow
     const freezeOffset = `var(--arrow-size) / 2`;
@@ -166,7 +166,10 @@ function StepchartSection({
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
-        className={clsx("absolute pointer-events-none")}
+        className={clsx("absolute pointer-events-none border overflow-hidden", {
+          'border-red-500': hasTail,
+          'border-blue-600': !hasTail
+        })}
         style={{
           top: `calc(${inRangeStartOffset - startOffset}  * ${measureHeight} ${
             hasHead ? `+ ${freezeOffset} + ${arrowAdjustment}` : ""
@@ -180,7 +183,7 @@ function StepchartSection({
           } ${hasHead ? `- ${freezeOffset} * ${speedMod}` : ""})`,
         }}
       >
-        <FreezeBody includeTail={hasTail} />
+        <FreezeBody includeTail={hasTail} style={{height: `calc(${f.endOffset - inRangeStartOffset} * ${measureHeight} + ${freezeOffset})`}} />
       </div>
     );
   });

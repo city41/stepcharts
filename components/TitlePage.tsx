@@ -88,7 +88,7 @@ function TitlePage({ title, displayBpm, artist, mix, types }: TitlePageProps) {
         <TitleDetailsTable>
           {title.translitTitleName && (
             <TitleDetailsRow name="Native title" value={title.titleName} />
-          )}
+          ) || null}
           <TitleDetailsRow name="BPM" value={displayBpm} />
           <TitleDetailsRow name="Artist" value={artist ?? "unknown"} />
           <TitleDetailsRow name="Mix" value={mix.mixName} />
