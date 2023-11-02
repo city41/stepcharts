@@ -21,7 +21,7 @@ type StepchartPageProps = {
 
 const speedmods = [1, 1.5, 2, 3];
 const sectionSizesInMeasures: Record<typeof speedmods[number], number> = {
-  1: 1,
+  1: 8,
   1.5: 5,
   2: 4,
   3: 3,
