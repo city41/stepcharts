@@ -46,8 +46,11 @@ function _getAllStepchartData(): EntireMix[] {
           mix,
         };
       } catch (e) {
+        const message = e instanceof Error ? e.message : String(e);
+        const stack = e instanceof Error ? e.stack : '';
+
         throw new Error(
-          `parseStepchart failed for ${ROOT}/${mixDir}/${songDir}: ${e.message} ${e.stack}`
+          `parseStepchart failed for ${ROOT}/${mixDir}/${songDir}: ${message} ${stack}`
         );
       }
     });

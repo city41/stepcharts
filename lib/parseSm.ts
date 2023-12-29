@@ -223,10 +223,8 @@ function parseSm(sm: string, _titlePath: string): RawSimfile {
     // now i is pointing at the first measure
     let arrows: Arrow[] = [];
 
-    const {
-      firstNonEmptyMeasureIndex,
-      numMeasuresSkipped,
-    } = findFirstNonEmptyMeasure(mode, lines, i);
+    const { firstNonEmptyMeasureIndex, numMeasuresSkipped } =
+      findFirstNonEmptyMeasure(mode, lines, i);
     i = firstNonEmptyMeasureIndex;
 
     const firstMeasureIndex = i;
@@ -329,8 +327,11 @@ function parseSm(sm: string, _titlePath: string): RawSimfile {
 
     return sc as RawSimfile;
   } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    const stack = e instanceof Error ? e.stack : "";
+
     throw new Error(
-      `error, ${e.message}, ${e.stack}, parsing ${sm.substring(0, 300)}`
+      `error, ${message}, ${stack}, parsing ${sm.substring(0, 300)}`
     );
   }
 }

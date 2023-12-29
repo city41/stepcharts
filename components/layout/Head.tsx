@@ -33,7 +33,7 @@ function getAbsoluteUrl(url: string): string {
 
 function Head({ title, metaDescription, metaImg }: HeadProps) {
   const finalMetaImg = `${getAbsoluteUrl(
-    metaImg ?? fallbackImg
+    metaImg ?? fallbackImg.src
   )}?t=${title.substring(0, 10)}`;
 
   return (

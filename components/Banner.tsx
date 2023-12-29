@@ -16,7 +16,7 @@ function Banner({ className, title }: BannerProps) {
     bannerEl = (
       <img
         className="absolute top-0 left-0 w-full h-full"
-        src={require(`./bannerImages/${currentBanner}`)}
+        src={`/bannerImages/${currentBanner}`}
         onError={() => setCurrentBanner(null)}
         loading="lazy"
         alt={`${name} banner`}

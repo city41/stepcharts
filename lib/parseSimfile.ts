@@ -68,6 +68,9 @@ function parseSimfile(
     fs.existsSync(path.join(stepchartSongDirPath, rawStepchart.banner))
   ) {
     const publicName = toSafeName(`${mixDir}-${rawStepchart.banner}`);
+    const srcPath = path.resolve(stepchartSongDirPath, rawStepchart.banner);
+    const destPath = path.resolve("public/bannerImages", publicName);
+    fs.copyFileSync(srcPath, destPath);
     fs.copyFileSync(
       path.join(stepchartSongDirPath, rawStepchart.banner),
       path.join("components/bannerImages", publicName)

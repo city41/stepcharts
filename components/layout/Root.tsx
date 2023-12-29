@@ -45,7 +45,7 @@ function Root({
               <a href="/" className={clsx(styles.logo, "block lg:-ml-4")}>
                 <img
                   className="w-full h-full"
-                  src={logoSvg}
+                  src={logoSvg.src}
                   alt="Stepcharts logo"
                   width={52}
                   height={52}
