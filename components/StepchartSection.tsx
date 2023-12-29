@@ -166,10 +166,7 @@ function StepchartSection({
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
-        className={clsx("absolute pointer-events-none border overflow-hidden", {
-          'border-red-500': hasTail,
-          'border-blue-600': !hasTail
-        })}
+        className="absolute pointer-events-none border overflow-hidden"
         style={{
           top: `calc(${inRangeStartOffset - startOffset}  * ${measureHeight} ${
             hasHead ? `+ ${freezeOffset} + ${arrowAdjustment}` : ""
@@ -183,7 +180,11 @@ function StepchartSection({
           } ${hasHead ? `- ${freezeOffset} * ${speedMod}` : ""})`,
         }}
       >
-        <FreezeBody includeTail={hasTail} style={{height: `calc(${f.endOffset - inRangeStartOffset} * ${measureHeight} + ${freezeOffset})`}} />
+        <FreezeBody
+          includeTail={hasTail}
+          endOffset={endOffset}
+          inRangeStartOffset={inRangeStartOffset}
+        />
       </div>
     );
   });
