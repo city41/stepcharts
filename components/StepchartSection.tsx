@@ -158,7 +158,7 @@ function StepchartSection({
     }
 
     const hasHead = f.startOffset >= startOffset && f.startOffset < endOffset;
-    const hasTail = f.endOffset - 0.5 <= endOffset;
+    const hasTail = f.endOffset <= endOffset;
 
     // this is because freezes need to start halfway down their corresponding arrow
     const freezeOffset = `var(--arrow-size) / 2`;
