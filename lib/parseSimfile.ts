@@ -68,10 +68,10 @@ function parseSimfile(
     fs.existsSync(path.join(stepchartSongDirPath, rawStepchart.banner))
   ) {
     const publicName = toSafeName(`${mixDir}-${rawStepchart.banner}`);
-    fs.copyFileSync(
-      path.join(stepchartSongDirPath, rawStepchart.banner),
-      path.join("components/bannerImages", publicName)
-    );
+    const srcPath = path.resolve(stepchartSongDirPath, rawStepchart.banner);
+    const destPath = path.resolve("public/bannerImages", publicName);
+    console.log("parseSimFile copying", srcPath, destPath, __dirname);
+    fs.copyFileSync(srcPath, destPath);
     rawStepchart.banner = publicName;
   } else {
     rawStepchart.banner = null;
