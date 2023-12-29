@@ -7,11 +7,22 @@ type FreezeBodyProps = {
   className?: string;
   style?: CSSProperties;
   includeTail: boolean;
+  endOffset?: number;
+  inRangeStartOffset?: number;
 };
 
-function FreezeBody({ className, style, includeTail }: FreezeBodyProps) {
+function FreezeBody({
+  className,
+  style,
+  includeTail,
+  endOffset,
+  inRangeStartOffset,
+}: FreezeBodyProps) {
   return (
     <div
+      data-endOffset={endOffset}
+      data-inRangeStartOffset={inRangeStartOffset}
+      data-includeTail={includeTail}
       className={clsx(className, styles.root, {
         [styles.withTail]: includeTail,
         [styles.withoutTail]: !includeTail,
