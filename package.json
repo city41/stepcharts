@@ -28,18 +28,18 @@
     "next-optimized-classnames": "^1.0.1",
     "next-optimized-images": "^2.6.2",
     "prettier": "^2.2.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-icons": "^4.1.0",
     "react-table": "^7.6.3",
     "sass": "^1.32.6",
     "ts-jest": "^26.5.0",
-    "typescript": "^4.1.3"
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "autoprefixer": "10.0.2",
-    "postcss": "8.1.7",
-    "tailwindcss": "^2.0.2"
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0"
   },
   "license": "MIT"
 }

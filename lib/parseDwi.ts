@@ -420,7 +420,10 @@ function parseDwi(dwi: string, titlePath?: string): RawSimfile {
 
     return sc as RawSimfile;
   } catch (e) {
-    throw new Error(`error, ${e.message}, ${e.stack}, parsing ${dwi}`);
+    const message = e instanceof Error ? e.message : String(e);
+    const stack = e instanceof Error ? e.stack : "";
+
+    throw new Error(`error, ${message}, ${stack}, parsing ${dwi}`);
   }
 }
 
