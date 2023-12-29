@@ -70,8 +70,11 @@ function parseSimfile(
     const publicName = toSafeName(`${mixDir}-${rawStepchart.banner}`);
     const srcPath = path.resolve(stepchartSongDirPath, rawStepchart.banner);
     const destPath = path.resolve("public/bannerImages", publicName);
-    console.log("parseSimFile copying", srcPath, destPath, __dirname);
     fs.copyFileSync(srcPath, destPath);
+    fs.copyFileSync(
+      path.join(stepchartSongDirPath, rawStepchart.banner),
+      path.join("components/bannerImages", publicName)
+    );
     rawStepchart.banner = publicName;
   } else {
     rawStepchart.banner = null;
