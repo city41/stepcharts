@@ -166,7 +166,7 @@ function StepchartSection({
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
-        className="absolute pointer-events-none border overflow-hidden"
+        className="absolute pointer-events-none overflow-hidden"
         style={{
           top: `calc(${inRangeStartOffset - startOffset}  * ${measureHeight} ${
             hasHead ? `+ ${freezeOffset} + ${arrowAdjustment}` : ""
