@@ -10,8 +10,8 @@ import { Breadcrumbs } from "./Breadcrumbs";
 import { Banner } from "./Banner";
 
 const modeSvgs = {
-  single: singleSvg,
-  double: doubleSvg,
+  single: singleSvg.src,
+  double: doubleSvg.src,
 };
 
 const modeSvgWidths = {
@@ -86,9 +86,10 @@ function TitlePage({ title, displayBpm, artist, mix, types }: TitlePageProps) {
           />
         </div>
         <TitleDetailsTable>
-          {title.translitTitleName && (
+          {(title.translitTitleName && (
             <TitleDetailsRow name="Native title" value={title.titleName} />
-          ) || null}
+          )) ||
+            null}
           <TitleDetailsRow name="BPM" value={displayBpm} />
           <TitleDetailsRow name="Artist" value={artist ?? "unknown"} />
           <TitleDetailsRow name="Mix" value={mix.mixName} />

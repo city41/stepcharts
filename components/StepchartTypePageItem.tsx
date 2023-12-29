@@ -14,8 +14,8 @@ type StepchartTypePageItemProps = {
 };
 
 const modeSvgs = {
-  single: singleSvg,
-  double: doubleSvg,
+  single: singleSvg.src,
+  double: doubleSvg.src,
 };
 
 const modeSvgWidths = {

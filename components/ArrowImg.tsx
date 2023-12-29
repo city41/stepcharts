@@ -29,13 +29,13 @@ const arrowClasses = {
 };
 
 const arrowImgs: Record<ArrowImgProps["beat"], string> = {
-  4: arrow4Svg,
-  6: arrow6Svg,
-  8: arrow8Svg,
-  12: arrow6Svg,
-  16: arrow16Svg,
-  shock: arrowShockSvg,
-  freeze: arrowFreezeSvg,
+  4: arrow4Svg.src,
+  6: arrow6Svg.src,
+  8: arrow8Svg.src,
+  12: arrow6Svg.src,
+  16: arrow16Svg.src,
+  shock: arrowShockSvg.src,
+  freeze: arrowFreezeSvg.src,
 };
 
 function ArrowImg({ className, style, position, beat }: ArrowImgProps) {
