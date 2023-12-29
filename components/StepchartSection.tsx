@@ -180,11 +180,7 @@ function StepchartSection({
           } ${hasHead ? `- ${freezeOffset} * ${speedMod}` : ""})`,
         }}
       >
-        <FreezeBody
-          includeTail={hasTail}
-          endOffset={endOffset}
-          inRangeStartOffset={inRangeStartOffset}
-        />
+        <FreezeBody includeTail={hasTail} />
       </div>
     );
   });
