@@ -50,7 +50,6 @@ class MyDocument extends Document {
               }}
             />
           </noscript>
-          <script src="/_vercel/insights/script.js" defer />
         </Head>
         <body>
           <Main />
