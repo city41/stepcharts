@@ -4,6 +4,6 @@ This is a website where Dance Dance Revolution players can browse step charts fr
 
 Deployed here: https://stepcharts.mattgreer.dev
 
-## Status
+## Creative Commons
 
-A rather solid and decently featured version of the site is live and deployed.
+This code is now licensed under Creative Commons, CC0, and is essentially public domain. Do whatever you want with it.
