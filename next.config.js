@@ -1,7 +1,8 @@
-const withOptimizedImages = require("next-optimized-images");
 const withOptimizedClassnames = require("next-optimized-classnames");
 
-const config = {
+const withPlugins = require("next-compose-plugins");
+
+const finalConfig = withPlugins([[withOptimizedClassnames]], {
   pageExtensions: ["tsx"],
   trailingSlash: true,
   serverRuntimeConfig: {
@@ -9,18 +10,6 @@ const config = {
     ROOT_DOMAIN: "ddr.stepcharts.com",
   },
   output: "export",
-};
+});
 
-const finalConfig = (_phase, { defaultConfig }) => {
-  const plugins = [withOptimizedImages, withOptimizedClassnames];
-  return plugins.reduce(
-    (acc, plugin) => {
-      return plugin(acc);
-    },
-    { ...defaultConfig, ...config },
-  );
-};
-
-console.log(JSON.stringify(finalConfig, null, 2));
-
-return finalConfig;
+module.exports = finalConfig;
