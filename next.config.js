@@ -8,6 +8,7 @@ const config = {
     PROJECT_ROOT: __dirname,
     ROOT_DOMAIN: "ddr.stepcharts.com",
   },
+  output: "export",
 };
 
 const finalConfig = (_phase, { defaultConfig }) => {
@@ -16,7 +17,7 @@ const finalConfig = (_phase, { defaultConfig }) => {
     (acc, plugin) => {
       return plugin(acc);
     },
-    { ...defaultConfig, ...config }
+    { ...defaultConfig, ...config },
   );
 };
 
